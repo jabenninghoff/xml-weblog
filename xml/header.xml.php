@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.4 2002/10/17 07:40:50 loki Exp $
+// $Id: header.xml.php,v 1.5 2002/10/18 00:12:34 loki Exp $
 
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
@@ -19,7 +19,7 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
 <?php
 $element = array ( "name", "slogan", "url", "description" );
 foreach ($element as $tag) {
-    echo "<$tag>", $site[$tag], "</$tag>\n";
+    echo "    <$tag>", $site[$tag], "</$tag>\n";
 }
 ?>
     <content><?php echo $site['header_content'] ?></content>

@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.5 2002/10/17 20:29:42 loki Exp $
+// $Id: index.xml.php,v 1.6 2002/10/18 00:12:34 loki Exp $
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
 
@@ -8,16 +8,16 @@ if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     header('Content-Type: text/xml');
 }
 
-// get site info 
+// build variables
 $site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
-
-// retrieve blocks
 $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+$article = $db->getAll("select * from article group by date limit 10", DB_FETCHMODE_ASSOC);
+$topic = $db->getAll("select * from topic group by id", DB_FETCHMODE_ASSOC);
 
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <!-- XML-weblog front page -->
-<page lang="en" title="technomagik.net (generated)">
+<page lang="en" title="<?php echo $site['name']; ?>">
 
 <?php require "xml/header.xml.php"; ?>
 
@@ -26,34 +26,40 @@ $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,b
   <!-- main: main section of document. index page contains articles. -->
   <main>
     <!-- 0 or more articles, default 10 most recent. topmost is index 0 -->
-    <article index="0">
-
+<?php
+$i = 0;
+while ($article[$i]) {
+$id = $article[$i]['id'];
+?>
+    <article index="<?php echo $i; ?>">
       <!-- metadata -->
-      <id>23 (article.id)</id>
+      <id><?php echo $id; ?></id>
       <topic>
-        <name>email (article.topic)</name>
-        <icon>(topic icon image)</icon>
+        <name><?php echo $topic[($article[$i]['topic'])-1]['name']; ?></name>
+        <icon>[icon: not implemented]</icon>
       </topic>
-      <language>en (article.language)</language>
-      <url>article.php?id=23 (generated)</url>
+      <language><?php echo $article[$i]['language']; ?></language>
+      <url>article.php?id=<?php echo $id; ?></url>
 
       <!-- "header" info -->
-      <title>Some Mail Someone Sent Me (article.title)</title>
-      <author>Loki (article.author)</author>
-      <date>2002-10-14 13:31:56 GMT-5 (article.date)</date>
+      <title><?php echo $article[$i]['title']; ?></title>
+      <author><?php echo $article[$i]['author']; ?></author>
+      <date><?php echo $article[$i]['date']; ?></date>
 
       <!-- actual content -->
       <leader>
-        <p>Here's some interesting email I got.
-        (article.leader,XHTML+)</p>
+<?php echo $article[$i]['leader']; ?>
       </leader>
       <content>
-        <p>the body of the message would, of course, go here.
-        (article.content,XHTML+)</p>
+<?php echo $article[$i]['content']; ?>
       </content>
 
       <!-- comments (not yet implemented) -->
     </article>
+<?php
+    $i++;
+}
+?>
   </main>
 
 <?php require "xml/footer.xml.php"; ?>
