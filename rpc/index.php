@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.14 2004/07/09 17:56:15 loki Exp $
+// $Id: index.php,v 1.15 2004/07/09 23:12:33 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -301,9 +301,36 @@ function _newPost($params) {
 // metaWeblog.editPost (postid, username, password, struct, publish) returns true
 
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
+function _deletePost($params) {
 
+    global $xwl_db, $_pshift;
+
+    // get the postid and publish bit
+    $p = $params->getParam(0+$_pshift);
+    $postid = $p->scalarval();
+    $p = $params->getParam(3+$_pshift);
+    $publish = $p->scalarval();
+
+    if (!$publish) {
+        // not publishing to home page is currently not supported.
+        // will be implemented with user submission system.
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
+    }
+
+    // check authorization - require admin for now
+    if (!xwl_auth_user_authorized("admin")) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOT_AUTHORIZED);
+    }
+
+    if ($xwl_db->delete_object("article", $postid)) {
+        return new XML_RPC_Response(new XML_RPC_Value(1, "boolean"));
+    }
+
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+}
 
 $dispatch_map = array(
+    "blogger.deletePost" => array("function" => "xwl_xmlrpc"),
     "blogger.getPost" => array("function" => "xwl_xmlrpc"),
     "blogger.getRecentPosts" => array("function" => "xwl_xmlrpc"),
     "blogger.newPost" => array("function" => "xwl_xmlrpc"),
