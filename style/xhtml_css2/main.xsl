@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.15 2002/11/16 01:18:11 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.16 2002/11/16 22:05:03 loki Exp $ -->
 
 <!--
    -
@@ -174,6 +174,13 @@
 
 <xsl:template match="menu">
   <a href="{@link}"><xsl:value-of select="."/></a>
+</xsl:template>
+
+<xsl:template match="topic">
+  <table class="topic" width="100%">
+    <tr class="icon"><td><img src="{icon}" alt="{name}"/></td></tr>
+    <tr class="caption"><td><b><xsl:value-of select="name"/></b></td></tr>
+  </table>
 </xsl:template>
 
 <xsl:template match="text()">

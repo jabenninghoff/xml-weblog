@@ -1,4 +1,4 @@
-/* $Id: advanced.css,v 1.4 2002/11/15 23:18:36 loki Exp $ */
+/* $Id: advanced.css,v 1.5 2002/11/16 22:05:03 loki Exp $ */
 
 /* advanced/CSS2 support - modern browsers */
 
@@ -90,6 +90,22 @@ div.block-main {
 div.byline {
     border: 1px solid black;
     padding: 0.25em;
+}
+
+table.topic {
+    float: left;
+    width: 12em;
+    height: 145px;
+    text-align: center;
+}
+
+tr.icon {
+    height: 120px;
+    vertical-align: bottom;
+}
+
+tr.caption {
+    height: 25px;
 }
 
 /* extras */
