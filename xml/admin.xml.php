@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.17 2002/11/01 17:00:28 loki Exp $
+// $Id: admin.xml.php,v 1.18 2002/11/01 17:25:02 loki Exp $
 
 require_once "include/auth.inc.php";
 require_once "include/config.inc.php";
@@ -44,8 +44,8 @@ function admin_input($name, $type, $value, $mode) {
         break;
 
     case "boolean":
-        echo '<input name="', $name, '" type="checkbox" value="', $value,
-            '" />';
+        if ($value) $checked=" checked=\"checked\"";
+        echo '<input name="', $name, '" type="checkbox"', $checked, ' />';
         break;
 
     case "date":
@@ -156,6 +156,27 @@ function admin_form_block($object, $type, $schema, $mode)
     echo "          </table>\n";
 }
 
+function admin_form_user($object, $type, $schema, $mode)
+{
+    echo "          <table>\n";
+    foreach ($schema as $s) {
+        if ($s['property'] == "password") {
+            echo "            <tr>\n";
+            echo "              <td><b>Password</b></td>\n";
+            echo "              <td>";
+            echo '<input name="password" type="password" maxlength="255" size="40"/>';
+            echo "</td>\n";
+            echo "            </tr>\n";
+        } else {
+            echo "            <tr>\n";
+            admin_input($s['property'], $s['datatype'],
+                htmlspecialchars($object[$s['property']]), $mode);
+            echo "            </tr>\n";
+        }
+    }
+    echo "          </table>\n";
+}
+
 function admin_form_image($object, $type, $schema, $mode)
 {
     echo "          <table>\n";
@@ -181,7 +202,7 @@ global $admin_form_handler;
 
 echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" ",
     "method=\"post\" enctype=\"multipart/form-data\">\n";
-if ($admin_form_handler[$type]) {
+if ($admin_form_handler[$type] && $mode != "delete") {
     $admin_form_handler[$type]($object, $type, $schema, $mode);
 } else {
     // default handler
@@ -286,6 +307,19 @@ function process_form_image($schema)
     if (!$object['mime']) $object['mime'] = $mime_type[$size[2]];
     if (!$object['width']) $object['width'] = $size[0];
     if (!$object['height']) $object['height'] = $size[1];
+
+    return $object;
+}
+
+function process_form_user($schema)
+{
+    foreach ($schema as $s) {
+       $validate = "valid_".$s['datatype'];
+       $object[$s['property']] = $validate($_POST[$s['property']]); 
+       if ($_FILES[$s['property']])
+           $object[$s['property']] = $validate($_FILES[$s['property']]);
+    }
+    $object['password'] = crypt($object['password']);
 
     return $object;
 }
