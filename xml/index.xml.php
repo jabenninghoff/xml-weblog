@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.19 2003/04/23 18:55:23 loki Exp $
+// $Id: index.xml.php,v 1.20 2003/04/23 21:05:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -64,12 +64,7 @@ $xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit']);
 // display articles
 $i = 0;
 while ($xwl_article[$i]) {
-
-    // convert to _xml values for convenience
-    foreach ($xwl_article[$i]->property as $key => $value) {
-        $xwl_article_value_xml[$key] = $value->display_XML();
-    }
-
+    $xwl_article_value_xml = $xwl_article[$i]->XML_values();
     xwl_display_article($xwl_article_value_xml, $i++, "");
 }
 

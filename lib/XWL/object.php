@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.4 2003/04/23 15:50:01 loki Exp $
+// $Id: object.php,v 1.5 2003/04/23 21:05:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -70,6 +70,16 @@ class XWL_object
             $this->property[$key]->set_value($value);
         }
     }
+
+    function XML_values()
+    {
+        // convert to _xml values for convenience
+        foreach ($this->property as $key => $value) {
+            $xml_value[$key] = $value->display_XML();
+        }
+        return $xml_value;
+    }
+
 }
 
 class XWL_site extends XWL_object

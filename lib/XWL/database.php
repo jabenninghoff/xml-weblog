@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.6 2003/04/23 16:10:27 loki Exp $
+// $Id: database.php,v 1.7 2003/04/23 21:05:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -93,6 +93,7 @@ class XWL_database
 
     function fetch_article($id)
     {
+        // get article by id
         $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.id = '$id'";
 
         return $this->_fetch_single("XWL_article", $query);
@@ -104,6 +105,20 @@ class XWL_database
 
         // fetch top ($limit) articles
         $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
+
+        return $this->_fetch_multiple("XWL_article", $query);
+    }
+
+    function fetch_topics()
+    {
+        // fetch all topics
+        return $this->_fetch_multiple("XWL_topic", "select * from topic order by id");
+    }
+
+    function fetch_articles_by_topic($topic)
+    {
+        // fetch all articles for a specific topic
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.topic='$topic' order by article.date desc";
 
         return $this->_fetch_multiple("XWL_article", $query);
     }
@@ -140,21 +155,6 @@ function xwl_db_fetch_article_last()
 
     $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date asc limit 1";
     return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_fetch_article_by_topic($topic)
-{
-    global $xwl_db;
-
-    $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.topic='$topic' order by article.date desc";
-    return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_fetch_topic()
-{
-    global $xwl_db;
-
-    return $xwl_db->getAll("select * from topic order by id", DB_FETCHMODE_ASSOC);
 }
 
 // image functions

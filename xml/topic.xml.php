@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.6 2003/04/21 20:54:12 loki Exp $
+// $Id: topic.xml.php,v 1.7 2003/04/23 21:05:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,34 +36,38 @@
  *
  */
 
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/site.php";
+require_once "include/article.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "topic.xml.php") {
     // standalone
-    header('Content-Type: text/xml');
+    header('Content-Type: text/plain');
 }
 
-// build variables
-$site = xwl_db_fetch_site(base_url());
-$block = xwl_db_fetch_block();
-$topic = xwl_db_fetch_topic();
+XWL::xml_declaration();
 
-xml_declaration();
-?>
-<page lang="en" title="<?php echo $site['name']; ?>">
+echo "<page lang=\"en\" title=\"{$xwl_site_value_xml['name']}\">\n\n";
 
-<?php require "xml/header.xml.php"; ?>
+require "xml/header.xml.php";
+echo "\n";
 
-<?php require "xml/sidebar.xml.php"; ?>
+require "xml/sidebar.xml.php";
+echo "\n";
 
-  <!-- main: main section of document. index page contains articles. -->
-  <main>
-<?php
-// if no id, present topic list
-if (!isset($_GET['id'])) {
+echo "  <!-- main: main section of document. index page contains articles. -->\n";
+echo "    <main>\n";
+
+$id = new XWL_ID;
+$xwl_topic = $xwl_db->fetch_topics();
+
+// if no valid id, present topic list
+if (!$id->set_value($_GET['id'])) {
+
     echo "    <topiclist>\n";
-    foreach ($topic as $t) {
+    foreach ($xwl_topic as $topic) {
+
+        $t = $topic->XML_values();
         echo "      <topic>\n";
         echo "        <name>{$t['name']}</name>\n";
         echo "        <icon>{$t['icon']}</icon>\n";
@@ -71,26 +75,37 @@ if (!isset($_GET['id'])) {
         echo "      </topic>\n";
     }
     echo "    </topiclist>\n";
+
 } else {
-    $id = xwl_valid_id($_GET['id']);
-    $article = xwl_db_fetch_article_by_topic($id);
+
+    $xwl_article = $xwl_db->fetch_articles_by_topic($id->value);
+    $topic_name = $xwl_topic[$id->value-1]->property['name']->display_XML();
+
     echo "    <articlelist>\n";
-    echo "      <heading>{$topic[$id-1]['name']}</heading>\n";
-    $i = 1;
-    foreach ($article as $a) {
-        echo "        <article index=\"$i\">\n";
-        echo "          <url>article.php?id={$a['id']}</url>\n";
-        echo "          <title>{$a['title']}</title>\n";
-        echo "          <author>{$a['author']}</author>\n";
-        echo "          <date>{$a['date']}</date>\n";
-        echo "        </article>\n";
-        $i++;
+    echo "      <heading>{$topic_name}</heading>\n";
+
+    if ($xwl_article) {
+        $i = 1;
+        foreach ($xwl_article as $article) {
+            $a = $article->XML_values();
+
+            echo "        <article index=\"$i\">\n";
+            echo "          <url>article.php?id={$a['id']}</url>\n";
+            echo "          <title>{$a['title']}</title>\n";
+            echo "          <author>{$a['author']}</author>\n";
+            echo "          <date>{$a['date']}</date>\n";
+            echo "        </article>\n";
+            $i++;
+        }
     }
     echo "</articlelist>\n";
+
 }
+
+echo "    </main>\n";
+
+require "xml/footer.xml.php";
+echo "\n";
+
+echo "</page>\n";
 ?>
-  </main>
-
-<?php require "xml/footer.xml.php"; ?>
-
-</page>
