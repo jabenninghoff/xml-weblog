@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.php,v 1.1 2002/11/17 03:46:16 loki Exp $
+// $Id: topic.php,v 1.2 2002/11/17 03:47:44 loki Exp $
 // single article renderer
 
 /*
@@ -42,7 +42,7 @@ $style_path = get_style_path();
 
 // get php-formatted xml document
 ob_start();
-require "xml/topics.xml.php";
+require "xml/topic.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
