@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.4 2003/04/23 15:50:01 loki Exp $
+// $Id: database.php,v 1.5 2003/04/23 15:54:43 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -59,7 +59,6 @@ class XWL_database
     {
         $result = $this->_db->getAll($query, DB_FETCHMODE_ASSOC);
 
-        echo $class, "\n";
         foreach ($result as $res) {
             $tmp = new $class;
             $tmp->load_SQL($res);
