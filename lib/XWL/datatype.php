@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.10 2003/11/03 06:31:01 loki Exp $
+// $Id: datatype.php,v 1.11 2003/11/24 03:20:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -178,6 +178,29 @@ class XWL_string extends XWL_datatype
     }
 }
 
+class XWL_password extends XWL_string
+{
+    function set_password($input)
+    {
+        // strings only
+        if (!$this->_valid_string($input)) return false;
+
+        $this->value = crypt($input);
+        return true;
+    }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value ? $this->value : "";
+        $input = "<input name=\"password\" type=\"password\" maxlength=\"255\" size=\"40\" value=\"$val\"/>";
+        $input .= "<input name =\"saved_password\" type=\"hidden\" value=\"$val\"/> ";
+        return $input;
+    }
+}
+
 class XWL_URI extends XWL_string
 {
     function set_value($input)
@@ -186,7 +209,7 @@ class XWL_URI extends XWL_string
         $num =  "0123456789";
         $dns = "-.";
         $url = "$-_.+"."!*'(),%";
-        $path = "/";
+        $path = "/~";
         $query = ";:@&=";
 
         // strings only
@@ -222,6 +245,39 @@ class XWL_URI extends XWL_string
     }
 }
 
+class XWL_mail extends XWL_string
+{
+    function set_value($input) {
+        $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $num =  "0123456789";
+        $mail_chars = "!#$%&'*+-/=?^_`{|}~";
+
+        // strings only
+        if (!$this->_valid_string($input)) return false;
+
+        $mail = explode("@", $input);
+        if (!$mail[0] || !$mail[1]) return false;
+
+        $local = explode(".", $mail[0]);
+        foreach ($local as $l) {
+            if (!$l || !XWL::_only_has($l,$alpha.$num.$mail_chars)) return false;
+        }
+
+        $domain = explode(".", $mail[1]);
+        if (!$domain[0] || !$domain[1]) return false;
+        foreach ($domain as $d) {
+            $subd = explode("-", $d);
+            foreach ($subd as $s) {
+                if (!$s || !XWL::_only_has($s,$alpha.$num)) return false;
+            }
+        }
+
+        // email is OK!
+        $this->value = $input;
+        return true;
+    }
+}
+
 class XWL_lang extends XWL_string
 {
     function set_value($input)
@@ -251,6 +307,22 @@ class XWL_lang extends XWL_string
     }
 }
 
+class XWL_userid extends XWL_string
+{
+    function set_value($input)
+    {
+        // strings only
+        if (!$this->_valid_string($input)) return false;
+
+        // userids can only have letters, numbers, and -_, must start with a letter. (arbitrary)
+        if (!preg_match("/^[a-zA-Z][-a-zA-Z0-9_]*$/", $input)) return false;
+
+        $this->value = $input;
+        return true;
+    }
+
+}
+
 class XWL_string_XHTML extends XWL_string
 {
     function set_value($input)
@@ -259,8 +331,11 @@ class XWL_string_XHTML extends XWL_string
         if (!$this->_valid_string($input)) return false;
 
         $valid_tags = "<a><b><i><s><span>";
-        $this->value = strip_tags(XWL::_safe_gpc_stripslashes($input), $valid_tags);
+        $stripped_input = strip_tags(XWL::_safe_gpc_stripslashes($input), $valid_tags);
 
+        if (!XWL::_test_xml($stripped_input)) return false;
+
+        $this->value = $stripped_input;        
         return true;
     }
 
@@ -366,7 +441,7 @@ class XWL_date extends XWL_datatype
         return true;
     }
 
-    function HTML_safe_value()
+    function display_XML()
     {
         // convert date to RFC 822 format
         return date('r', strtotime($this->value));
@@ -438,7 +513,7 @@ class XWL_XHTML extends XWL_datatype
     {
         // check for valid length text (string)
         if (!is_string($input) || strlen($input) > _XWL_TEXT_MAXLEN) return false;
-        else return true;
+        else return XWL::_test_xml($input);
     }
 
     function set_value($input)
@@ -492,6 +567,6 @@ class XWL_XHTML_long extends XWL_XHTML
     {
         // check for valid length text (string)
         if (!is_string($input) || strlen($input) > _XWL_MEDIUMTEXT_MAXLEN) return false;
-        else return true;
+        else return XWL::_test_xml($input);
     }
 }

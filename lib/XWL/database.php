@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.12 2003/11/01 20:33:45 loki Exp $
+// $Id: database.php,v 1.13 2003/11/24 03:20:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -101,7 +101,7 @@ class XWL_database
     function fetch_article($id)
     {
         // get article by id
-        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.id = '$id'";
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.id = '$id'";
 
         return $this->_fetch_single("XWL_article", $query);
     }
@@ -109,14 +109,14 @@ class XWL_database
 
     function fetch_article_first()
     {
-        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date desc limit 1";
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date desc limit 1";
 
         return $this->_fetch_single("XWL_article", $query);
     }
 
     function fetch_article_last()
     {
-        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date asc limit 1";
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date asc limit 1";
 
         return $this->_fetch_single("XWL_article", $query);
     }
@@ -127,12 +127,12 @@ class XWL_database
 
         // fetch top ($limit) articles
         if ($start) {
-            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date <= $start order by article.date desc limit $limit";
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date <= $start order by article.date desc limit $limit";
         } elseif ($end) {
-            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date >= $end order by article.date asc limit $limit";
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date >= $end order by article.date asc limit $limit";
             return array_reverse($this->_fetch_multiple("XWL_article", $query));
         } else {
-            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
         }
 
         return $this->_fetch_multiple("XWL_article", $query);
@@ -147,7 +147,7 @@ class XWL_database
     function fetch_articles_by_topic($topic)
     {
         // fetch all articles for a specific topic
-        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.topic='$topic' order by article.date desc";
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.topic='$topic' order by article.date desc";
 
         return $this->_fetch_multiple("XWL_article", $query);
     }

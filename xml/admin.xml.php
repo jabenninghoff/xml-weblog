@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.27 2003/11/01 20:33:53 loki Exp $
+// $Id: admin.xml.php,v 1.28 2003/11/24 03:20:38 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -105,7 +105,14 @@ function process_form($object_class, $edit_mode, $object_id)
         $xwl_class = "XWL_$object_class";
         $object = new $xwl_class;
         foreach ($_POST as $name => $post) {
-            if ($object->property[$name]) $object->property[$name]->set_value($post);
+            if ($object->property[$name]) {
+                if ($name == "password" && $_POST['password'] != $_POST['saved_password']) {
+                    // here the magic happens -- we want to crypt the password (which has changed)
+                    $object->property[$name]->set_password($post);
+                } else {
+                    $object->property[$name]->set_value($post);
+                }
+            }
         }
         if ($missing = $object->missing_required()) {
             echo "        <p><b>please re-enter missing values:</b><i>";

@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.9 2003/11/01 20:33:46 loki Exp $
+// $Id: object.php,v 1.10 2003/11/24 03:20:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -238,7 +238,7 @@ class XWL_article extends XWL_object
         $this->_add_property("id", "XWL_ID", true);
         $this->_add_property("site", "XWL_key", true);
         $this->_add_property("topic", "XWL_key", true);
-        $this->_add_property("title", "XWL_string", true);
+        $this->_add_property("title", "XWL_string_XHTML", true);
         $this->_add_property("user", "XWL_key", true);
         $this->_add_property("date", "XWL_date", true);
         $this->_add_property("leader", "XWL_XHTML_long", true);
@@ -293,25 +293,12 @@ class XWL_user extends XWL_object
     {
         // _add_property($name, $datatype, $required)
         $this->_add_property("id", "XWL_ID", true);
-        $this->_add_property("userid", "XWL_string", true);
-        $this->_add_property("password", "XWL_string", true);
+        $this->_add_property("name", "XWL_string", true);
+        $this->_add_property("mail", "XWL_mail", true);
+        $this->_add_property("userid", "XWL_userid", true);
+        $this->_add_property("password", "XWL_password", true);
         $this->_add_property("admin", "XWL_boolean", true);
         $this->_add_property("block", "XWL_XHTML_fragment", false);
-    }
-
-    function _admin_input($prop, $mode) {
-        if ($prop == "password" && $mode != "delete") {
-            $input = "            <tr>\n";
-            $input .= "              <td><b>Password</b></td>\n";
-            $input .= "              <td>";
-            $input .= '<input name="password" type="password" maxlength="255" size="40"/>';
-            $input .= "</td>\n";
-            $input .= "            </tr>\n";
-
-            return $input;
-        } else {
-            return parent::_admin_input($prop, $mode);
-        }
     }
 }
 
