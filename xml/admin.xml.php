@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.9 2002/10/24 22:38:35 loki Exp $
+// $Id: admin.xml.php,v 1.10 2002/10/24 23:01:04 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -129,12 +129,14 @@ foreach ($schema as $s) {
     echo "        </tr>\n";
 }
 echo "      </table>\n";
-echo '      <input name="mode" type="hidden" value="', $get_mode, '"/>',"\n";
-echo '      <input name="type" type="hidden" value="', $get_type, '"/>',"\n";
+echo "      <p>\n";
+echo '        <input name="mode" type="hidden" value="', $get_mode, '"/>',"\n";
+echo '        <input name="type" type="hidden" value="', $get_type, '"/>',"\n";
 if ($get_mode == "edit") $button = "Save";
 else $button = ucfirst($get_mode);
-echo '      <p><input name="submit" type="submit" value="', $button, '"/> ',
-    '<input name="cancel" type="submit" value="Cancel"/></p>', "\n";
+echo '        <input name="submit" type="submit" value="', $button, '"/> ',
+    '<input name="cancel" type="submit" value="Cancel"/>', "\n";
+echo "      </p>\n";
 echo "      </form>\n";
 }
 
