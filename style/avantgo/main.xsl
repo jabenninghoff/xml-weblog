@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.1 2003/04/16 17:34:55 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.2 2003/04/17 17:49:13 loki Exp $ -->
 
 <!--
    -
@@ -37,166 +37,57 @@
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" indent="yes" encoding="iso-8859-1"
-    omit-xml-declaration="yes"
-    doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-    doctype-system="/DTD/xhtml1-strict.dtd"/>
+<xsl:output method="html" indent="yes" encoding="iso-8859-1"
+    doctype-public="-//W3C//DTD HTML 3.2 Final//EN"/>
 
 <xsl:template match="page">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <meta name="HandheldFriendly" content="True"/>
     <title><xsl:value-of select="@title"/></title>
-    <link rel="stylesheet" href="style/xhtml_css2/basic.css" type="text/css"/>
-    <style type="text/css">@import "style/xhtml_css2/advanced.css";</style>
-    <xsl:if test="sidebar[@align='left']">
-      <style type="text/css">@import "style/xhtml_css2/sidebar_left.css";</style>
-    </xsl:if>
-    <xsl:if test="sidebar[@align='right']">
-      <style type="text/css">@import "style/xhtml_css2/sidebar_right.css";</style>
-    </xsl:if>
   </head>
   <body>
-    <xsl:comment> Only non-standards-compliant browsers should see the following message </xsl:comment>
-    <p class="ahem">
-      <b>Note:</b> This site will look much better in a browser that supports 
-      <a href="http://www.webstandards.org/upgrade/">web standards</a>,
-      but it is accessible to any browser or Internet device.
-    </p>
-    <div class="header">
-      <xsl:apply-templates select="header"/>
-    </div>
-    <xsl:if test="sidebar[@align='left']">
-      <div class="sidebar-left">
-        <xsl:apply-templates select="sidebar[@align='left']"/>
-      </div>
-    </xsl:if>
-    <xsl:if test="sidebar[@align='right']">
-      <div class="sidebar-right">
-        <xsl:apply-templates select="sidebar[@align='right']"/>
-      </div>
-    </xsl:if>
-    <div class="main">
-      <xsl:apply-templates select="main"/>
-    </div>
-    <div class="footer">
-      <xsl:apply-templates select="footer"/>
-    </div>
+    <xsl:apply-templates select="header"/>
+    <xsl:apply-templates select="main"/>
+    <xsl:apply-templates select="footer"/>
   </body>
 </html>
 </xsl:template>
 
 <xsl:template match="header">
-  <xsl:if test="banner">
-    <div class="center"><p><xsl:copy-of select="banner/text()|banner/*"/></p></div>
-  </xsl:if>
-  <div class="masthead">
-    <div class="header-logo">
-      <p class="zero">
-        <a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a>
-      </p>
-    </div>
-    <div class="header-slogan">
-      <p class="zero"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
-    </div>
-    <div class="header-content">
-      <xsl:apply-templates select="content"/>
-    </div>
-  </div>
+  <p>
+    <a href="avantgo.php"><img src="{logo}" alt="{name}"/></a><br/>
+    <xsl:copy-of select="slogan/text()|slogan/*"/><br/>
+    <xsl:copy-of select="content/p/*"/>
+  </p>
+  <hr/>
   <xsl:apply-templates select="message"/>
 </xsl:template>
 
-<xsl:template match="content">
-  <xsl:copy-of select="./*"/>
-</xsl:template>
-
 <xsl:template match="message">
-  <div class="message"><p><xsl:copy-of select="./text()|./*"/></p></div>
+  <p><xsl:copy-of select="./text()|./*"/></p>
+  <hr/>
 </xsl:template>
 
 <xsl:template match="footer">
-  <xsl:apply-templates select="content"/>
-  <p><span class="small"><xsl:copy-of select="disclaimer/*|disclaimer/text()"/></span></p>
-</xsl:template>
-
-<xsl:template match="block">
-  <div class="block-title"><p class="zero"><b><xsl:value-of select="title"/></b></p></div>
-  <div class="block-main"><p class="zero"><xsl:copy-of select="content/text()|content/*"/></p></div>
+  <p><xsl:copy-of select="disclaimer/*|disclaimer/text()"/></p>
 </xsl:template>
 
 <xsl:template match="article">
   <h3><xsl:value-of select="title"/></h3>
-  <div class="topic-icon">
-    <p class="zero">
-      <a href="{topic/url}"><img src="{topic/icon}" alt="{topic/name}"/></a>
-    </p>
-  </div>
-  <div class="story">
-    <xsl:copy-of select="leader/*"/>
-    <xsl:if test="@content='show'">
-      <xsl:copy-of select="content/*"/>
-    </xsl:if>
-  </div>
-  <div class="byline">
-    <p class="zero">
-      posted by <b><xsl:value-of select="author"/></b> on
-      <xsl:value-of select="date"/>
-      <xsl:if test="not(@content='show') and normalize-space(content)">
-        <b><a href="{url}">Read More...</a></b>
-      </xsl:if>
-    </p>
-  </div>
-</xsl:template>
-
-<xsl:template match="heading">
-  <h3><xsl:value-of select="."/></h3>
-</xsl:template>
-
-<xsl:template match="articlelist/article">
+  <p><u><xsl:value-of select="topic/name"/></u></p>
+  <xsl:copy-of select="leader/*"/>
+  <xsl:if test="@content='show'">
+    <xsl:copy-of select="content/*"/>
+  </xsl:if>
   <p>
-    <b><a href="{url}"><xsl:value-of select="title"/></a></b>
     posted by <b><xsl:value-of select="author"/></b> on
     <xsl:value-of select="date"/>
+    <xsl:if test="not(@content='show') and normalize-space(content)">
+      <b><a href="{url}&amp;style=avantgo">Read More...</a></b>
+    </xsl:if>
   </p>
-</xsl:template>
-
-<xsl:template match="admin">
-  <p>
-    <xsl:apply-templates select="menu"/>
-  </p>
-  <h2><xsl:value-of select="title"/></h2>
-  <xsl:if test="object">
-    <table>
-      <xsl:for-each select="object">
-        <xsl:if test="position()=1">
-          <tr>
-            <xsl:for-each select="property">
-              <td><b><xsl:value-of select="@name"/></b></td>
-            </xsl:for-each>
-          </tr>
-        </xsl:if>
-        <tr>
-          <xsl:for-each select="property">
-            <td><xsl:copy-of select="./text()|./*"/></td>
-          </xsl:for-each>
-        </tr>
-      </xsl:for-each>
-    </table>
-  </xsl:if>
-  <xsl:apply-templates select="content"/>
-</xsl:template>
-
-<xsl:template match="menu">
-  <a href="{@link}"><xsl:value-of select="."/></a>
-</xsl:template>
-
-<xsl:template match="topic">
-  <table class="topic" width="100%">
-    <tr class="icon"><td>
-      <a href="{link}" class="img"><img src="{icon}" alt="{name}"/></a>
-    </td></tr>
-    <tr class="caption"><td><b><xsl:value-of select="name"/></b></td></tr>
-  </table>
+  <hr/>
 </xsl:template>
 
 <xsl:template match="text()">
