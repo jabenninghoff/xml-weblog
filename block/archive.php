@@ -1,5 +1,7 @@
 <?php
-// $Id: archive.php,v 1.6 2003/04/21 17:41:20 loki Exp $
+// $Id: archive.php,v 1.7 2003/04/21 20:54:12 loki Exp $
+// vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
 // newer/older articles selection block
 
 /*

@@ -1,5 +1,7 @@
 <?php
-// $Id: index.php,v 1.13 2003/04/21 17:41:20 loki Exp $
+// $Id: index.php,v 1.14 2003/04/21 20:54:12 loki Exp $
+// vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
 // front page renderer
 
 /*

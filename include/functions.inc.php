@@ -1,5 +1,7 @@
 <?php
-// $Id: functions.inc.php,v 1.24 2003/04/21 17:41:20 loki Exp $
+// $Id: functions.inc.php,v 1.25 2003/04/21 20:54:12 loki Exp $
+// vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
 // core xml-weblog functions
 
 /*

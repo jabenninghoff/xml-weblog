@@ -1,5 +1,7 @@
 <?php
-// $Id: load_dbase.php,v 1.18 2003/04/17 16:03:28 loki Exp $
+// $Id: load_dbase.php,v 1.19 2003/04/21 20:54:12 loki Exp $
+// vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
 // database/image loader
 
 /*

@@ -1,5 +1,7 @@
 <?php
-// $Id: auth.inc.php,v 1.10 2003/04/21 17:41:20 loki Exp $
+// $Id: auth.inc.php,v 1.11 2003/04/21 20:54:12 loki Exp $
+// vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
 // authentication & authorization module
 
 /*

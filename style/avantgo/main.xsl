@@ -1,4 +1,5 @@
-<!-- $Id: main.xsl,v 1.3 2003/04/17 18:09:45 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.4 2003/04/21 20:54:12 loki Exp $ -->
+<!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
    -
