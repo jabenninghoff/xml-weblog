@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.8 2003/11/01 02:19:56 loki Exp $
+// $Id: datatype.php,v 1.9 2003/11/01 20:33:46 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -76,6 +76,11 @@ class XWL_datatype
         return trim($this->HTML_safe_value());
     }
 
+    function missing()
+    {
+        return !$this->value;
+    }
+
     function admin_input($name, $mode)
     {
         if ($mode == "delete") {
@@ -113,6 +118,11 @@ class XWL_integer extends XWL_datatype
 class XWL_ID extends XWL_integer
 {
     var $sql_type = "int unsigned NOT NULL auto_increment";
+
+    function missing()
+    {
+        return $this->value < 0;
+    }
 
     function admin_input($name, $mode)
     {
@@ -316,6 +326,12 @@ class XWL_boolean extends XWL_datatype
     {
         // convert to a human-readable string
         return $this->value ? "true" : "false";
+    }
+
+    function missing()
+    {
+        // never missing
+        return false;
     }
 
     function admin_input($name, $mode)

@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.26 2003/11/01 02:19:56 loki Exp $
+// $Id: admin.xml.php,v 1.27 2003/11/01 20:33:53 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -42,20 +42,9 @@ require_once "include/auth.inc.php";
 
 // print_form functions
 
-function print_form()
+function print_form($object_class, $edit_mode, $object_id)
 {
-    global $xwl_object_class, $xwl_db, $page;
-
-    $object_class = in_array($_GET['class'],$xwl_object_class) ? $_GET['class'] : $xwl_object_class[0];
-    $edit_mode = ($_GET['mode'] == "edit" || $_GET['mode'] == "delete") ? $_GET['mode'] : "create";
-
-    $temp_id = new XWL_ID;
-    if ($temp_id->set_value($_GET['id'])) {
-        $object_id = $temp_id->value;
-    } else {
-        // fall back to create mode when given an invalid id
-        $edit_mode = "create";
-    }
+    global $xwl_db, $page;
 
     if ($edit_mode == "create") {
         echo "      <title>", ucfirst($object_class."s"), "</title>\n";
@@ -88,12 +77,71 @@ function print_form()
     }
 
     if ($object_form) {
-        echo $object_form->admin_form("$page?type=$object_class", $edit_mode, $object_class);
+        $act = "$page?class=$object_class&amp;mode=$edit_mode";
+        if ($edit_mode != "create") $act .= "&amp;id=$object_id";
+        echo $object_form->admin_form($act, $edit_mode, $object_class);
     } else {
         echo "<p>xml_weblog error: invalid $object_class id '$object_id'</p>\n";
     }
     echo "      </content>\n";
 
+}
+
+function process_form($object_class, $edit_mode, $object_id)
+{
+    global $xwl_db;
+
+    echo "      <title>", ucfirst($edit_mode), " ", ucfirst($object_class), "</title>\n";
+
+    echo "      <content>\n";
+
+    if ($edit_mode == "delete") {
+        if ($xwl_db->delete_object($object_class, $object_id)) {
+            echo "<p>$object_class id '$object_id' deleted.</p>\n";
+        } else {
+            echo "<p>xml_weblog error: error deleting $object_class id '$object_id'</p>\n";
+        }
+    } else {
+        $xwl_class = "XWL_$object_class";
+        $object = new $xwl_class;
+        foreach ($_POST as $name => $post) {
+            if ($object->property[$name]) $object->property[$name]->set_value($post);
+        }
+        if ($missing = $object->missing_required()) {
+            echo "        <p><b>please re-enter missing values:</b><i>";
+            foreach ($missing as $val) {
+                echo " $val";
+            }
+            echo "</i></p>\n";
+
+            // redraw form
+            $act = "$page?class=$object_class&amp;mode=$edit_mode&amp;id=$object_id";
+            echo $object->admin_form($act, $edit_mode, $object_class);
+        } else {
+            // store object
+            if ($edit_mode == "edit") {
+                $success = $xwl_db->edit_object($object_class, $object);
+                $action = "updated";
+            } else {
+                // edit_mode = create
+                $success = $xwl_db->create_object($object_class, $object);
+                $action = "created";
+            }
+
+            if ($success) {
+                echo "        <p>$object_class $action.</p>\n";
+                // dump results
+                echo "        <table>\n";
+                foreach ($object->property as $key => $prop) {
+                    echo "        <tr><td><b>$key</b></td><td>", $prop->HTML_safe_value(), "</td></tr>\n";
+                }
+                echo "        </table>\n";
+            } else {
+                echo "        <p>xml_weblog error: $object_class not $action.</p>\n";
+            }
+        }
+    }
+    echo "      </content>\n";
 }
 
 // main
@@ -128,10 +176,24 @@ foreach ($xwl_object_class as $object) {
     echo "      <menu link=\"$page?class=$object\">", ucfirst($object."s"), "</menu>\n";
 }
 
-if (isset($_POST['submit'])) {
-//    process_form();
+$object_class = in_array($_GET['class'],$xwl_object_class) ? $_GET['class'] : $xwl_object_class[0];
+$edit_mode = ($_GET['mode'] == "edit" || $_GET['mode'] == "delete") ? $_GET['mode'] : "create";
+
+$temp_id = new XWL_ID;
+if ($temp_id->set_value($_GET['id'])) {
+    $object_id = $temp_id->value;
 } else {
-    print_form();
+    // fall back to create mode when given an invalid id
+    $edit_mode = "create";
+}
+
+if (isset($_POST['submit'])) {
+    process_form($object_class, $edit_mode, $object_id);
+} elseif (isset($_POST['cancel'])) {
+    // cancelled -- display default page
+    print_form($object_class, "create", 0);
+} else {
+    print_form($object_class, $edit_mode, $object_id);
 }
 
 echo "      </admin>\n";

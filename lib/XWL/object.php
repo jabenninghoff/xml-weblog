@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.8 2003/11/01 04:11:44 loki Exp $
+// $Id: object.php,v 1.9 2003/11/01 20:33:46 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -88,7 +88,7 @@ class XWL_object
     function XWL_object()
     {
         // _add_property($name, $datatype, $required)
-        $this->_add_property("id", "XWL_ID", 1);
+        $this->_add_property("id", "XWL_ID", true);
     }
 
     function load_SQL($result)
@@ -102,10 +102,30 @@ class XWL_object
     function XML_values()
     {
         // convert to _xml values for convenience
-        foreach ($this->property as $key => $value) {
-            $xml_value[$key] = $value->display_XML();
+        foreach ($this->property as $key => $prop) {
+            $xml_value[$key] = $prop->display_XML();
         }
         return $xml_value;
+    }
+
+    function missing_required()
+    {
+        $i = -1;
+        foreach ($this->property as $key => $prop) {
+            if ($prop->missing() && $this->required[$key]) $missing[++$i] = $key;
+        }
+        return $i == -1 ? false : $missing;
+    }
+
+    function query_string()
+    {
+        foreach ($this->property as $key => $prop) {
+            $query .= " $key='".$prop->SQL_safe_value()."',";
+        }
+        // strip the last comma & specify ID
+        $query = substr($query, 0, strlen($query)-1);
+
+        return $query;
     }
 
     function admin_display($prop)
@@ -124,8 +144,6 @@ class XWL_object
         $form .= "          </table>\n";
 
         $form .= "          <p>\n";
-        $form .= "            <input name=\"mode\" type=\"hidden\" value=\"$mode\"/>\n";
-        $form .= "            <input name=\"type\" type=\"hidden\" value=\"$class\"/>\n";
         if ($mode == "edit") $button = "Save";
         else $button = ucfirst($mode);
         $form .= "            <input name=\"submit\" type=\"submit\" value=\"$button\"/><input name=\"cancel\" type=\"submit\" value=\"Cancel\"/>\n";
@@ -161,7 +179,7 @@ class XWL_message extends XWL_object
     function XWL_message()
     {
         // _add_property($name, $datatype, $required)
-        $this->_add_property("id", "XWL_ID", 1);
+        $this->_add_property("id", "XWL_ID", true);
         $this->_add_property("message_index", "XWL_integer", true);
         $this->_add_property("start_date", "XWL_date", false);
         $this->_add_property("end_date", "XWL_date", false);
@@ -233,6 +251,19 @@ class XWL_article extends XWL_object
         $this->_add_property("user_name", "XWL_string", false);
     }
 
+    function query_string()
+    {
+        foreach ($this->property as $key => $prop) {
+            if (!in_array($key, $this->linked_properties)) {
+                $query .= " $key='".$prop->SQL_safe_value()."',";
+            }
+        }
+        // strip the last comma & specify ID
+        $query = substr($query, 0, strlen($query)-1);
+
+        return $query;
+    }
+
     function admin_display($prop)
     {
         return in_array($prop,$this->linked_properties) ? false : $this->property[$prop]->admin_display;
@@ -241,7 +272,7 @@ class XWL_article extends XWL_object
     function _admin_input($prop, $mode) {
         if (in_array($prop, $this->linked_properties)) {
             return;
-        } elseif (in_array($prop, array("site","topic","user"))) {
+        } elseif (in_array($prop, array("site","topic","user")) && $mode != "delete") {
             $i = 0;
             foreach ($GLOBALS["XWL_{$prop}_list"] as $item) {
                 if ($this->property[$prop]->value == $item['id']) $def = $item['name'];
@@ -269,7 +300,7 @@ class XWL_user extends XWL_object
     }
 
     function _admin_input($prop, $mode) {
-        if ($prop == "password") {
+        if ($prop == "password" && $mode != "delete") {
             $input = "            <tr>\n";
             $input .= "              <td><b>Password</b></td>\n";
             $input .= "              <td>";
