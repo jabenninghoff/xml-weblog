@@ -1,4 +1,5 @@
 <?php
+// $Id: test-xml.php,v 1.2 2001/12/28 09:06:42 death Exp $
 
 $doc = domxml_new_xmldoc("1.0");
 $page = $doc->add_root("page");
