@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.5 2003/04/16 17:34:48 loki Exp $
+// $Id: style.inc.php,v 1.6 2003/04/17 17:52:12 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,23 +35,23 @@
  *
  */
 
-function get_stylesheet()
+function style()
 {
-    // get the path to the right stylesheet
-    $style = "style/xhtml_css2/main.xsl"; // default for now
+    global $xwl_default_style;
+
+    $style = valid_filename($_GET['style']);
+
+    return $style ? $style : $xwl_default_style;
+}
+
+function render_page($xml, $style)
+{
 
     // load the stylesheet
     ob_start();
-    require $style;
+    require "style/".valid_filename($style)."/main.xsl";
     $xsl = ob_get_contents();
     ob_end_clean();
-
-    return $xsl;
-}
-
-function render_page($xml) {
-
-    $xsl = get_stylesheet();
 
     $arguments = array(
          '/_xml' => $xml,

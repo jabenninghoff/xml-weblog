@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.1 2003/04/16 21:32:16 loki Exp $
+// $Id: user.php,v 1.2 2003/04/17 17:52:12 loki Exp $
 // front page renderer
 
 /*
@@ -51,5 +51,5 @@ require "xml/user.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-render_page($xml);
+render_page($xml, style());
 ?>

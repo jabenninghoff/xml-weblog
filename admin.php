@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.php,v 1.8 2003/04/16 03:58:20 loki Exp $
+// $Id: admin.php,v 1.9 2003/04/17 17:52:12 loki Exp $
 // admin front page
 
 /*
@@ -51,5 +51,5 @@ require "xml/admin.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-render_page($xml);
+render_page($xml, style());
 ?>

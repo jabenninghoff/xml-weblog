@@ -1,5 +1,5 @@
 <?php
-// $Id: config.inc.php,v 1.7 2003/04/16 03:58:20 loki Exp $
+// $Id: config.inc.php,v 1.8 2003/04/17 17:52:12 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -48,5 +48,6 @@ $xwl_default_site = 1;
 $xwl_default_topic = 1;
 $xwl_default_user = 1;
 $xwl_default_lang = "en";
+$xwl_default_style = "xhtml_css2";
 
 ?>
