@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.17 2002/11/17 21:53:56 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.18 2002/11/24 22:13:24 loki Exp $ -->
 
 <!--
    -
@@ -144,6 +144,18 @@
       </xsl:if>
     </p>
   </div>
+</xsl:template>
+
+<xsl:template match="heading">
+  <h3><xsl:value-of select="."/></h3>
+</xsl:template>
+
+<xsl:template match="articlelist/article">
+  <p>
+    <b><a href="{url}"><xsl:value-of select="title"/></a></b>
+    posted by <b><xsl:value-of select="author"/></b> on
+    <xsl:value-of select="date"/>
+  </p>
 </xsl:template>
 
 <xsl:template match="admin">
