@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.12 2002/10/29 18:19:46 loki Exp $
+// $Id: functions.inc.php,v 1.13 2002/10/31 09:25:13 loki Exp $
 
 function xml_declaration()
 {
@@ -13,7 +13,7 @@ function validate_self()
     if ($_SERVER['QUERY_STRING']) $uri .= "?".$_SERVER['QUERY_STRING'];
     $uri = rawurlencode($uri);
 
-    echo '<a href="http://validator.w3.org/check?uri=', $uri, ';ss=1">',
+    echo '<a class="img" href="http://validator.w3.org/check?uri=', $uri, ';ss=1">',
           '<img src="image.php?name=valid-xhtml10.png" ',
           'alt="Valid XHTML 1.0!" height="31" width="88"/></a>';
 }
