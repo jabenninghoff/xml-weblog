@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.12 2003/04/21 20:54:12 loki Exp $
+// $Id: sidebar.xml.php,v 1.13 2003/04/22 21:50:52 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,41 +36,41 @@
  *
  */
 
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/site.php";
 
 if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {
     // standalone
     header('Content-Type: text/xml');
-    xml_declaration();
+    XWL::xml_declaration();
     echo "<page>\n";
-    $block = xwl_db_fetch_block();
 }
 
 echo "  <!-- left or right sidebar(s), outermost is index 0 -->\n";
+$xwl_block = $xwl_db->fetch_blocks();
 
 $i = 0;
 // this loop only works because the blocks are already sorted!
-while ($block[$i]) {
+while ($xwl_block[$i]) {
 
     // get the new sidebar index & alignment
-    $align = $block[$i]['sidebar_align'];
-    $index = $block[$i]['sidebar_index'];
+    $align = $xwl_block[$i]->property['sidebar_align']->value;
+    $index = $xwl_block[$i]->property['sidebar_index']->value;
     echo '  <sidebar align="', $align, '" index="', $index, '">', "\n";
     echo "    <!-- zero or more blocks, topmost is index 0 -->\n";
 
     // this will run at least once, so i will be incremented
-    while ($block[$i]['sidebar_align'] == $align && $block[$i]['sidebar_index'] == $index) {
-        if (!$block[$i]['sysblock']) {
-            echo '    <block index="', $block[$i]['block_index'], '">', "\n";
-            echo "      <title>{$block[$i]['title']}</title>\n";
+    while ($xwl_block[$i]->property['sidebar_align']->value === $align && $xwl_block[$i]->property['sidebar_index']->value == $index) {
+        if (!$xwl_block[$i]->property['sysblock']->value) {
+            echo '    <block index="', $xwl_block[$i]->property['block_index']->value, '">', "\n";
+            echo "      <title>", $xwl_block[$i]->property['title']->display_XML(), "</title>\n";
             echo "      <content>\n";
-            echo trim($block[$i]['content']), "\n";
+            echo $xwl_block[$i]->property['content']->display_XML(), "\n";
             echo "      </content>\n";
             echo "    </block>\n";
         } else {
             // run sysblock code
-            include "block/".xwl_valid_filename($block[$i]['sysblock'].".php");
+            include "block/".$xwl_block[$i]->property['sysblock']->display_XML().".php";
         }
         $i++;
     }
