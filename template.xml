@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: template.xml,v 1.6 2002/06/24 18:54:47 loki Exp $ -->
+<!-- $Id: template.xml,v 1.7 2002/07/03 23:33:22 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
@@ -14,6 +14,8 @@
         <logo>site.logo (image)</logo>
         <!-- zero or more blocks -->
         <block weight="0">
+            <id>block.id</id>
+            <language>block.language</language>
             <title>block.title</title>
             <content>block.content (XHMTL)</content>
         </block> 
@@ -24,6 +26,8 @@
         <disclaimer>site.disclaimer</disclaimer>
         <!-- zero or more blocks -->
         <block weight="0">
+            <id>block.id</id>
+            <language>block.language</language>
             <title>block.title</title>
             <content>block.content (XHMTL)</content>
         </block> 
@@ -47,17 +51,21 @@
               order in the XML document.
         -->
         <block weight="0">
+            <id>block.id</id>
+            <language>block.language</language>
     	<!-- block title: name of block -->
-            <title>#PCDATA title goes here</title>
+            <title>block.title</title>
     	<!-- block content -->
-            <content>XHTML content goes here</content>
+            <content>block.content (XHMTL)</content>
         </block>
 
         <block weight="1">
+            <id>block.id</id>
+            <language>block.language</language>
     	<!-- block title: name of block -->
-            <title>#PCDATA title goes here</title>
+            <title>block.title</title>
     	<!-- block content -->
-            <content>XHTML content goes here</content>
+            <content>block.content (XHMTL)</content>
         </block>
 
         <!-- ... additional blocks ... -->
@@ -68,6 +76,21 @@
     <main>
         <!-- 0 or more articles, default 10 most recent -->
         <!-- article: -->
+        <article weight="0">
+            <!-- metadata -->
+            <id>article.id</id>
+            <topic>article.topic</topic>
+            <language>article.language</language>
+            <url>article.url</url>
+
+            <!-- "header" info -->
+            <title>article.title</title>
+            <author>article.author</author>
+            <date>article.date</date>
+
+            <!-- actual content -->
+            <content>article.content (XHMTL)</content>
+        </article>
     </main>
 
 </page>
