@@ -1,19 +1,12 @@
-<!-- $Id: basic_xhtml.xsl,v 1.5 2002/10/15 04:14:37 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.6 2002/10/15 16:17:16 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"/>
+<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+    doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+    doctype-system="/DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="page">
-<xsl:text disable-output-escaping="yes">
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "/DTD/xhtml1-strict.dtd">
-</xsl:text>
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <xsl:attribute name="xml:lang">
-    <xsl:value-of select="@lang"/>
-  </xsl:attribute>
-  <xsl:attribute name="lang">
-    <xsl:value-of select="@lang"/>
-  </xsl:attribute>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
   <head>
     <title><xsl:value-of select="@title"/></title>
   </head>
@@ -37,23 +30,11 @@
 <xsl:template match="header">
   <p><xsl:copy-of select="banner/text()|banner/*"/></p>
   <h1>
-    <img>
-      <xsl:attribute name="src">
-        <xsl:value-of select="logo"/>
-      </xsl:attribute>
-      <xsl:attribute name="alt">
-        <xsl:value-of select="logo"/>
-      </xsl:attribute>
-    </img>
+    <img src="{logo}" alt="{logo}"/>
     <xsl:value-of select="name"/>
   </h1>
   <p>
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="url"/>
-      </xsl:attribute>
-      <xsl:value-of select="url"/>
-    </a>:
+    <a href="{url}"><xsl:value-of select="url"/></a>:
     <xsl:copy-of select="description/text()|description/*"/>
   </p>
   <p><xsl:copy-of select="slogan/text()|slogan/*"/></p>
@@ -66,8 +47,34 @@
   <p><xsl:value-of select="disclaimer"/></p>
 </xsl:template>
 
+<xsl:template match="block">
+  <p>
+    <b><xsl:value-of select="title"/></b><br/>
+    <xsl:copy-of select="content/text()|content/*"/>
+  </p>
+</xsl:template>
+
+<xsl:template match="article">
+  <xsl:for-each select="id|topic|language">
+    <xsl:value-of select="name()"/>: <xsl:value-of select="."/>
+    <xsl:text> </xsl:text>
+  </xsl:for-each>
+  <br/>
+  <h3><xsl:value-of select="title"/></h3>
+  <xsl:copy-of select="leader"/>
+  <p>
+    posted by <b><xsl:value-of select="author"/></b> on
+    <xsl:value-of select="date"/><br/>
+    <b><a href="{url}">Read More...</a></b>
+  </p>
+
+  <!-- main content not normally displayed here -->
+  <p><i>main content:</i></p>
+  <xsl:copy-of select="content"/>
+</xsl:template>
+
 <xsl:template match="text()">
-  <xsl:if test="string-length(normalize-space(current())) != 0">
+  <xsl:if test="normalize-space(.)">
     <xsl:value-of select="."/><br/>
   </xsl:if>
 </xsl:template>
