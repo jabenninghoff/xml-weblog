@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!-- XML weblog template/test page -->
+
+<!-- page: defines a single weblog "page" -->
+<page>
+
+    <!-- header: always appears at the top of the page -->
+    <header>insert header here</header>
+
+    <!--
+    block: basic unit of weblog. A block of space in one of 3 columns, left,
+    center, right.
+    -->
+    <block weight="0" column="left" active="true" id="3">
+        <title><!-- #PCDATA title here --></title>
+        <content><!-- weblog/XHTML content block here --></content>
+    </block>
+
+    <block weight="1" column="left" active="true" id="2">
+        <title>Title</title>
+    	<content>insert block here</content>
+    </block>
+
+    <block weight="2" column="left" active="true" id="4">
+        <title>Title</title>
+    	<content>insert block here</content>
+    </block>
+
+    <!-- right blocks -->
+    <block weight="0" column="right" active="true" id="3">
+        <title>Title</title>
+    	<content>insert block here</content>
+    </block>
+
+    <block weight="1" column="right" active="true" id="17">
+        <title>Title</title>
+    	<content>insert block here</content>
+    </block>
+
+    <block weight="2" column="right" active="true" id="12">
+        <title>Title</title>
+    	<content>insert block here</content>
+    </block>
+
+    <!-- center block(s). Usually a single block; main page displays stories -->
+    <block weight="0" column="center" active="true" id="1" script="home.php">
+        <title>index</title>
+        <content>
+            <!-- main story section goes here -->
+            <story id="1231203">
+                <author url="mailto:loki@technomagik.net">Loki</author>
+                <date>2001/12/18 17:49:12</date>
+                <title>#PCDATA title goes here</title>
+                <content>XHTML Story text goes here</content>
+                <comment id="390098">
+		    <author>jason</author>
+		    <date>2001/12/18 19:02:13</date>
+                    <content>First Post!!!</content>
+		</comment>
+            </story>
+        </content>
+    </block>
+    <footer>insert footer here</footer>
+</page>
