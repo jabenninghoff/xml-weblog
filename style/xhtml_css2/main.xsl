@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.19 2002/11/25 00:42:06 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.20 2002/11/25 06:42:13 loki Exp $ -->
 
 <!--
    -
@@ -126,15 +126,17 @@
 
 <xsl:template match="article">
   <h3><xsl:value-of select="title"/></h3>
-  <p>
-    <span class="topic-icon">
+  <div class="topic-icon">
+    <p class="zero">
       <a href="{topic/url}"><img src="{topic/icon}" alt="{topic/name}"/></a>
-    </span>
-  </p>
-  <xsl:copy-of select="leader/*"/>
-  <xsl:if test="@content='show'">
-    <xsl:copy-of select="content/*"/>
-  </xsl:if>
+    </p>
+  </div>
+  <div class="story">
+    <xsl:copy-of select="leader/*"/>
+    <xsl:if test="@content='show'">
+      <xsl:copy-of select="content/*"/>
+    </xsl:if>
+  </div>
   <div class="byline">
     <p class="zero">
       posted by <b><xsl:value-of select="author"/></b> on

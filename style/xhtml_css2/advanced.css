@@ -1,4 +1,4 @@
-/* $Id: advanced.css,v 1.5 2002/11/16 22:05:03 loki Exp $ */
+/* $Id: advanced.css,v 1.6 2002/11/25 06:42:13 loki Exp $ */
 
 /* advanced/CSS2 support - modern browsers */
 
@@ -117,8 +117,12 @@ span.small {
     font-size: 75%;
 }
 
-span.topic-icon {
+div.topic-icon {
     float: right;
     margin-right: 1em;
 }
 
+/* only mozilla gets this right */
+div.story {
+    min-height: 120px;
+}
