@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.1 2003/04/03 17:30:34 loki Exp $
+// $Id: user.php,v 1.2 2003/04/03 19:56:58 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -38,20 +38,21 @@
 require_once "include/auth.inc.php";
 
 // only display for authenticated users
-if (!user_authenticated()) exit;
+if (user_authenticated()) {
 
-$user = fetch_auth_user();
+    $user = fetch_auth_user();
 
-echo "<block>\n";
-echo "  <title>$user[userid]'s Menu</title>\n";
-echo "  <content>\n";
+    echo "<block>\n";
+    echo "  <title>$user[userid]</title>\n";
+    echo "  <content>\n";
 
-if ($user['block']) {
-    echo $user['block'], "\n";
-} else {
-    echo "<a href=\"user.php\">customize</a> your personal menu\n";
+    if ($user['block']) {
+        echo $user['block'], "\n";
+    } else {
+        echo "<a href=\"user.php\">customize</a> your personal menu\n";
+    }
+
+    echo "  </content>\n";
+    echo "</block>\n";
 }
-
-echo "  </content>\n";
-echo "</block>\n";
 ?>
