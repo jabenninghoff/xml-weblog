@@ -1,5 +1,6 @@
 <?php
-// $Id: style.inc.php,v 1.5 2003/04/16 17:34:48 loki Exp $
+// $Id: avantgo.php,v 1.1 2003/04/16 17:34:43 loki Exp $
+// front page renderer
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,37 +36,15 @@
  *
  */
 
-function get_stylesheet()
-{
-    // get the path to the right stylesheet
-    $style = "style/xhtml_css2/main.xsl"; // default for now
+require_once "include/style.inc.php";
 
-    // load the stylesheet
-    ob_start();
-    require $style;
-    $xsl = ob_get_contents();
-    ob_end_clean();
+// get php-formatted xml document (must be in the global context)
+ob_start();
 
-    return $xsl;
-}
+// we use the same index.xml page for avantgo.php
+require "xml/index.xml.php";
+$xml = ob_get_contents();
+ob_end_clean();
 
-function render_page($xml) {
-
-    $xsl = get_stylesheet();
-
-    $arguments = array(
-         '/_xml' => $xml,
-         '/_xsl' => $xsl
-    );
-
-    // render & display the document using xslt
-    $xh = xslt_create();
-    $result = xslt_process($xh, 'arg:/_xml', 'arg:/_xsl', NULL, $arguments);
-
-    // textarea hack
-    $result = str_replace("%enter_text%", "", $result);
-
-    echo $result;
-    xslt_free($xh);
-}
+render_page($xml);
 ?>
