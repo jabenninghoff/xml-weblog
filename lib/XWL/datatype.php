@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.16 2004/05/02 21:33:04 loki Exp $
+// $Id: datatype.php,v 1.17 2004/07/10 22:40:03 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -338,7 +338,7 @@ class XWL_string_XHTML extends XWL_string
         // strings only
         if (!$this->_valid_string($input)) return false;
 
-        $valid_tags = "<a><b><i><s><span>";
+        $valid_tags = "<a><b><strong><i><em><s><span>";
         $stripped_input = strip_tags($input, $valid_tags);
 
         if (!XWL::_test_xml($stripped_input)) return false;
@@ -559,7 +559,7 @@ class XWL_XHTML extends XWL_datatype
 
 class XWL_XHTML_code extends XWL_XHTML
 {
-    var $_valid_tags = "<a><b><i><s><span><pre><br><br/><img><p><code>";
+    var $_valid_tags = "<a><b><strong><i><em><s><span><pre><br><br/><img><p><code>";
 
     function display_XML()
     {
@@ -570,12 +570,12 @@ class XWL_XHTML_code extends XWL_XHTML
 
 class XWL_XHTML_fragment extends XWL_XHTML
 {
-    var $_valid_tags = "<a><b><i><s><span><pre><br><br/><img>";
+    var $_valid_tags = "<a><b><strong><i><em><s><span><pre><br><br/><img>";
 }
 
 class XWL_XHTML_long extends XWL_XHTML
 {
-    var $_valid_tags = "<a><b><i><s><span><blockquote><table><tr><td><ul><ol><li><pre><br><br/><img><p>";
+    var $_valid_tags = "<a><b><strong><i><em><s><span><blockquote><table><tr><td><ul><ol><li><pre><br><br/><img><p>";
 
     var $sql_type = "mediumtext NOT NULL";
 
