@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.21 2004/07/16 05:15:27 loki Exp $
+// $Id: index.php,v 1.22 2004/07/16 05:29:10 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -66,7 +66,8 @@ $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH] = "%s failed: unsupported p
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOTFOUND_POSTID] = "%s failed: postid not found.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_DB_ERROR] = "%s failed: database error.";
 
-function _xmlrpc_error($error_id) {
+function _xmlrpc_error($error_id)
+{
 
     global $_xwl_xmlrpc_error, $_xwl_xmlrpc_method;
 
@@ -78,7 +79,8 @@ $_xwl_xmlrpc_api = "unknownAPI";
 $_xwl_xmlrpc_method = "unknownMethod";
 $_pshift = 0;
 
-function xwl_xmlrpc($params) {
+function xwl_xmlrpc($params)
+{
 
     global $xwl_db, $_xwl_auth_user, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
 
@@ -124,7 +126,8 @@ function xwl_xmlrpc($params) {
 
 
 // metaWeblog.getCategories (blogid, username, password) returns struct (of structs, each is a category)
-function _getCategories($params) {
+function _getCategories($params)
+{
 
     global $xwl_db, $xwl_site_value_xml;
 
@@ -146,7 +149,8 @@ function _getCategories($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "struct"));
 }
 
-function _blogger_translate_post($article) {
+function _blogger_translate_post($article)
+{
 
     $content = $article->property['leader']->value;
     if ($article->property['content']->value) {
@@ -163,7 +167,8 @@ function _blogger_translate_post($article) {
     return new XML_RPC_Value($post_struct, "struct");
 }
 
-function _metaWeblog_translate_post($article) {
+function _metaWeblog_translate_post($article)
+{
 
     global $xwl_site_value_xml;
 
@@ -192,7 +197,8 @@ function _metaWeblog_translate_post($article) {
 
 // blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
 // metaWeblog.getPost (postid, username, password) returns struct (post as RSS 2.0 item)
-function _getPost($params) {
+function _getPost($params)
+{
 
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
@@ -222,7 +228,8 @@ function _getPost($params) {
 
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
 // metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts) returns array of structs (each is a post)
-function _getRecentPosts($params) {
+function _getRecentPosts($params)
+{
 
     global $xwl_db, $xwl_site_value_xml, $_xwl_xmlrpc_api, $_pshift;
 
@@ -252,7 +259,8 @@ function _getRecentPosts($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
 }
 
-function _blogger_post($content, $publish) {
+function _blogger_post($content, $publish)
+{
 
     global $xwl_db, $_xwl_auth_user;
 
@@ -284,7 +292,8 @@ function _blogger_post($content, $publish) {
     return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
 }
 
-function _metaWeblog_post($post_struct, $publish) {
+function _metaWeblog_post($post_struct, $publish)
+{
 
     global $xwl_db, $_xwl_auth_user;
 
@@ -359,7 +368,8 @@ function _metaWeblog_post($post_struct, $publish) {
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
 // metaWeblog.newPost (blogid, username, password, struct, publish) returns string (postId)
-function _newPost($params) {
+function _newPost($params)
+{
 
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
@@ -389,7 +399,8 @@ function _newPost($params) {
     return $post_function($post, $publish);
 }
 
-function _blogger_edit($id, $content, $publish) {
+function _blogger_edit($id, $content, $publish)
+{
 
     global $xwl_db, $_xwl_auth_user;
 
@@ -412,7 +423,8 @@ function _blogger_edit($id, $content, $publish) {
     return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
 }
 
-function _metaWeblog_edit($id, $post_struct, $publish) {
+function _metaWeblog_edit($id, $post_struct, $publish)
+{
 
     global $xwl_db, $_xwl_auth_user;
 
@@ -486,7 +498,8 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
 
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
 // metaWeblog.editPost (postid, username, password, struct, publish) returns true
-function _editPost($params) {
+function _editPost($params)
+{
 
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
@@ -524,7 +537,8 @@ function _editPost($params) {
 }
 
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
-function _deletePost($params) {
+function _deletePost($params)
+{
 
     global $xwl_db, $_pshift;
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: article.inc.php,v 1.11 2004/04/30 21:24:19 loki Exp $
+// $Id: article.inc.php,v 1.12 2004/07/16 05:29:10 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // display article on index.xml.php or article.xml.php page
@@ -38,7 +38,8 @@
  *
  */
 
-function xwl_display_article($article, $index, $content) {
+function xwl_display_article($article, $index, $content)
+{
 echo <<< END
     <article index="$index" content="$content">
       <!-- metadata -->
