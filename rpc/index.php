@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.8 2004/05/02 21:50:37 loki Exp $
+// $Id: index.php,v 1.9 2004/05/02 21:57:06 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -173,10 +173,10 @@ function blogger_getRecentPosts($params) {
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
 
 
-// metaWeblog.newPost
-// metaWeblog.editPost
+// metaWeblog.newPost (blogid, username, password, struct, publish) returns string
+// metaWeblog.editPost (postid, username, password, struct, publish) returns true
 
-// metaWeblog.getCategories (blogid, username, password)
+// metaWeblog.getCategories (blogid, username, password) returns struct
 function metaWeblog_getCategories($params) {
 
     global $xwl_db, $xwl_site_value_xml;
@@ -196,7 +196,7 @@ function metaWeblog_getCategories($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "struct"));
 }
 
-// metaWeblog.getPost (postid, username, password)
+// metaWeblog.getPost (postid, username, password) returns struct
 function metaWeblog_getPost($params) {
 
     global $xwl_db, $xwl_site_value_xml;
@@ -230,7 +230,7 @@ function metaWeblog_getPost($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_struct, "struct"));
 }
 
-// metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts)
+// metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts) returns array of structs
 function metaWeblog_getRecentPosts($params) {
 
     global $xwl_db, $xwl_site_value_xml;
