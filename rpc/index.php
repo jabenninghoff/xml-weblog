@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.4 2004/05/01 19:24:23 loki Exp $
+// $Id: index.php,v 1.5 2004/05/02 02:57:39 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -39,8 +39,8 @@
  */
 
 require_once "XWL.php";
-require_once "XML/RPC/Server.php";
 require_once "include/site.php";
+require_once "XML/RPC/Server.php";
 
 // rpc authorization routine
 function rpc_auth($user, $pass) {
@@ -100,13 +100,79 @@ function blogger_getRecentPosts($params) {
 
 
 $metaWeblog = array(
-    "getRecentPosts"
+    "getRecentPosts", "getCategories", "getPost"
 );
 
 // metaWeblog.newPost
 // metaWeblog.editPost
-// metaWeblog.getCategories
-// metaWeblog.getPost
+
+// metaWeblog.getCategories (blogid, username, password)
+function metaWeblog_getCategories($params) {
+
+    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
+    $resp_array = array();
+
+    $username = $params->getParam(1);
+    $password = $params->getParam(2);
+    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
+        // user error 1
+        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
+    }
+
+    $xwl_topic = $xwl_db->fetch_topics();
+
+    for ($i=0; $xwl_topic[$i]; $i++) {
+        $resp_struct = array(
+            "description" => new XML_RPC_Value($xwl_topic[$i]->property['description']->value),
+            "htmlUrl" => new XML_RPC_Value($xwl_site_value_xml['url']."topic.php?id=".$xwl_topic[$i]->property['id']->value),
+            "rssUrl" => new XML_RPC_Value("")
+        );
+
+        $resp_array[$xwl_topic[$i]->property['name']->value] = new XML_RPC_Value($resp_struct, "struct");
+    }
+
+    return new XML_RPC_Response(new XML_RPC_Value($resp_array, "struct"));
+}
+
+// metaWeblog.getPost (postid, username, password)
+function metaWeblog_getPost($params) {
+
+    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
+    $resp_array = array();
+
+    $postid = $params->getParam(0);
+    $username = $params->getParam(1);
+    $password = $params->getParam(2);
+    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
+        // user error 1
+        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
+    }
+
+    // validate $postid
+    $tmp_id = new XWL_ID;
+    $tmp_id->set_value($postid->scalarval());
+    $id = $tmp_id->value;
+
+    if (!$xwl_article = $xwl_db->fetch_article($id)) {
+        // user error 2
+        return new XML_RPC_Response(0, $xmlrpcerruser+2, "getPost failed: invalid postid");
+    }
+
+    $link = $xwl_site_value_xml['url']."article.php?id=$id";
+    $resp_struct = array(
+            "categories" => new XML_RPC_Value(
+                array(new XML_RPC_Value($xwl_article->property['topic_name']->value)), "array"),
+        "userid" => new XML_RPC_Value($xwl_article->property['user_name']->value),
+        "dateCreated" => new XML_RPC_Value($xwl_article->property['date']->iso8601_date(), "dateTime.iso8601"),
+        "description" => new XML_RPC_Value($xwl_article->property['leader']->value),
+        "postid" => new XML_RPC_Value($id),
+        "title" => new XML_RPC_Value($xwl_article->property['title']->value),
+        "link" => new XML_RPC_Value($link),
+        "permaLink" => new XML_RPC_Value($link)
+    );
+
+    return new XML_RPC_Response(new XML_RPC_Value($resp_struct, "struct"));
+}
 
 // metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts)
 function metaWeblog_getRecentPosts($params) {
@@ -130,6 +196,8 @@ function metaWeblog_getRecentPosts($params) {
         $id = $xwl_article[$i]->property['id']->value;
         $link = $xwl_site_value_xml['url']."article.php?id=$id";
         $resp_struct = array(
+            "categories" => new XML_RPC_Value(
+                array(new XML_RPC_Value($xwl_article[$i]->property['topic_name']->value)), "array"),
             "userid" => new XML_RPC_Value($xwl_article[$i]->property['user_name']->value),
             "dateCreated" => new XML_RPC_Value($xwl_article[$i]->property['date']->iso8601_date(), "dateTime.iso8601"),
             "description" => new XML_RPC_Value($xwl_article[$i]->property['leader']->value),
