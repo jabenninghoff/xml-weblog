@@ -1,0 +1,15 @@
+To Do:
+* finish up XML-RPC interface (1.1 release) - top priority
+* add WAP style (snap)
+* add user story submission - with XML-RPC support (?) (snap)
+* add user signup/preferences screen (1.2)
+* traditional weblog format/layout/style (benninghoff.org) (snap)
+* multiple "site" support, like apple.slashdot.org (??)
+
+Need:
+* new logos
+* (clean) php implementation of md5 digest auth
+
+Maybe Do:
+* multi-blog support
+* multiple language support
