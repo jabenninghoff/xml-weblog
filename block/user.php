@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.3 2003/04/03 20:02:37 loki Exp $
+// $Id: user.php,v 1.4 2003/04/04 18:52:57 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -43,7 +43,7 @@ if (user_authenticated()) {
     $user = fetch_auth_user();
 
     echo "<block>\n";
-    echo "  <title>$user[userid]'s Menu</title>\n";
+    echo "  <title>", ucfirst($user[userid]), "'s Menu</title>\n";
     echo "  <content>\n";
 
     if ($user['block']) {
