@@ -1,15 +1,14 @@
 <?php
-// $Id: header.xml.php,v 1.10 2002/10/19 21:04:52 loki Exp $
+// $Id: header.xml.php,v 1.11 2002/10/28 17:23:13 loki Exp $
 
-require_once "include/config.inc.php";
+require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
     // standalone
     header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n";
-
-    $site = fetch_site(1);
+    xml_declaration();
+    $site = fetch_site(base_url());
     $message = fetch_message();
 }
 ?>
@@ -21,16 +20,16 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
     <slogan><?php echo $site['slogan']; ?></slogan>
     <url><?php echo $site['url']; ?></url>
     <description><?php echo $site['description']; ?></description>
-    <content><?php echo $site['header_content']; ?></content>
+    <content>
+      <?php echo trim(process_code($site['header_content'])), "\n"; ?>
+    </content>
 
     <!-- zero or more messages, topmost is index 0 -->
 <?php
 for ($i=0; $message[$i]; $i++) {
-?>
-    <message index="<?php echo $i; ?>">
-      <?php echo $message[$i]['content'], "\n"; ?>
-    </message>
-<?php
+    echo "    <message index=\"$i\">\n";
+    echo "      {$message[$i]['content']}\n";
+    echo "    </message>\n";
 }
 ?>
   </header>

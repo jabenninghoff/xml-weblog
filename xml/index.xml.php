@@ -1,23 +1,18 @@
 <?php
-// $Id: index.xml.php,v 1.8 2002/10/19 21:04:52 loki Exp $
+// $Id: index.xml.php,v 1.9 2002/10/28 17:23:13 loki Exp $
 
-require_once "include/config.inc.php";
+require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
-if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
-    // standalone
-    header('Content-Type: text/xml');
-}
-
 // build variables
-$site = fetch_site(1);
+$site = fetch_site(base_url());
 $block = fetch_block();
 $message = fetch_message();
-$article = fetch_article(10);
+$article = fetch_article($site['article_limit']);
 $topic = fetch_topic();
 
+xml_declaration();
 ?>
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <!-- XML-weblog front page -->
 <page lang="en" title="<?php echo $site['name']; ?>">
 
@@ -50,10 +45,10 @@ $id = $article[$i]['id'];
 
       <!-- actual content -->
       <leader>
-<?php echo $article[$i]['leader']; ?>
+<?php echo trim($article[$i]['leader']), "\n"; ?>
       </leader>
       <content>
-<?php echo $article[$i]['content']; ?>
+<?php echo trim($article[$i]['content']), "\n"; ?>
       </content>
 
       <!-- comments (not yet implemented) -->

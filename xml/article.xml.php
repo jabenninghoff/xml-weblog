@@ -1,7 +1,7 @@
 <?php
-// $Id: article.xml.php,v 1.5 2002/10/21 06:19:26 loki Exp $
+// $Id: article.xml.php,v 1.6 2002/10/28 17:23:13 loki Exp $
 
-require_once "include/config.inc.php";
+require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
@@ -10,18 +10,15 @@ if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
 }
 
 // build variables
-$site = fetch_site(1);
+$site = fetch_site(base_url());
 $block = fetch_block();
 $topic = fetch_topic();
 
 $id = valid_ID($_GET['id']);
+$article = fetch_article_single($id);
 
-// fetch article
-$q = "select * from article where id='$id'";
-$article = $db->getRow($q, DB_FETCHMODE_ASSOC);
-
+xml_declaration();
 ?>
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <page lang="en" title="<?php echo $site['name']; ?>">
 
 <?php require "xml/header.xml.php"; ?>
@@ -48,10 +45,10 @@ $article = $db->getRow($q, DB_FETCHMODE_ASSOC);
 
       <!-- actual content -->
       <leader>
-<?php echo $article['leader']; ?>
+<?php echo trim($article['leader']), "\n"; ?>
       </leader>
       <content>
-<?php echo $article['content']; ?>
+<?php echo trim($article['content']), "\n"; ?>
       </content>
 
       <!-- comments (not yet implemented) -->
