@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.12 2003/11/30 02:35:49 loki Exp $
+// $Id: user.php,v 1.13 2003/12/01 16:13:09 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -61,9 +61,9 @@ if (xwl_auth_user_authenticated()) {
 
     echo "    <br class=\"br\"/>\n";
     echo "    <br class=\"br\"/>\n";
-    echo "    <form action=\"$userblock_page\" method=\"post\">\n";
-    echo "      <input name=\"logout\" type=\"submit\" value=\"Logout\"/>\n";
-    echo "    </form>\n";
+    echo "    <object><form action=\"$userblock_page\" method=\"post\">\n";
+    echo "      <div><input name=\"logout\" type=\"submit\" value=\"Logout\"/></div>\n";
+    echo "    </form></object>\n";
 
     echo "  </content>\n";
     echo "</block>\n";
@@ -73,9 +73,9 @@ if (xwl_auth_user_authenticated()) {
 <block>
   <title>Access</title>
   <content>
-    <form action="$userblock_page" method="post">
-      <input name="login" type="submit" value="Login"/>
-    </form>
+    <object><form action="$userblock_page" method="post">
+      <div><input name="login" type="submit" value="Login"/></div>
+    </form></object>
     If you do not have an account, you can <a href="user.php?mode=new">create</a> one.
   </content>
 </block>
