@@ -1,2 +1,2 @@
-# $Id: default.htaccess,v 1.4 2002/11/24 21:38:23 loki Exp $
-php_value include_path "/usr/local/lib/php:/xml-weblog-path"
+# $Id: default.htaccess,v 1.5 2003/10/20 18:33:17 loki Exp $
+php_value include_path "/php-lib-path:/xml-weblog-path:/xml-weblog-lib-path"
