@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.3 2002/10/17 07:13:49 loki Exp $
+// $Id: header.xml.php,v 1.4 2002/10/17 07:40:50 loki Exp $
 
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
@@ -26,7 +26,7 @@ foreach ($element as $tag) {
 
     <!-- zero or more messages, topmost is index 0 -->
     <message index="0">
-      <b>still under development... not open yet!</b>
+      <b>NOTE: this is only a prototype; don't expect anything to work.</b>
       [message: not implemented]
     </message>
   </header>
