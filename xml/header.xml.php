@@ -1,32 +1,27 @@
 <?php
-// $Id: header.xml.php,v 1.9 2002/10/19 07:55:26 loki Exp $
+// $Id: header.xml.php,v 1.10 2002/10/19 21:04:52 loki Exp $
 
-require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
+require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n";
-    // get site info 
-    $site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
-    // get message(s)
-    $q = "select * from message where (start_date < now() or start_date=0)".
-         "and (end_date > now() or end_date=0)"; // add "group by index"
-    $message = $db->getAll($q, DB_FETCHMODE_ASSOC);
+
+    $site = fetch_site(1);
+    $message = fetch_message();
 }
 ?>
   <!-- header: top of the page, with logo, slogan, etc.  -->
   <header>
     <banner>[banner: not implemented]</banner>
     <logo>image.php?name=<?php echo $site['logo']; ?></logo>
-<?php
-$element = array ( "name", "slogan", "url", "description" );
-foreach ($element as $tag) {
-    echo "    <$tag>", $site[$tag], "</$tag>\n";
-}
-?>
-    <content><?php echo $site['header_content'] ?></content>
+    <name><?php echo $site['name']; ?></name>
+    <slogan><?php echo $site['slogan']; ?></slogan>
+    <url><?php echo $site['url']; ?></url>
+    <description><?php echo $site['description']; ?></description>
+    <content><?php echo $site['header_content']; ?></content>
 
     <!-- zero or more messages, topmost is index 0 -->
 <?php

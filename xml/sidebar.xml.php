@@ -1,16 +1,16 @@
 <?php
-// $Id: sidebar.xml.php,v 1.4 2002/10/18 00:12:34 loki Exp $
+// $Id: sidebar.xml.php,v 1.5 2002/10/19 21:04:52 loki Exp $
 
-require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
+require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n";
     echo "<page>\n";
-    // retrieve blocks
-    $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+
+    $block = fetch_block();
 }
 ?>
   <!-- left or right sidebar(s), outermost is index 0 -->
@@ -23,21 +23,26 @@ while ($block[$i]) {
     // get the new sidebar index & alignment
     $align = $block[$i]['sidebar_align'];
     $index = $block[$i]['sidebar_index'];
-
-    echo '  <sidebar align="', $align, '" index="', $index, '">', "\n";
-    echo "    <!-- zero or more blocks, topmost is index 0 -->\n";
-
+?>
+  <sidebar align="<?php echo $align; ?>" index="<?php echo $index; ?>">
+    <!-- zero or more blocks, topmost is index 0 -->
+<?php
     // this will run at least once, so i will be incremented
     while ($block[$i]['sidebar_align'] == $align &&
            $block[$i]['sidebar_index'] == $index) {
-        echo '    <block index="', $block[$i]['block_index'], '">', "\n";
-        echo "      <title>", $block[$i]['title'], "</title>\n";
-        echo "      <content>\n", $block[$i]['content'], "\n      </content>\n";
-        echo "    </block>\n";
+?>
+    <block index="<?php echo $block[$i]['block_index']; ?>">
+      <title><?php echo $block[$i]['title']; ?></title>
+      <content>
+<?php echo "{$block[$i]['content']}"; ?>
+      </content>
+    </block>
+<?php
         $i++;
     }
-
-    echo "  </sidebar>\n";
+?>
+  </sidebar>
+<?php
 }
 
 if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {

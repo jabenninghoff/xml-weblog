@@ -1,14 +1,18 @@
 <?php
+require_once "include/config.inc.php";
 
+// W3C valid XTML 1.0 logo/link
 function validate_self()
 {
-print '<p><a href="http://validator.w3.org/check?uri=http://'.
-      $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].';ss=1">'."\n".
-      '<img src="image.php?name=valid-xhtml10.png"'."\n".
-      'alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>'."\n";
+echo '<p><a href="http://validator.w3.org/check?uri=http://',
+    $_SERVER['SERVER_NAME'], $_SERVER['PHP_SELF'], ';ss=1">', "\n",
+    '<img src="image.php?name=valid-xhtml10.png"', "\n",
+    'alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>',"\n";
 }
 
-function process_code($string) {
+// replace <?code include="file.php"> with include "code/file.php"
+function process_code($string)
+{
 // Loop through to find the dynamic code processing instruction
 while ( ($pos = strpos( $string, '<?code' )) !== FALSE ) {
     // find the end of the instruction
@@ -34,4 +38,44 @@ $string = substr($string, 0, $pos) . $results . substr($string, $pos2 + 2);
 return $string;
 }
 
+function fetch_site($id)
+{
+if (!$id) $id = 1;
+global $db;
+
+return $db->getRow("select * from site where id=$id", DB_FETCHMODE_ASSOC);
+}
+
+function fetch_block()
+{
+global $db;
+
+$q = "select * from block group by sidebar_align,sidebar_index,block_index";
+return $db->getAll($q, DB_FETCHMODE_ASSOC);
+}
+
+function fetch_message()
+{
+global $db;
+
+$q = "select * from message where (start_date < now() or start_date=0)".
+     "and (end_date > now() or end_date=0)"; // add "group by index"
+return $db->getAll($q, DB_FETCHMODE_ASSOC);
+}
+
+function fetch_article($limit)
+{
+if (!$limit) $limit = 10;
+global $db;
+
+$q = "select * from article group by date desc limit $limit";
+return $db->getAll($q, DB_FETCHMODE_ASSOC);
+}
+
+function fetch_topic()
+{
+global $db;
+
+return $db->getAll("select * from topic group by id", DB_FETCHMODE_ASSOC);
+}
 ?>

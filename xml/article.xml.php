@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.2 2002/10/19 15:49:21 loki Exp $
+// $Id: article.xml.php,v 1.3 2002/10/19 21:04:52 loki Exp $
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
 
@@ -9,13 +9,14 @@ if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
 }
 
 // build variables
-$site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
-$block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
-$topic = $db->getAll("select * from topic group by id", DB_FETCHMODE_ASSOC);
+$site = fetch_site(1);
+$block = fetch_block();
+$topic = fetch_topic();
 
 // fetch article
-$id = $_GET['id'];
-$article = $db->getRow("select * from article where id='$id'", DB_FETCHMODE_ASSOC);
+$q = "select * from article where id='{$_GET['id']}'";
+$article = $db->getRow($q, DB_FETCHMODE_ASSOC);
+
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <page lang="en" title="<?php echo $site['name']; ?>">
