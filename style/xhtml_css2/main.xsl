@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.11 2002/11/14 23:42:13 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.12 2002/11/15 00:43:04 loki Exp $ -->
 
 <!--
    -
@@ -37,7 +37,7 @@
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+<xsl:output method="xml" indent="yes" encoding="iso-8859-1"
     omit-xml-declaration="yes"
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
     doctype-system="/DTD/xhtml1-strict.dtd"/>
@@ -45,6 +45,7 @@
 <xsl:template match="page">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title><xsl:value-of select="@title"/></title>
     <link rel="stylesheet" href="style/xhtml_css2/basic.css" type="text/css"/>
     <xsl:if test="sidebar[@align='left']">
@@ -85,7 +86,7 @@
   <div class="masthead">
     <a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a>
     <div class="header-slogan">
-      <p><xsl:copy-of select="slogan/text()|slogan/*"/></p>
+      <p class="zero"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
     </div>
     <div class="header-content">
       <xsl:apply-templates select="content"/>
@@ -126,11 +127,13 @@
       <xsl:copy-of select="content/*"/>
     </xsl:if>
     <div class="byline">
-      posted by <b><xsl:value-of select="author"/></b> on
-      <xsl:value-of select="date"/>
-      <xsl:if test="not(@content='show') and normalize-space(content)">
-        <b><a href="{url}">Read More...</a></b>
-      </xsl:if>
+      <p class="zero">
+        posted by <b><xsl:value-of select="author"/></b> on
+        <xsl:value-of select="date"/>
+        <xsl:if test="not(@content='show') and normalize-space(content)">
+          <b><a href="{url}">Read More...</a></b>
+        </xsl:if>
+      </p>
     </div>
   </xsl:for-each>
   <xsl:apply-templates select="admin"/>
