@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.7 2003/04/23 21:05:07 loki Exp $
+// $Id: database.php,v 1.8 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -99,12 +99,34 @@ class XWL_database
         return $this->_fetch_single("XWL_article", $query);
     }
 
-    function fetch_articles($limit)
+
+    function fetch_article_first()
+    {
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date desc limit 1";
+
+        return $this->_fetch_single("XWL_article", $query);
+    }
+
+    function fetch_article_last()
+    {
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.user=user.id order by article.date asc limit 1";
+
+        return $this->_fetch_single("XWL_article", $query);
+    }
+
+    function fetch_articles($limit, $start, $end)
     {
         if (!$limit || $limit <= 0) $limit = 1;
 
         // fetch top ($limit) articles
-        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
+        if ($start) {
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date <= $start order by article.date desc limit $limit";
+        } elseif ($end) {
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.date >= $end order by article.date asc limit $limit";
+            return array_reverse($this->_fetch_multiple("XWL_article", $query));
+        } else {
+            $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
+        }
 
         return $this->_fetch_multiple("XWL_article", $query);
     }
@@ -122,40 +144,23 @@ class XWL_database
 
         return $this->_fetch_multiple("XWL_article", $query);
     }
+
+    // auth functions
+    function fetch_user($userid)
+    {
+        // we don't use the generic fetch for security sensitive functions
+        $result = $this->_db->getRow("select * from user where userid='$userid'", DB_FETCHMODE_ASSOC);
+        if (DB::isError($result)) return false;
+
+        $user = new XWL_user;
+        $user->load_SQL($result);
+        return $user;
+    }
 }
 
 // unimplemented functions
 
 /*
-function xwl_db_fetch_article($limit, $start, $end)
-{
-    if ($start) {
-        $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date <= $start order by article.date desc limit $limit";
-        return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
-    } else if ($end) {
-        $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date >= $end order by article.date limit $limit";
-        return array_reverse($xwl_db->getAll($query, DB_FETCHMODE_ASSOC));
-    } else {
-        $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit $limit";
-        return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
-    }
-}
-
-function xwl_db_fetch_article_first()
-{
-    global $xwl_db;
-
-    $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit 1";
-    return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_fetch_article_last()
-{
-    global $xwl_db;
-
-    $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date asc limit 1";
-    return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
-}
 
 // image functions
 function xwl_db_fetch_image($name)
@@ -170,17 +175,6 @@ function xwl_db_fetch_icon($name)
     global $xwl_db;
 
     return $xwl_db->getRow("select * from icon where name='$name'", DB_FETCHMODE_ASSOC);
-}
-
-// auth functions
-function xwl_db_fetch_user($userid)
-{
-    global $xwl_db;
-
-    $user = $xwl_db->getRow("select * from user where userid='$userid'", DB_FETCHMODE_ASSOC);
-    if (DB::isError($user)) $user = false;
-
-    return $user;
 }
 
 // admin functions

@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.8 2003/04/21 20:54:12 loki Exp $
+// $Id: style.inc.php,v 1.9 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // style/xml rendering module
@@ -38,7 +38,8 @@
  *
  */
 
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/config.inc.php";
 
 // public functions
 
@@ -46,9 +47,12 @@ function xwl_style_get()
 {
     global $xwl_default_style;
 
-    $style = xwl_valid_filename($_GET['style']);
 
-    return $style ? $style : $xwl_default_style;
+    $style = new XWL_filename;
+
+    if (!$style->set_value($_GET['style'])) $style->set_value($xwl_default_style);
+
+    return $style;
 }
 
 function xwl_style_render_page($xml, $style)
@@ -56,7 +60,7 @@ function xwl_style_render_page($xml, $style)
 
     // load the stylesheet
     ob_start();
-    require "style/".xwl_valid_filename($style)."/main.xsl";
+    require "style/{$style->value}/main.xsl";
     $xsl = ob_get_contents();
     ob_end_clean();
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: archive.php,v 1.7 2003/04/21 20:54:12 loki Exp $
+// $Id: archive.php,v 1.8 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // newer/older articles selection block
@@ -38,7 +38,8 @@
  *
  */
 
-require_once "include/db.inc.php";
+
+// requires: xml/index.xml.php, site.php
 
 // private functions
 function date_to_datenum($date)
@@ -52,20 +53,20 @@ if (basename($_SERVER['PHP_SELF']) == "index.php") {
     echo "  <title>Archives</title>\n";
     echo "  <content>\n";
 
-    $e = date_to_datenum($article[0]['date']);
-    $a = end($article);
-    $s = date_to_datenum($a['date']);
+    $end = date_to_datenum($xwl_article[0]->property['date']->value);
+    $s = end($xwl_article);
+    $start = date_to_datenum($s->property['date']->value);
 
-    $first_a = xwl_db_fetch_article_first();
-    $last_a = xwl_db_fetch_article_last();
+    $first_article = $xwl_db->fetch_article_first();
+    $last_article = $xwl_db->fetch_article_last();
 
-    if (($xwl_article_start || $xwl_article_end) && date_to_datenum($first_a['date']) != $e) {
-        echo "<a href=\"index.php?end=$e\">Newer Articles</a><br class=\"br\"/>\n";
+    if (date_to_datenum($first_article->property['date']->value) != $end) {
+        echo "<a href=\"index.php?end=$end\">Newer Articles</a><br class=\"br\"/>\n";
     } else {
         echo "Newer Articles<br class=\"br\"/>\n";
     }
-    if (date_to_datenum($last_a['date']) != $s) {
-        echo "<a href=\"index.php?start=$s\">Older Articles</a><br class=\"br\"/>\n";
+    if (date_to_datenum($last_article->property['date']->value) != $start) {
+        echo "<a href=\"index.php?start=$start\">Older Articles</a><br class=\"br\"/>\n";
     } else {
         echo "Older Articles<br class=\"br\"/>\n";
     }

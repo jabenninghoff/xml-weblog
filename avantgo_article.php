@@ -1,5 +1,5 @@
 <?php
-// $Id: avantgo_article.php,v 1.4 2003/04/21 20:54:12 loki Exp $
+// $Id: avantgo_article.php,v 1.5 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // avantgo article renderer
@@ -64,5 +64,8 @@ require "xml/article.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-xwl_style_render_page($xml, "avantgo");
+$style = new XWL_filename;
+$style->set_value("avantgo");
+
+xwl_style_render_page($xml, $style);
 ?>

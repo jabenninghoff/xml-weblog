@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.9 2003/04/21 20:54:12 loki Exp $
+// $Id: user.php,v 1.10 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -46,11 +46,11 @@ if (xwl_auth_user_authenticated()) {
     $user = xwl_auth_user_fetch();
 
     echo "<block>\n";
-    echo "  <title>", ucfirst($user[userid]), "'s Menu</title>\n";
+    echo "  <title>", ucfirst($user->property['userid']->display_XML()), "'s Menu</title>\n";
     echo "  <content>\n";
 
-    if ($user['block']) {
-        echo $user['block'], "\n";
+    if ($block = $user->property['block']->display_XML()) {
+        echo $block, "\n";
     } else {
         echo "<a href=\"user.php\">Customize</a> your personal menu\n";
     }

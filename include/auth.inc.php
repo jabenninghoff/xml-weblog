@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.11 2003/04/21 20:54:12 loki Exp $
+// $Id: auth.inc.php,v 1.12 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
@@ -38,22 +38,22 @@
  *
  */
 
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/site.php";
+require_once "include/config.inc.php";
 
 // private globals
-$auth_user = "";
+$_xwl_auth_user = NULL;
 
 // initialization
-if (isset($_SERVER['PHP_AUTH_USER'])) {
-    $auth_user = xwl_db_fetch_user(xwl_valid_string($_SERVER['PHP_AUTH_USER']));
+if (isset($_SERVER['PHP_AUTH_USER']) && XWL_string::valid($_SERVER['PHP_AUTH_USER'])) {
+    $_xwl_auth_user = $xwl_db->fetch_user($_SERVER['PHP_AUTH_USER']);
 } else {
-    $auth_user = false;
+    $_xwl_auth_user = false;
 }
 
 
 // public functions
-
 function xwl_auth_login()
 {
     // see if the user explicity requested a login
@@ -78,29 +78,27 @@ function xwl_auth_login()
 
 function xwl_auth_user_authenticated()
 {
-global $auth_user;
+global $_xwl_auth_user;
 
-    if (!$auth_user) return false;
-    if (crypt($_SERVER['PHP_AUTH_PW'], $auth_user['password']) != $auth_user['password']) return false;
+    if (!$_xwl_auth_user) return false;
+    if (crypt($_SERVER['PHP_AUTH_PW'], $_xwl_auth_user->property['password']->value) != $_xwl_auth_user->property['password']->value) return false;
 
     return true;
 }
 
 function xwl_auth_user_authorized($priv)
 {
-global $auth_user;
+global $_xwl_auth_user;
 
-    if (!$auth_user) return false;
-    if (!$auth_user[$priv]) return false;
-
-    return true;
+    if (!$_xwl_auth_user) return false;
+    return $_xwl_auth_user->property[$priv]->value;
 }
 
 function xwl_auth_user_fetch()
 {
-global $auth_user;
+global $_xwl_auth_user;
 
-    return $auth_user;
+    return $_xwl_auth_user;
 }
 
 function xwl_auth_unauthorized($realm)

@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.5 2003/04/23 04:34:13 loki Exp $
+// $Id: datatype.php,v 1.6 2003/05/14 22:44:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -123,6 +123,12 @@ class XWL_string extends XWL_datatype
         $this->value = $input;
         return true;
     }
+
+    // public version of _valid_string
+    function valid($input)
+    {
+        return XWL_string::_valid_string($input);
+    }
 }
 
 class XWL_URI extends XWL_string
@@ -218,7 +224,25 @@ class XWL_filename extends XWL_string
         // strings only
         if (!$this->_valid_string($input)) return false;
 
-        if (!XWL::_only_has($input, $alpha.$num.$sym) && $input != ".." & $input != ".") return false;
+        if (!XWL::_only_has($input, $alpha.$num.$sym) || $input == ".." || $input == ".") return false;
+
+        $this->value = $input;
+        return true;
+    }
+}
+
+class XWL_datenum extends XWL_string
+{
+    var $value = FALSE;
+
+    function set_value($input)
+    {
+        $num =  "0123456789";
+
+        // strings only
+        if (!$this->_valid_string($input)) return false;
+
+        if (!XWL::_only_has($input, $num) || strlen($input) != 14) return false;
 
         $this->value = $input;
         return true;
