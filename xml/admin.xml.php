@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.15 2002/11/01 03:32:09 loki Exp $
+// $Id: admin.xml.php,v 1.16 2002/11/01 16:46:21 loki Exp $
 
 require_once "include/auth.inc.php";
 require_once "include/config.inc.php";
@@ -156,6 +156,25 @@ function admin_form_block($object, $type, $schema, $mode)
     echo "          </table>\n";
 }
 
+function admin_form_image($object, $type, $schema, $mode)
+{
+    echo "          <table>\n";
+    foreach ($schema as $s) {
+        if ($s['property'] == "mime" || $s['property'] == "width" || $s['property'] == "height") {
+            echo "            <tr>\n";
+            echo "              <td><b>", ucfirst($s['property']), "</b></td>\n";
+            echo "              <td><i>automatically generated</i></td>\n";
+            echo "            </tr>\n";
+        } else {
+            echo "            <tr>\n";
+            admin_input($s['property'], $s['datatype'],
+                htmlspecialchars($object[$s['property']]), $mode);
+            echo "            </tr>\n";
+        }
+    }
+    echo "          </table>\n";
+}
+
 function admin_form($object, $type, $schema, $mode)
 {
 global $admin_form_handler;
@@ -246,9 +265,34 @@ admin_form($get_object, $get_type, $schema, $get_mode);
 echo "      </content>\n";
 }
 
+function process_form_image($schema)
+{
+    global $mime_type;
+
+    $size = array("", "", 0);
+
+    foreach ($schema as $s) {
+        $validate = "valid_".$s['datatype'];
+        $object[$s['property']] = $validate($_POST[$s['property']]); 
+        if ($file = $_FILES[$s['property']]) {
+            if (is_uploaded_file($file['tmp_name'])) {
+                if ($size = getimagesize($file['tmp_name'])) {
+                    $object[$s['property']] = addslashes(fread(fopen($file['tmp_name'], "r"), filesize($file['tmp_name'])));
+                 } else $object[$s['property']] = "";
+            } else $object[$s['property']] = "";
+        }
+    }
+
+    if (!$object['mime']) $object['mime'] = $mime_type[$size[2]];
+    if (!$object['width']) $object['width'] = $size[0];
+    if (!$object['height']) $object['height'] = $size[1];
+
+    return $object;
+}
+
 function process_form()
 {
-global $type;
+global $type, $admin_form_processor;
 
 $valid_mode = array("create", "edit", "delete");
 
@@ -272,11 +316,16 @@ if ($post_mode == "delete") {
 $schema = fetch_schema($post_type);
 
 // valid-ize all data
-foreach ($schema as $s) {
-   $validate = "valid_".$s['datatype'];
-   $object[$s['property']] = $validate($_POST[$s['property']]); 
-   if ($_FILES[$s['property']])
-       $object[$s['property']] = $validate($_FILES[$s['property']]);
+if ($admin_form_processor[$post_type]) {
+    $object = $admin_form_processor[$post_type]($schema);
+} else {
+    // default handler
+    foreach ($schema as $s) {
+       $validate = "valid_".$s['datatype'];
+       $object[$s['property']] = $validate($_POST[$s['property']]); 
+       if ($_FILES[$s['property']])
+           $object[$s['property']] = $validate($_FILES[$s['property']]);
+    }
 }
 if ($post_mode == "create") $object['id'] = "0";
 
