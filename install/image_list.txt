@@ -1,2 +1,5 @@
 ./image/xml-weblog-logo.png
 ./image/valid-xhtml10.png
+./image/apache_pb.png
+./image/openbsd_pb.png
+./image/php_pb.png

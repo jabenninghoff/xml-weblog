@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.7 2002/10/29 23:28:51 loki Exp $
+-- $Id: sample-values.sql,v 1.8 2002/10/31 00:41:29 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -9,7 +9,7 @@ INSERT INTO block VALUES (1,'left',1,1,'News Links','<a href=\"http://www.deadly
 
 INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
 
-INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','image.php?name=xml-weblog-logo.png','xml-weblog sample site','<p><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest &#169; 2002 xml-weblog.org','<p><code include=\"validxml.php\"/></p>','en');
+INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','image.php?name=xml-weblog-logo.png','xml-weblog sample site','<p><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br/>Comments are owned by the Poster. The Rest &#169; 2002 xml-weblog.org','<p>\r\n<a class="img" href=\"http://www.openbsd.org\"><img src=\"image.php?name=openbsd_pb.png\" alt=\"Powered by OpenBSD\"/></a>\r\n<a class="img" href=\"http://httpd.apache.org\"><img src=\"image.php?name=apache_pb.png\" alt=\"Powered by Apache\"/> </a>\r\n<a class="img" href=\"http://www.php.net\"><img src=\"image.php?name=php_pb.png\" alt=\"Powered by PHP\"/> </a>\r\n<code include=\"validxml.php\"/>\r\n</p>','en');
 
 INSERT INTO topic VALUES (1,'No Topic','No topic.','icon.php?name=blank.png');
 INSERT INTO topic VALUES (2,'Announcements','Site Information and Announcements.','icon.php?name=announce.png');

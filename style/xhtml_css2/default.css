@@ -1,0 +1,45 @@
+/* $Id: default.css,v 1.1 2002/10/31 00:41:29 loki Exp $ */
+
+body {
+    font: helvetica, sans-serif;
+    font: 10pt arial, sans-serif;
+    font: 10pt verdana, sans-serif;
+    right-margin: 0.5em;
+    left-margin: 0.5em;
+}
+
+table {
+    font: helvetica, sans-serif;
+    font: 10pt arial, sans-serif;
+    font: 10pt verdana, sans-serif;
+}
+
+div.center {
+    text-align: center;
+}
+
+span.small {
+    font-size: 75%;
+}
+
+a.img {
+    text-decoration: none;
+    word-spacing: 1em;
+}
+
+img {
+    border-width: 0;
+}
+
+table.head {
+    border: solid gray;
+}
+
+div.footer {
+    text-align: center;
+}
+
+span.topic_icon {
+    float: right;
+    margin-right: 1em;
+}
