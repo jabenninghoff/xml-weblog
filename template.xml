@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: template.xml,v 1.10 2002/10/12 01:08:21 loki Exp $ -->
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<!-- $Id: template.xml,v 1.11 2002/10/12 02:29:24 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
