@@ -1,5 +1,5 @@
 <?php
-// $Id: site.php,v 1.5 2004/04/30 21:24:19 loki Exp $
+// $Id: site.php,v 1.6 2004/09/23 18:53:21 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // sitewide (dynamic) global variables
@@ -38,8 +38,8 @@
  *
  */
 
+require_once "config.php";
 require_once "XWL.php";
-require_once "include/config.inc.php";
 
 // database initialization
 $xwl_db = new XWL_database;
