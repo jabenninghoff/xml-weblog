@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.2 2002/10/20 00:13:58 loki Exp $
+// $Id: load_dbase.php,v 1.3 2002/10/20 00:20:25 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -143,7 +143,7 @@ foreach ($tables as $table) {
     echo ") TYPE=MyISAM;\n\n";
 }
 include "./sample-values.sql";
-$query = split(";",ob_get_contents());
+$query = split(";\n",ob_get_contents());
 foreach ($query as $q) {
     $db->query(trim($q));
 } 
