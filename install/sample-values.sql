@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.22 2002/11/25 04:03:17 loki Exp $
+-- $Id: sample-values.sql,v 1.23 2003/04/03 17:30:34 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -42,7 +42,8 @@ INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:0
 INSERT INTO block VALUES (1,'left',1,1,'Main Menu','<a href=\"index.php\">Home</a><br class=\"br\"/>\r\n<a href=\"topic.php\">Topics</a><br class=\"br\"/>','','en');
 INSERT INTO block VALUES (2,'left',1,2,'sysblock','','archive','en');
 INSERT INTO block VALUES (3,'left',1,3,'News Links','<a href=\"http://www.deadly.org\">OpenBSD Journal</a><br class=\"br\"/>\r\n<a href=\"http://daily.daemonnews.org\">daemonnews</a><br class=\"br\"/>\r\n<a href=\"http://www.bsdtoday.com\">BSD Today</a><br class=\"br\"/>\r\n<a href=\"http://www.macosrumors.com\">MacOS Rumors</a><br class=\"br\"/>\r\n<a href=\"http://apple.slashdot.org\">Slashdot (Apple)</a><br class=\"br\"/>\r\n<a href=\"http://bsd.slashdot.org\">Slashdot (BSD)</a><br class=\"br\"/>\r\n<a href=\"http://yro.slashdot.org\">Slashdot (YRO)</a><br class=\"br\"/>\r\n<a href=\"http://slashdot.org\">Slashdot</a>\r\n','','en');
-INSERT INTO block VALUES (4,'left',1,4,'Administration','<a href=\"admin.php\">login</a><br class=\"br\"/><br class=\"br\"/>\r\nPlease delete this block after configuring the site.','','en');
+INSERT INTO block VALUES (4,'left',1,4,'sysblock','','user','en');
+INSERT INTO block VALUES (5,'left',1,5,'Administration','<a href=\"admin.php\">login</a><br class=\"br\"/><br class=\"br\"/>\r\nPlease delete this block after configuring the site.','','en');
 
 INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
 
@@ -73,5 +74,5 @@ INSERT INTO topic VALUES (22,'Software','Software and programming.','wl_icons/so
 INSERT INTO topic VALUES (23,'Technology','Modern and post-modern technology.','wl_icons/technology.png');
 INSERT INTO topic VALUES (24,'XML-Weblog','XML-Weblog site management engine','wl_icons/xml-weblog.png');
 
-INSERT INTO user VALUES (1,'admin','$1$djcMXWAa$C7BumIUNqvkpTcabiU9IT0',1);
-INSERT INTO user VALUES (2,'loki','$1$dk3BJfNA$0u1ZFF3PvBy24L0Z.wZdb/',1);
+INSERT INTO user VALUES (1,'admin','$1$djcMXWAa$C7BumIUNqvkpTcabiU9IT0',1, '');
+INSERT INTO user VALUES (2,'loki','$1$dk3BJfNA$0u1ZFF3PvBy24L0Z.wZdb/',1, '');

@@ -1,5 +1,5 @@
 <?php
-// $Id: types.inc.php,v 1.6 2002/11/24 21:54:53 loki Exp $
+// $Id: types.inc.php,v 1.7 2003/04/03 17:30:34 loki Exp $
 // xml-weblog type definitions
 
 /*
@@ -154,7 +154,8 @@ $user = array(
     "id" => array("ID", 1),
     "userid" => array("string", 1),
     "password" => array("string", 1),
-    "admin" => array("boolean", 1)
+    "admin" => array("boolean", 1),
+    "block" => array("XHTML_fragment", 0)
 );
 
 // image-BLOB tables
