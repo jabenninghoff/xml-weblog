@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.17 2004/07/10 02:48:23 loki Exp $
+// $Id: index.php,v 1.18 2004/07/10 04:36:12 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -285,7 +285,7 @@ function _metaWeblog_post($post_struct, $publish) {
 
     if ($xwl_db->create_object("article", $post)) {
         $created_post = $xwl_db->fetch_article_last_id();
-        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value, "int"));
+        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value));
     }
 
     return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
