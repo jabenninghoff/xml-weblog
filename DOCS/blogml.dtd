@@ -1,0 +1,47 @@
+<!--
+    BlogML Project DTD, version RC2
+    This version will be here to stay untill 
+    either I finish SHoEBoX, or BlogML is 
+    actually picked up by some others out 
+    there. I like this stucture and feel
+    it's the best way to do it.
+
+    Homepage: http://blogml.ktyp.com/
+     Contact: kyle@ktyp.com
+
+    The lastest version of this DTD can
+    always be found at:
+    http://blogml.ktyp.com/DTD/blogml.dtd
+
+-->
+
+<!-- entity stuff to help brevity/clarity -->
+<!ENTITY  %          text.content '#PCDATA'>
+<!ENTITY  %          att.content  'CDATA'>
+
+<!-- main elements, basic structure -->
+<!ELEMENT blog       (post)>
+<!ELEMENT post       (title?, text, poster, date, comments?)>
+<!ATTLIST post       id ID #REQUIRED>
+
+<!-- post elements -->
+<!ELEMENT title      (%text.content;)*>
+<!ELEMENT text       (%text.content;)*>
+<!ELEMENT poster     (%text.content;)*>
+<!ELEMENT date       (%text.content;)*>
+<!ATTLIST poster     nick  %att.content; #IMPLIED
+                     email %att.content; #IMPLIED >
+
+<!-- comment elements, totally optional -->
+<!ELEMENT comments   (comment)>
+<!ELEMENT comment    (ctext, cdate, cposter)>
+<!ELEMENT ctext      (%text.content;)*>
+<!ELEMENT cwhen      (%text.content;)*>
+<!ELEMENT cwho       (%text.content;)*>
+<!ATTLIST comment    id ID #REQUIRED>
+<!ATTLIST cwho       url   %att.content; #IMPLIED
+                     nick  %att.content; #IMPLIED
+                     email %att.content; #IMPLIED > 
+
+
+<!-- 10/17/01 16:51 kyle@ktyp.com -->

@@ -1,0 +1,82 @@
+<!--
+From: http://casbah.org/CML/Wilma/Wilma.dtd  2001-06
+$Id: CASBAH-Wilma-DTD.txt,v 1.1 2001/12/28 08:54:21 death Exp $
+
+Wilma ML by Kendall G. Clark and Niel Bornstein for
+	
+	The Casbah Project, <http://ntlug.org/casbah>
+
+Email kclark@ntlug.org or casbah@ntlug.org with questions or 
+comments.
+
+And, remember:
+
+	It's written "WebLog Markup Language" 
+	but it's pronounced "Wilma"!
+
+This DTD  provides a simple XML scheme for WebLog documents, like
+Jorn Barger's Robot Wisdom WebLog, <http://www.robotwisdom.com/>.
+
+A simple instance of Wilma looks like this:
+
+<?xml version="1.0"?>
+
+<wilma id="021499">
+  
+   <item id="001">
+     <category>Linux</category>
+     <title>Dell Embraces Linux</title>
+     <poster>kclark@ntlug.org</poster>
+     <link url="http://news.com/foo...">[News.com]</link>
+     <descrip>
+        <p><b>Dell's</b> newfound interest in the Linux OS is turning
+        some heads in Corporate America...</p>
+     </descrip>
+   </item>
+
+</wilma>
+
+Note: you have most of the stylistic freedom of HTML 4.0 available
+within <descrip>.
+
+-->
+
+<!--                    Wilma root element                         -->
+<!ELEMENT  weblog       (item)*                                      >
+<!ATTLIST  weblog
+             id         ID                                 #IMPLIED  >
+<!ELEMENT  item         (category | descrip 
+                         | title | poster 
+                         | link)*                                    >
+<!ATTLIST  item
+             id         ID                                 #IMPLIED  >
+<!ELEMENT  category     (#PCDATA)                                    >
+<!ELEMENT  descrip      (%struct.model;)                             >
+<!ELEMENT  title        (#PCDATA)                                    >
+<!ELEMENT  poster       (#PCDATA)                                    >
+<!ELEMENT  link         (#PCDATA)                                    >
+<!ATTLIST  link
+             url        CDATA                              #REQUIRED >
+
+<!--                    These declarations include standard HTML
+                        entities in Wilma, as well as most of HTML
+                        4.0 Traditional, courtesy of John Cowan.   -->
+<!ENTITY % XMLlat1          PUBLIC
+"-//XML-DEV List//ENTITIES Latin1//EN"
+"xml_Latin1.ent"                                                     >
+%XMLlat1;
+
+<!ENTITY % XMLsymbol        PUBLIC
+"-//XML-DEV List//ENTITIES Symbols//EN" 
+"xml_Symbol.ent"                                                     >
+%XMLsymbol;
+
+<!ENTITY % XMLspecial       PUBLIC                                        
+"-//XML-DEV List//ENTITIES Special//EN" 
+"xml_Special.ent"                                                    >
+%XMLspecial;
+
+<!ENTITY % ibtwsh.dtd      PUBLIC
+"-//XML-DEV List//DTD IBTWSH 1.0//EN" 
+"ibtwsh.dtd"                                                         >
+%ibtwsh.dtd; 
