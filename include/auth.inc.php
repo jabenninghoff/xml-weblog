@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.8 2003/04/16 23:05:55 loki Exp $
+// $Id: auth.inc.php,v 1.9 2003/04/17 13:47:42 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -50,15 +50,19 @@ function login()
     if ($_GET['login']) {
 
         /*
-         * some browsers (K-Meleon) only send credentials when asked, so to
-         * force them to give up the user & pass we set a cookie.
+         * Some browsers (K-Meleon) only send credentials when asked, so to
+         * force them to give up the user & pass we set a cookie. While this
+         * does not violate rfc2617 (HTTP Authentication), all other browsers
+         * will send credentials every time if asked once, since it's more
+         * efficient that way. *sigh* This isn't too intrusive, since pretty
+         * much everyone silently accepts session cookies.
          */
         setcookie('login', true);
 
         return true;
     }
 
-    // this will be true if the session cookie has been sent.
+    // this will be true (only) if the session cookie has been sent.
     return $_COOKIE['login'];
 }
 
