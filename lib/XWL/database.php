@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.9 2003/10/22 21:44:36 loki Exp $
+// $Id: database.php,v 1.10 2003/11/01 02:19:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -49,6 +49,7 @@ class XWL_database
     function _fetch_single($class, $query)
     {
         $result = $this->_db->getRow($query, DB_FETCHMODE_ASSOC);
+        if (DB::isError($result) || !$result) return false;
 
         $obj = new $class;
         $obj->load_SQL($result);
@@ -58,6 +59,7 @@ class XWL_database
     function _fetch_multiple($class, $query)
     {
         $result = $this->_db->getAll($query, DB_FETCHMODE_ASSOC);
+        if (DB::isError($result) || !$result) return false;
 
         foreach ($result as $res) {
             $tmp = new $class;
@@ -145,12 +147,27 @@ class XWL_database
         return $this->_fetch_multiple("XWL_article", $query);
     }
 
+    // admin functions
+    function fetch_objects($class)
+    {
+        // fetch all objects for provided class (table)
+        $query = "select * from $class order by id";
+        return $this->_fetch_multiple("XWL_$class", $query); 
+    }
+
+    function fetch_object($class, $id)
+    {
+        // fetch single object
+        $query = "select * from $class where id='$id'";
+        return $this->_fetch_single("XWL_$class", $query);
+    }
+
     // auth functions
     function fetch_user($userid)
     {
         // we don't use the generic fetch for security sensitive functions
         $result = $this->_db->getRow("select * from user where userid='$userid'", DB_FETCHMODE_ASSOC);
-        if (DB::isError($result)) return false;
+        if (DB::isError($result) || !$result) return false;
 
         $user = new XWL_user;
         $user->load_SQL($result);
@@ -187,25 +204,11 @@ function xwl_db_fetch_column_by_id($table, $column)
     return $result;
 }
 
-function xwl_db_fetch_type($type)
-{
-    global $xwl_db;
-
-    return $xwl_db->getAll("select * from $type order by id", DB_FETCHMODE_ASSOC);
-}
-
 function xwl_db_fetch_schema($type)
 {
     global $xwl_db;
 
     return $xwl_db->getAll("select distinct property,datatype,required from schema where object='$type'", DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_fetch_object($type, $id)
-{
-    global $xwl_db;
-
-    return $xwl_db->getRow("select * from $type where id='$id'", DB_FETCHMODE_ASSOC);
 }
 
 function xwl_db_delete_object($type, $id)
