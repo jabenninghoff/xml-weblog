@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.5 2002/10/22 22:13:51 loki Exp $
+// $Id: admin.xml.php,v 1.6 2002/10/23 18:37:11 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -92,6 +92,13 @@ function mode_create() {
     global $object,$type,$property,$display,$object_table;
 
     echo "    <admin>\n";
+/* test code
+echo "<title> ";
+foreach ($_POST as $key => $post ) {
+echo "POST['$key'] = $post ";
+}
+echo "</title>\n";
+*/
     echo "      <title>", ucfirst($type."s"), "</title>\n";
     admin_menu($object);
     foreach ($object_table as $obj) {
