@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.26 2003/04/17 18:18:46 loki Exp $
+-- $Id: sample-values.sql,v 1.27 2003/04/23 05:38:10 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -47,7 +47,7 @@ INSERT INTO block VALUES (5,'left',1,5,'sysblock','','admin','en');
 
 INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
 
-INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','images/xml-weblog-logo.png','xml-weblog sample site','<p class=\"zero\"><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br class=\"br\"/>Comments are owned by the Poster. The Rest &#169; 2002-2003 xml-weblog.org','<p>\r\n<a class=\"img\" href=\"http://httpd.apache.org\"><img src=\"images/apache_pb.png\" alt=\"Powered by Apache\"/></a>\r\n<a class=\"img\" href=\"http://www.mysql.com\"><img src=\"images/mysql_pb.png\" alt=\"Powered by MySQL\"/></a>\r\n<a class=\"img\" href=\"http://www.php.net\"><img src=\"images/php_pb.png\" alt=\"Powered by PHP\"/></a>\r\n<code include=\"validxml.php\"/>\r\n<a class=\"img\" href=\"http://jigsaw.w3.org/css-validator/\"><img src=\"images/valid-css.png\" alt=\"Valid CSS!\"/></a>\r\n</p>','en');
+INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','images/xml-weblog-logo.png','xml-weblog sample site','<p class=\"zero\"><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br class=\"br\"/>Comments are owned by the Poster. The Rest &#169; 2002-2003 xml-weblog.org','<p>\r\n<a class=\"img\" href=\"http://httpd.apache.org\"><img src=\"images/apache_pb.png\" alt=\"Powered by Apache\"/></a>\r\n<a class=\"img\" href=\"http://www.mysql.com\"><img src=\"images/mysql_pb.png\" alt=\"Powered by MySQL\"/></a>\r\n<a class=\"img\" href=\"http://www.php.net\"><img src=\"images/php_pb.png\" alt=\"Powered by PHP\"/></a>\r\n<code include=\"validxml.php\"/>\r\n<a class=\"img\" href=\"http://jigsaw.w3.org/css-validator/\"><img src=\"images/valid-css.png\" alt=\"Valid CSS\"/></a>\r\n</p>','en');
 
 INSERT INTO topic VALUES (1,'No Topic','No topic.','wl_icons/blank.png');
 INSERT INTO topic VALUES (2,'Announcements','Site Information and Announcements.','wl_icons/announce.png');
