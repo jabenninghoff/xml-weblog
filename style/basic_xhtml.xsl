@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.6 2002/10/15 16:17:16 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.7 2002/10/16 19:39:27 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -61,7 +61,7 @@
   </xsl:for-each>
   <br/>
   <h3><xsl:value-of select="title"/></h3>
-  <xsl:copy-of select="leader"/>
+  <xsl:copy-of select="leader/*"/>
   <p>
     posted by <b><xsl:value-of select="author"/></b> on
     <xsl:value-of select="date"/><br/>
@@ -70,7 +70,7 @@
 
   <!-- main content not normally displayed here -->
   <p><i>main content:</i></p>
-  <xsl:copy-of select="content"/>
+  <xsl:copy-of select="content/*"/>
 </xsl:template>
 
 <xsl:template match="text()">
