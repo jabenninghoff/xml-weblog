@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.18 2002/11/24 22:13:24 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.19 2002/11/25 00:42:06 loki Exp $ -->
 
 <!--
    -
@@ -128,7 +128,7 @@
   <h3><xsl:value-of select="title"/></h3>
   <p>
     <span class="topic-icon">
-      <img src="{topic/icon}" alt="{topic/name}"/>
+      <a href="{topic/url}"><img src="{topic/icon}" alt="{topic/name}"/></a>
     </span>
   </p>
   <xsl:copy-of select="leader/*"/>
