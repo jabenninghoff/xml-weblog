@@ -1,10 +1,13 @@
--- $Id: xml-mysql.sql,v 1.1 2002/07/20 19:19:33 loki Exp $
+-- $Id: xml-mysql.sql,v 1.2 2002/07/23 07:06:08 loki Exp $
 --
 -- XML MySQL database definitions / initial values
 
 --
 -- test site "technomagik"
 --
+
+-- DROP only for test version
+DROP DATABASE xml_technomagik;
 
 CREATE DATABASE xml_technomagik;
 
@@ -21,3 +24,5 @@ CREATE TABLE articles (
   content mediumtext NOT NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM COMMENT='Article Objects';
+
+INSERT INTO articles VALUES (1,'Announcements','en','','Test Article','Loki','2002-07-20 15:00:00','<p>This is a test article. Normally the full content would be displayed here.</p>');
