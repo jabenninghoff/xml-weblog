@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.2 2003/04/17 17:49:13 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.3 2003/04/17 18:09:45 loki Exp $ -->
 
 <!--
    -
@@ -84,7 +84,7 @@
     posted by <b><xsl:value-of select="author"/></b> on
     <xsl:value-of select="date"/>
     <xsl:if test="not(@content='show') and normalize-space(content)">
-      <b><a href="{url}&amp;style=avantgo">Read More...</a></b>
+      <b><a href="avantgo_{url}">Read More...</a></b>
     </xsl:if>
   </p>
   <hr/>
