@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.7 2004/05/02 21:33:04 loki Exp $
+// $Id: index.php,v 1.8 2004/05/02 21:50:37 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -112,7 +112,34 @@ function xwl_xmlrpc($params) {
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
+
 // blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
+function blogger_getPost($params) {
+
+    global $xwl_db;
+
+    $postid = $params->getParam(1);
+    $id = $postid->scalarval();
+
+    // validate $postid
+    if (!XWL_integer::valid($id)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
+    }
+
+    if (!$xwl_article = $xwl_db->fetch_article($id)) {
+        // this doesn't work for some reason ???
+        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
+    }
+
+    $resp_struct = array(
+        "userid" => new XML_RPC_Value($xwl_article->property['user_name']->value),
+        "dateCreated" => new XML_RPC_Value($xwl_article->property['date']->iso8601_date(), "dateTime.iso8601"),
+        "content" => new XML_RPC_Value($xwl_article->property['leader']->value),
+        "postid" => new XML_RPC_Value($xwl_article->property['id']->value)
+    );
+
+    return new XML_RPC_Response(new XML_RPC_Value($resp_struct, "struct"));
+}
 
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
 function blogger_getRecentPosts($params) {
@@ -240,6 +267,7 @@ function metaWeblog_getRecentPosts($params) {
 }
 
 $dispatch_map = array(
+    "blogger.getPost" => array("function" => "xwl_xmlrpc"),
     "blogger.getRecentPosts" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getRecentPosts" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getCategories" => array("function" => "xwl_xmlrpc"),
