@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.10 2002/11/14 05:44:57 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.11 2002/11/14 23:42:13 loki Exp $ -->
 
 <!--
    -
@@ -38,6 +38,7 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+    omit-xml-declaration="yes"
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
     doctype-system="/DTD/xhtml1-strict.dtd"/>
 
@@ -45,12 +46,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
   <head>
     <title><xsl:value-of select="@title"/></title>
-    <link rel="stylesheet" href="style/xhtml_css2/default.css" type="text/css"/>
+    <link rel="stylesheet" href="style/xhtml_css2/basic.css" type="text/css"/>
     <xsl:if test="sidebar[@align='left']">
-      <link rel="stylesheet" href="style/xhtml_css2/sidebar_left.css" type="text/css"/>
+      <style type="text/css">@import "style/xhtml_css2/sidebar_left.css";</style>
     </xsl:if>
     <xsl:if test="sidebar[@align='right']">
-      <link rel="stylesheet" href="style/xhtml_css2/sidebar_right.css" type="text/css"/>
+      <style type="text/css">@import "style/xhtml_css2/sidebar_right.css";</style>
     </xsl:if>
   </head>
   <body>
@@ -167,7 +168,7 @@
 
 <xsl:template match="text()">
   <xsl:if test="normalize-space(.)">
-    <xsl:value-of select="."/><br/>
+    <xsl:value-of select="."/><br class="br"/>
   </xsl:if>
 </xsl:template>
 

@@ -1,0 +1,116 @@
+/* $Id: advanced.css,v 1.1 2002/11/14 23:42:13 loki Exp $ */
+
+/* advanced/CSS2 support - modern browsers */
+
+/* default settings */
+body {
+    font-family: helvetica, sans-serif;
+    font: 80% arial, sans-serif;
+    font: 80% verdana, sans-serif;
+}
+
+table {
+    font-family: helvetica, sans-serif;
+    font: 100% arial, sans-serif;
+    font: 100% verdana, sans-serif;
+}
+
+img {
+    border-width: 0;
+}
+
+h3 {
+    background-color: #D0D0D0;
+    padding: 4px;
+    font-size: 120%;
+}
+
+/* variants */
+a.img {
+    text-decoration: none;
+    word-spacing: 0.5em;
+}
+
+p.hrule {
+    border-bottom: 1px solid black;
+    clear: both;
+}
+
+p.break {
+    clear: both;
+}
+
+p.zero {
+    padding: 0;
+    margin: 0;
+}
+
+table.head {
+    border: solid gray;
+}
+
+/* main sections */
+div.header {
+    margin-bottom: 2ex;
+}
+
+div.footer {
+    clear: both;
+    text-align: center;
+    margin-top: 4ex;
+    border-top: 1px solid black;
+}
+
+/* subsections */
+div.masthead {
+    border: solid gray;
+    padding: 1em;
+}
+
+div.header-slogan {
+    float: left;
+}
+
+div.header-content{
+    float: right;
+}
+
+div.message {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+div.block-title {
+    border: 2px solid black;
+    padding: 4px;
+    background: #D0D0D0;
+}
+
+div.block-main {
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
+div.byline {
+    border: 1px solid black;
+    padding: 3px;
+    width: auto;
+}
+
+/* extras */
+div.center {
+    text-align: center;
+}
+
+span.small {
+    font-size: 75%;
+}
+
+span.topic-icon {
+    float: right;
+    margin-right: 1em;
+}
+
