@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.7 2002/10/16 19:39:27 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.8 2002/10/18 03:06:37 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -14,7 +14,7 @@
     <xsl:apply-templates select="header"/>
     <table width="100%">
       <tr>
-        <td>
+        <td valign="top">
           <xsl:apply-templates select="sidebar"/>
         </td>
         <td>
@@ -55,12 +55,12 @@
 </xsl:template>
 
 <xsl:template match="article">
+  <h3><xsl:value-of select="title"/></h3>
   <xsl:for-each select="id|topic|language">
     <xsl:value-of select="name()"/>: <xsl:value-of select="."/>
     <xsl:text> </xsl:text>
   </xsl:for-each>
   <br/>
-  <h3><xsl:value-of select="title"/></h3>
   <xsl:copy-of select="leader/*"/>
   <p>
     posted by <b><xsl:value-of select="author"/></b> on
@@ -71,6 +71,7 @@
   <!-- main content not normally displayed here -->
   <p><i>main content:</i></p>
   <xsl:copy-of select="content/*"/>
+  <hr/>
 </xsl:template>
 
 <xsl:template match="text()">
