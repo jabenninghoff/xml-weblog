@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.8 2002/10/18 22:00:12 loki Exp $
+// $Id: header.xml.php,v 1.9 2002/10/19 07:55:26 loki Exp $
 
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
@@ -35,7 +35,7 @@ for ($i=0; $message[$i]; $i++) {
     <message index="<?php echo $i; ?>">
       <?php echo $message[$i]['content'], "\n"; ?>
     </message>
-  </header>
 <?php
 }
 ?>
+  </header>
