@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.10 2002/10/24 23:01:04 loki Exp $
+// $Id: admin.xml.php,v 1.11 2002/10/26 05:19:52 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -10,19 +10,26 @@ $display = array(
     "boolean" => true,
     "date" => false,
     "image" => false,
-    "image-small" => false,
+    "image_small" => false,
     "int" => true,
     "lang" => true,
     "string" => true,
-    "string-XHTML" => true,
-    "XHTML-code" => false,
-    "XHTML-fragment" => false,
-    "XHTML-long" => false
+    "string_XHTML" => true,
+    "XHTML_code" => false,
+    "XHTML_fragment" => false,
+    "XHTML_long" => false
 );
+
+function form_error()
+{
+echo "      <content>\n";
+echo "        <p><b>Error: invalid post_type or post_mode</b></p>\n";
+echo "      </content>\n";
+}
 
 function admin_input($name, $type, $value, $mode) {
 
-    echo "          <td><b>", ucfirst($name), "</b></td>\n";
+    echo "              <td><b>", ucfirst($name), "</b></td>\n";
 
     if ($mode == "delete") {
         echo "<td>$value", '<input name="', $name, '" type="hidden" value="',
@@ -30,16 +37,18 @@ function admin_input($name, $type, $value, $mode) {
         return;
     }
 
-    echo "          <td>";
+    echo "              <td>";
     switch ($type) {
 
     case "ID":
-        echo $value ? $value : "<i>next_id</i>"; 
+        $id = $value ? $value : 0;
+        $value = $value ? $value : "<i>next_id</i>";
+        echo $value,'<input name="',$name,'" type="hidden" value="',$id,'"/>';
         break;
 
     case "URI":
     case "string":
-    case "string-XHTML":
+    case "string_XHTML":
         echo '<input name="',$name,'" type="text" maxlength="255" size="40" ',
             'value="', $value, '"/>';
         break;
@@ -64,9 +73,9 @@ function admin_input($name, $type, $value, $mode) {
             'value="', $value, '"/>';
         break;
 
-    case "XHTML-code":
-    case "XHTML-fragment":
-    case "XHTML-long":
+    case "XHTML_code":
+    case "XHTML_fragment":
+    case "XHTML_long":
         if (!$value) $value = "enter_text";
         echo '<textarea name="', $name, '" cols="40" rows="4">';
         echo "$value</textarea>";
@@ -74,6 +83,30 @@ function admin_input($name, $type, $value, $mode) {
 
     }
     echo "</td>\n";
+}
+
+
+function admin_form($object, $type, $schema, $mode)
+{
+echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" ",
+    "method=\"post\">\n";
+echo "          <table>\n";
+foreach ($schema as $s) {
+    echo "            <tr>\n";
+    admin_input($s['property'], $s['datatype'],
+        htmlspecialchars($object[$s['property']]), $mode);
+    echo "            </tr>\n";
+}
+echo "          </table>\n";
+echo "          <p>\n";
+echo '            <input name="mode" type="hidden" value="', $mode, '"/>',"\n";
+echo '            <input name="type" type="hidden" value="', $type, '"/>',"\n";
+if ($mode == "edit") $button = "Save";
+else $button = ucfirst($mode);
+echo '            <input name="submit" type="submit" value="', $button, '"/> ',
+    '<input name="cancel" type="submit" value="Cancel"/>', "\n";
+echo "          </p>\n";
+echo "        </form>\n";
 }
 
 function display_form()
@@ -119,34 +152,83 @@ if ($get_mode == "create") {
     echo "      <title>", ucfirst($get_mode), " ", ucfirst($get_type),
         "</title>\n";
 }
-echo "      <form action=\"{$_SERVER['PHP_SELF']}?type=$get_type\" ",
-    "method=\"post\">\n";
-echo "      <table>\n";
-foreach ($schema as $s) {
-    echo "        <tr>\n";
-    admin_input($s['property'], $s['datatype'],
-        htmlspecialchars($get_object[$s['property']]), $get_mode);
-    echo "        </tr>\n";
-}
-echo "      </table>\n";
-echo "      <p>\n";
-echo '        <input name="mode" type="hidden" value="', $get_mode, '"/>',"\n";
-echo '        <input name="type" type="hidden" value="', $get_type, '"/>',"\n";
-if ($get_mode == "edit") $button = "Save";
-else $button = ucfirst($get_mode);
-echo '        <input name="submit" type="submit" value="', $button, '"/> ',
-    '<input name="cancel" type="submit" value="Cancel"/>', "\n";
-echo "      </p>\n";
-echo "      </form>\n";
+echo "      <content>\n";
+admin_form($get_object, $get_type, $schema, $get_mode);
+echo "      </content>\n";
 }
 
 function process_form()
 {
-echo "<form><table>\n";
-foreach ($_POST as $key => $value) {
-    echo "<tr><td><b>$key</b></td><td>$value</td></tr>\n";
+global $db,$type,$display;
+
+$valid_mode = array("create", "edit", "delete");
+
+$post_mode = $_POST['mode'];
+$post_type = $_POST['type'];
+if (!in_array($post_mode, $valid_mode) || !in_array($post_type, $type)) {
+    form_error();
+    return;
 }
-echo "</table></form>\n";
+
+if ($post_mode == "delete") {
+    $id = valid_ID($_POST['id']);
+    $query = "DELETE from $post_type where id=$id";
+    $db->query($query);
+
+    echo "      <content>\n";
+    echo "        <pre>$query;</pre>\n";
+    echo "      </content>\n";
+    return;
+}
+
+$schema = $db->getAll("select distinct property,datatype,required from schema ".
+    "where object='$post_type'", DB_FETCHMODE_ASSOC);
+
+// valid-ize all data
+foreach ($schema as $s) {
+   $validate = "valid_".$s['datatype'];
+   $object[$s['property']] = $validate($_POST[$s['property']]); 
+}
+if ($post_mode == "create") $object['id'] = "0";
+
+// check for missing values
+$i = 0;
+foreach ($schema as $s) {
+   if ($object[$s['property']] == "" && $s['required']) {
+       $missing[$i++] = $s['property'];
+   }
+}
+
+// if missing values, prompt with form for resubmit.
+if ($i) {
+    echo "      <content>\n";
+    echo "        <p><b>please re-enter missing values:</b><i>";
+    foreach ($missing as $val) {
+        echo " $val";
+    }
+    echo "</i></p>\n";
+    admin_form($object, $post_type, $schema, $post_mode);
+    echo "      </content>\n";
+    return;
+}
+
+
+// add to table & display if not missing any required values
+$query = ($post_mode == "edit") ? "UPDATE $post_type SET" :
+    "INSERT INTO $post_type SET";
+
+foreach ($schema as $s) {
+    $query = $query." ".$s['property']."='".$object[$s['property']]."',";
+}
+$query = substr($query, 0, strlen($query)-1);
+$query = ($post_mode == "edit") ? $query." WHERE id='".$object['id']."'" :
+    $query;
+
+$db->query($query);
+
+echo "      <content>\n";
+echo "        <p>".htmlspecialchars($query).";</p>\n";
+echo "      </content>\n";
 }
 
 if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
