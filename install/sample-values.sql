@@ -1,10 +1,10 @@
--- $Id: sample-values.sql,v 1.27 2003/04/23 05:38:10 loki Exp $
+-- $Id: sample-values.sql,v 1.28 2003/10/22 21:44:36 loki Exp $
 --
 -- XML-weblog sample values
 --
 
 /*
- * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

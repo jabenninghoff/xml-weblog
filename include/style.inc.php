@@ -1,11 +1,11 @@
 <?php
-// $Id: style.inc.php,v 1.9 2003/05/14 22:44:44 loki Exp $
+// $Id: style.inc.php,v 1.10 2003/10/22 21:44:35 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // style/xml rendering module
 
 /*
- * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

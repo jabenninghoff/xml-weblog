@@ -1,9 +1,9 @@
-<!-- $Id: main.xsl,v 1.22 2003/10/21 22:31:11 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.23 2003/10/22 21:44:36 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
    -
-   - Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
+   - Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
    - All rights reserved.
    -
    - Redistribution and use in source and binary forms, with or without

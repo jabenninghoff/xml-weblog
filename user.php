@@ -1,11 +1,11 @@
 <?php
-// $Id: user.php,v 1.5 2003/06/09 19:13:32 loki Exp $
+// $Id: user.php,v 1.6 2003/10/22 21:44:35 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user configuration page
 
 /*
- * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
