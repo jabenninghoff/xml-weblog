@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.4 2002/10/17 05:45:33 loki Exp $
+// $Id: index.xml.php,v 1.5 2002/10/17 20:29:42 loki Exp $
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
 
@@ -10,6 +10,10 @@ if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
 
 // get site info 
 $site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
+
+// retrieve blocks
+$block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <!-- XML-weblog front page -->
