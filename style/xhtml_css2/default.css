@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.12 2002/11/14 04:55:07 loki Exp $ */
+/* $Id: default.css,v 1.13 2002/11/14 05:37:33 loki Exp $ */
 
 /* default settings */
 body {
@@ -84,7 +84,7 @@ div.block-main {
     border-left: 2px solid black;
     border-bottom: 2px solid black;
     padding: 4px;
-    margin-bottom: 1ex;
+    margin-bottom: 8px;
 }
 
 div.byline {
