@@ -1,5 +1,5 @@
 <?php
-// $Id: rss.php,v 1.1 2003/11/03 06:31:01 loki Exp $
+// $Id: rss.php,v 1.2 2004/04/30 18:14:59 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // avantgo front page renderer
@@ -51,5 +51,6 @@ ob_end_clean();
 $style = new XWL_filename;
 $style->set_value("rss");
 
+header("Content-type: application/rss+xml");
 xwl_style_render_page($xml, $style);
 ?>
