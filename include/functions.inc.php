@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.14 2002/11/01 17:58:49 loki Exp $
+// $Id: functions.inc.php,v 1.15 2002/11/01 22:08:07 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -203,25 +203,25 @@ function valid_string($str)
 
 function valid_string_XHTML($str)
 {
-    $tags = "<a><b><i><s><u>";
+    $tags = "<a><b><i><s><u><span>";
     return addslashes(strip_tags(safe_gpc_stripslashes($str),$tags));
 }
 
 function valid_XHTML_code($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/><img><p><code>";
+    $tags = "<a><b><i><s><u><span><ul><li><br><br/><img><p><code>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_fragment($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/><img>";
+    $tags = "<a><b><i><s><u><span><ul><li><br><br/><img>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_long($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/><img><p>";
+    $tags = "<a><b><i><s><u><span><ul><li><br><br/><img><p>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 ?>
