@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.13 2003/04/22 21:50:52 loki Exp $
+// $Id: sidebar.xml.php,v 1.14 2003/04/23 04:35:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -70,7 +70,7 @@ while ($xwl_block[$i]) {
             echo "    </block>\n";
         } else {
             // run sysblock code
-            include "block/".$xwl_block[$i]->property['sysblock']->display_XML().".php";
+            //include "block/".$xwl_block[$i]->property['sysblock']->display_XML().".php";
         }
         $i++;
     }

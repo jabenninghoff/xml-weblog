@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.13 2003/04/21 20:54:12 loki Exp $
+// $Id: article.xml.php,v 1.14 2003/04/23 04:35:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,36 +36,47 @@
  *
  */
 
+require_once "XWL.php";
+require_once "include/site.php";
 require_once "include/article.inc.php";
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 }
 
-// build variables
-$site = xwl_db_fetch_site(base_url());
-$block = xwl_db_fetch_block();
+XWL::xml_declaration();
 
+echo "<page lang=\"en\" title=\"{$xwl_site_value_xml['name']}\">\n\n";
+
+require "xml/header.xml.php";
+echo "\n";
+
+require "xml/sidebar.xml.php";
+echo "\n";
+
+echo "  <!-- main: main section of document. index page contains articles. -->\n";
+echo "    <main>\n";
+
+/*
 $id = xwl_valid_ID($_GET['id']);
 $topic = xwl_db_fetch_topic();
 $article = xwl_db_fetch_article_single($id);
+*/
 
-xml_declaration();
+$xwl_article = $xwl_db->fetch_article(1);
+
+// convert to _xml values for convenience
+foreach ($xwl_article->property as $key => $value) {
+    $xwl_article_value_xml[$key] = $value->display_XML();
+}
+
+xwl_display_article($xwl_article_value_xml, 0, "show");
+
+echo "    </main>\n";
+
+require "xml/footer.xml.php";
+echo "\n";
+
+echo "</page>\n";
 ?>
-<page lang="en" title="<?php echo $site['name']; ?>">
-
-<?php require "xml/header.xml.php"; ?>
-
-<?php require "xml/sidebar.xml.php"; ?>
-
-  <!-- main: main section of document. index page contains articles. -->
-  <main>
-<?php display_article($article, 0, "show", $topic); ?>
-  </main>
-
-<?php require "xml/footer.xml.php"; ?>
-
-</page>

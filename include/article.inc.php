@@ -1,5 +1,5 @@
 <?php
-// $Id: article.inc.php,v 1.6 2003/04/21 20:54:12 loki Exp $
+// $Id: article.inc.php,v 1.7 2003/04/23 04:35:11 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // display article on index.xml.php or article.xml.php page
@@ -38,35 +38,35 @@
  *
  */
 
-function display_article($article, $index, $content, $topic) {
-    echo "    <article index=\"$index\" content=\"$content\">\n";
-?>
+function xwl_display_article($article, $index, $content) {
+echo <<< END
+    <article index="$index" content="$content">
       <!-- metadata -->
-      <id><?php echo $article['id']; ?></id>
+      <id>{$article['id']}</id>
       <topic>
-        <name><?php echo $topic[($article['topic'])-1]['name']; ?></name>
-        <icon><?php echo $topic[($article['topic'])-1]['icon']; ?></icon>
-        <url>topic.php?id=<?php echo $article['topic']; ?></url>
+        <name>topic_name</name>
+        <icon>topic_icon</icon>
+        <url>topic_url</url>
       </topic>
-      <language><?php echo $article['language']; ?></language>
-      <url>article.php?id=<?php echo $article['id']; ?></url>
+      <language>{$article['language']}</language>
+      <url>article.php?id={$article['id']}</url>
 
       <!-- "header" info -->
-      <title><?php echo $article['title']; ?></title>
-      <author><?php echo $article['author']; ?></author>
-      <date><?php echo $article['date']; ?></date>
+      <title>{$article['title']}</title>
+      <author>user_name</author>
+      <date>{$article['date']}</date>
 
       <!-- actual content -->
       <leader>
-<?php echo trim($article['leader']), "\n"; ?>
+{$article['leader']}
       </leader>
       <content>
-<?php echo trim($article['content']), "\n"; ?>
+{$article['content']}
       </content>
 
       <!-- comments (not yet implemented) -->
     </article>
-<?php
-}
 
+END;
+}
 ?>
