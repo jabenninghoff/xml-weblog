@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.5 2002/11/01 18:47:15 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.6 2002/11/01 22:43:40 loki Exp $ -->
 
 <!--
    -
@@ -81,17 +81,16 @@
   <xsl:if test="banner">
     <div class="center"><p><xsl:copy-of select="banner/text()|banner/*"/></p></div>
   </xsl:if>
-  <table class="head" width="100%" cellpadding="10">
-    <tr>
-       <td>
-         <p><a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a><br/>
-         <xsl:copy-of select="slogan/text()|slogan/*"/></p>
-       </td>
-       <td align="right" valign="bottom">
-         <xsl:apply-templates select="content"/>
-       </td>
-    </tr>
-  </table>
+  <div class="masthead">
+    <a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a>
+    <div class="header-slogan">
+      <p><xsl:copy-of select="slogan/text()|slogan/*"/></p>
+    </div>
+    <div class="header-content">
+      <xsl:apply-templates select="content"/>
+    </div>
+    <p/>
+  </div>
   <xsl:apply-templates select="message"/>
   <xsl:if test="not(message)">
     <br/>

@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.5 2002/11/01 17:24:28 loki Exp $ */
+/* $Id: default.css,v 1.6 2002/11/01 22:43:40 loki Exp $ */
 
 /* default settings */
 body {
@@ -44,12 +44,22 @@ div.footer {
 }
 
 /* subsections */
+div.masthead {
+    border: solid gray;
+    padding: 1em;
+}
+
+div.header-slogan {
+    float: left;
+}
+
+div.header-content{
+    float: right;
+}
+
 div.message {
     text-align: center;
     border-bottom: 1px solid black;
-}
-
-div.byline {
 }
 
 /* extras */
