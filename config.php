@@ -1,5 +1,5 @@
 <?php
-// $Id: config.inc.php,v 1.15 2004/09/23 18:53:21 loki Exp $
+// $Id: config.php,v 1.1 2004/09/23 18:54:29 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // configuration variables
