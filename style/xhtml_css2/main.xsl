@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.13 2002/11/15 15:41:14 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.14 2002/11/15 18:08:24 loki Exp $ -->
 
 <!--
    -
@@ -91,14 +91,17 @@
     <div class="center"><p><xsl:copy-of select="banner/text()|banner/*"/></p></div>
   </xsl:if>
   <div class="masthead">
-    <a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a>
+    <div class="header-logo">
+      <p class="zero">
+        <a class="img" href="index.php"><img src="{logo}" alt="{name}"/></a>
+      </p>
+    </div>
     <div class="header-slogan">
       <p class="zero"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
     </div>
     <div class="header-content">
       <xsl:apply-templates select="content"/>
     </div>
-    <p class="break"/>
   </div>
   <xsl:apply-templates select="message"/>
 </xsl:template>

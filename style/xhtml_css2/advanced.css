@@ -1,4 +1,4 @@
-/* $Id: advanced.css,v 1.2 2002/11/15 15:41:14 loki Exp $ */
+/* $Id: advanced.css,v 1.3 2002/11/15 18:08:24 loki Exp $ */
 
 /* advanced/CSS2 support - modern browsers */
 
@@ -36,10 +36,6 @@ a.img {
     word-spacing: 0.5em;
 }
 
-p.break {
-    clear: both;
-}
-
 p.zero {
     padding: 0;
     margin: 0;
@@ -61,6 +57,7 @@ div.footer {
 div.masthead {
     border: 3px solid gray;
     padding: 1em;
+    padding-bottom: 4ex;
 }
 
 div.header-slogan {
