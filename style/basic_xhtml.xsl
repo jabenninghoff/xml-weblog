@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.9 2002/10/18 03:28:19 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.10 2002/10/18 22:00:12 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -11,6 +11,8 @@
     <title><xsl:value-of select="@title"/></title>
     <style type="text/css">
       p.center {text-align: center}
+      img {border-width: 0 }
+      table.head {border: solid gray}
     </style>
   </head>
   <body>
@@ -32,7 +34,7 @@
 
 <xsl:template match="header">
   <p class="center"><xsl:copy-of select="banner/text()|banner/*"/></p>
-  <table width="100%">
+  <table class="head" width="100%">
     <tr>
        <td><a href="index.php"><img src="{logo}" alt="{name}"/></a></td>
        <td>
