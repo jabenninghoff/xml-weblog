@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.7 2003/10/22 21:44:36 loki Exp $
+// $Id: datatype.php,v 1.8 2003/11/01 02:19:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -75,6 +75,14 @@ class XWL_datatype
     {
         return trim($this->HTML_safe_value());
     }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            $val = $this->value ? $this->HTML_safe_value() : "";
+            return "$val<input name=\"$name\" type=\"hidden\" value=\"$val\"/>";
+        }
+    }
 }
 
 class XWL_integer extends XWL_datatype
@@ -86,16 +94,36 @@ class XWL_integer extends XWL_datatype
     function set_value($input)
     {
         // positive integers only
-        if (!is_numeric($input) || $input < 0 || $input > _XWL_UNSIGNED_INT_MAX) return false;
+        if (!is_numeric($input) || $input <= 0 || $input > _XWL_UNSIGNED_INT_MAX) return false;
 
         $this->value = $input;
         return true;
+    }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value ? $this->HTML_safe_value() : "";
+        return "<input name=\"$name\" type=\"text\" maxlength=\"10\" size=\"10\" value=\"$val\"/>";
     }
 }
 
 class XWL_ID extends XWL_integer
 {
     var $sql_type = "int unsigned NOT NULL auto_increment";
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+
+        $id = $this->value ? $this->value : 0;
+        $val = $this->value ? $this->value : "<i>next_id</i>";
+        return "$val<input name=\"$name\" type=\"hidden\" value=\"$id\"/>";
+    }
 }
 
 class XWL_key extends XWL_integer
@@ -128,6 +156,15 @@ class XWL_string extends XWL_datatype
     function valid($input)
     {
         return XWL_string::_valid_string($input);
+    }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value ? $this->HTML_safe_value() : "";
+        return "<input name=\"$name\" type=\"text\" maxlength=\"255\" size=\"40\" value=\"$val\"/>";
     }
 }
 
@@ -190,6 +227,17 @@ class XWL_lang extends XWL_string
 
         $this->value = $input;
         return true;
+    }
+
+    function admin_input($name, $mode)
+    {
+        global $xwl_default_lang;
+
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value ? $this->HTML_safe_value() : $xwl_default_lang;
+        return "<input name=\"$name\" type=\"text\" maxlength=\"255\" size=\"5\" value=\"$val\"/>";
     }
 }
 
@@ -269,6 +317,16 @@ class XWL_boolean extends XWL_datatype
         // convert to a human-readable string
         return $this->value ? "true" : "false";
     }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+
+        if ($this->value) $checked=" checked=\"checked\"";
+        return "<input name=\"$name\" type=\"checkbox\"$checked />";
+    }
 }
 
 class XWL_date extends XWL_datatype
@@ -291,6 +349,15 @@ class XWL_date extends XWL_datatype
         $this->value = date("Y-m-d H:i:s",$timestamp);
         return true;
     }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value != "0000-00-00 00:00:00" ? $this->HTML_safe_value() : "";
+        return "<input name=\"$name\" type=\"text\" maxlength=\"19\" size=\"20\" value=\"$val\"/>";
+    }
 }
 
 class XWL_imagedata extends XWL_datatype
@@ -310,9 +377,16 @@ class XWL_imagedata extends XWL_datatype
         return true;
     }
 
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        return "<input name=\"$name\" type=\"file\"/>";
+    }
 }
 
-class XWL_imagedata_small extends XWL_datatype
+class XWL_imagedata_small extends XWL_imagedata
 {
     var $value;
     var $sql_type = "blob NOT NULL";
@@ -358,6 +432,15 @@ class XWL_XHTML extends XWL_datatype
     {
         // should already be valid XML
         return trim($this->value);
+    }
+
+    function admin_input($name, $mode)
+    {
+        if ($mode == "delete") {
+            return parent::admin_input($name, $mode);
+        }
+        $val = $this->value ? $this->HTML_safe_value() : "%enter_text%";
+        return "<textarea name=\"$name\" cols=\"48\" rows=\"8\">$val</textarea>";
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.6 2003/10/22 21:44:36 loki Exp $
+// $Id: object.php,v 1.7 2003/11/01 02:19:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -40,7 +40,7 @@
 
 // object class list
 $xwl_object_class = array(
-    "site", "message", "topic", "block", "article", "user", "image", "icon"
+    "article", "block", "icon", "image", "message", "site", "topic", "user"
 );
 
 // object definitions
@@ -57,6 +57,34 @@ class XWL_object
         $this->required[$name] = $required;
     }
 
+    function _admin_input($prop, $mode) {
+        $input  = "            <tr>\n";
+        $input .= "              <td><b>$prop</b></td>\n";
+        $input .= "              <td>";
+        $input .= $this->property[$prop]->admin_input($prop, $mode);
+        $input .= "</td>\n";
+        $input .= "            </tr>\n";
+
+        return $input;
+    }
+
+    function _admin_input_select($name, $option, $value, $default)
+    {
+        if (!in_array($default, $option)) $default = $option[0];
+        $input  = "            <tr>\n";
+        $input .= "              <td><b>$name</b></td>\n";
+        $input .= "              <td><select name=\"$name\">\n";
+        for ($i=0; $option[$i]; $i++) {
+            $sel = $i == $default ? "selected=\"selected\" " : "";
+            $input .= "                <option ".$sel." value=\"$value[$i]\">$option[$i]</option>\n";
+        }
+        $input .= "              </select></td>\n";
+        $input .= "            </tr>\n";
+
+        return $input;
+    }
+
+    // public functions
     function XWL_object()
     {
         // _add_property($name, $datatype, $required)
@@ -80,6 +108,33 @@ class XWL_object
         return $xml_value;
     }
 
+    function admin_display($prop)
+    {
+        return $this->property[$prop]->admin_display;
+    }
+
+    function admin_form($action, $mode, $class)
+    {
+        $form = "        <form action=\"$action\" method=\"post\" enctype=\"multipart/form-data\">\n";
+
+        $form .= "          <table>\n";
+        foreach ($this->property as $key => $value) {
+            $form .= $this->_admin_input($key, $mode);
+        }
+        $form .= "          </table>\n";
+
+        $form .= "          <p>\n";
+        $form .= "            <input name=\"mode\" type=\"hidden\" value=\"$mode\"/>\n";
+        $form .= "            <input name=\"type\" type=\"hidden\" value=\"$class\"/>\n";
+        if ($mode == "edit") $button = "Save";
+        else $button = ucfirst($mode);
+        $form .= "            <input name=\"submit\" type=\"submit\" value=\"$button\"/><input name=\"cancel\" type=\"submit\" value=\"Cancel\"/>\n";
+        $form .= "          </p>\n";
+
+        $form .= "        </form>\n";
+
+        return $form;
+    }
 }
 
 class XWL_site extends XWL_object
@@ -141,10 +196,23 @@ class XWL_block extends XWL_object
         $this->_add_property("sysblock", "XWL_filename", false);
         $this->_add_property("language", "XWL_lang", true);
     }
+
+    function _admin_input($prop, $mode) {
+        if ($prop == "sidebar_align" && $mode != "delete") {
+            $opt = array("left", "right");
+            return $this->_admin_input_select($prop, $opt, $opt, $this->property[$prop]->value);
+        } else {
+            return parent::_admin_input($prop, $mode);
+        }
+    }
 }
 
 class XWL_article extends XWL_object
 {
+    var $linked_properties = array(
+        "topic_name", "topic_icon", "user_name"
+    );
+
     function XWL_article()
     {
         // _add_property($name, $datatype, $required)
@@ -164,6 +232,19 @@ class XWL_article extends XWL_object
         $this->_add_property("topic_icon", "XWL_URI", false);
         $this->_add_property("user_name", "XWL_string", false);
     }
+
+    function admin_display($prop)
+    {
+        return in_array($prop,$this->linked_properties) ? false : $this->property[$prop]->admin_display;
+    }
+
+    function _admin_input($prop, $mode) {
+        if (in_array($prop, $this->linked_properties)) {
+            return;
+        } else {
+            return parent::_admin_input($prop, $mode);
+        }
+    }
 }
 
 class XWL_user extends XWL_object
@@ -176,6 +257,21 @@ class XWL_user extends XWL_object
         $this->_add_property("password", "XWL_string", true);
         $this->_add_property("admin", "XWL_boolean", true);
         $this->_add_property("block", "XWL_XHTML_fragment", false);
+    }
+
+    function _admin_input($prop, $mode) {
+        if ($prop == "password") {
+            $input = "            <tr>\n";
+            $input .= "              <td><b>Password</b></td>\n";
+            $input .= "              <td>";
+            $input .= '<input name="password" type="password" maxlength="255" size="40"/>';
+            $input .= "</td>\n";
+            $input .= "            </tr>\n";
+
+            return $input;
+        } else {
+            return parent::_admin_input($prop, $mode);
+        }
     }
 }
 
@@ -192,6 +288,14 @@ class XWL_image extends XWL_object
         $this->_add_property("width", "XWL_integer", false);
         $this->_add_property("height", "XWL_integer", false);
     }
+
+    function _admin_input($prop, $mode) {
+        if (in_array($prop, array("mime","width","height")) && $mode != "delete") {
+            return "<tr><td>$prop</td><td><i>automatically generated</i></td></tr>";
+        } else {
+            return parent::_admin_input($prop, $mode);
+        }
+    }
 }
 
 class XWL_icon extends XWL_object
@@ -205,6 +309,14 @@ class XWL_icon extends XWL_object
         $this->_add_property("mime", "XWL_string", true);
         $this->_add_property("width", "XWL_integer", false);
         $this->_add_property("height", "XWL_integer", false);
+    }
+
+    function _admin_input($prop, $mode) {
+        if (in_array($prop, array("mime","width","height")) && $mode != "delete") {
+            return "<tr><td>$prop</td><td><i>automatically generated</i></td></tr>";
+        } else {
+            return parent::_admin_input($prop, $mode);
+        }
     }
 }
 ?>
