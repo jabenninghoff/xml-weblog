@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.8 2003/06/09 19:13:32 loki Exp $
+// $Id: topic.xml.php,v 1.9 2003/10/20 19:23:55 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -49,7 +49,7 @@ if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
 
 if (basename($_SERVER['PHP_SELF']) == "topic.xml.php") {
     // standalone
-    header('Content-Type: text/plain');
+    header('Content-Type: text/xml');
 }
 
 XWL::xml_declaration();

@@ -1,5 +1,5 @@
 <?php
-// $Id: user.xml.php,v 1.5 2003/06/09 19:13:32 loki Exp $
+// $Id: user.xml.php,v 1.6 2003/10/20 19:23:55 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -61,14 +61,12 @@ echo "\n";
 require "xml/sidebar.xml.php";
 echo "\n";
 
-echo <<< END
-  <!-- main: main section of document. index page contains articles. -->
-  <main>
-<p>Not implemented.</p>
-  </main>
+echo "  <!-- main: main section of document. index page contains articles. -->\n";
+echo "    <main>\n";
 
+echo "<p>Not implemented.</p>\n";
 
-END;
+echo "    </main>\n";
 
 require "xml/footer.xml.php";
 echo "\n";

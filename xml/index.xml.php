@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.22 2003/06/09 19:13:32 loki Exp $
+// $Id: index.xml.php,v 1.23 2003/10/20 19:23:55 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -52,15 +52,6 @@ if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     header('Content-Type: text/xml');
 }
 
-// pre-fetch articles
-$start = new XWL_datenum;
-$start->set_value($_GET['start']);
-
-$end = new XWL_datenum;
-$end->set_value($_GET['end']);
-
-$xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit'], $start->value, $end->value);
-
 XWL::xml_declaration();
 
 echo "<page lang=\"en\" title=\"{$xwl_site_value_xml['name']}\">\n\n";
@@ -75,6 +66,14 @@ echo "  <!-- main: main section of document. index page contains articles. -->\n
 echo "    <main>\n";
 
 // display articles
+$start = new XWL_datenum;
+$start->set_value($_GET['start']);
+
+$end = new XWL_datenum;
+$end->set_value($_GET['end']);
+
+$xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit'], $start->value, $end->value);
+
 $i = 0;
 while ($xwl_article[$i]) {
     $xwl_article_value_xml = $xwl_article[$i]->XML_values();
