@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.2 2003/04/22 17:37:57 loki Exp $
+// $Id: XWL.php,v 1.3 2003/04/22 19:25:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -40,6 +40,7 @@
 
 // XWL modules
 require_once "XWL/datatype.php";
+require_once "XWL/object.php";
 
 // core functions
 class XWL
@@ -127,4 +128,16 @@ foreach ($test_values as $key => $test) {
     $object = new $key;
     if ($object->set_value($test)) echo $object->HTML_safe_value(), " | ", $object->SQL_safe_value(), "\n";
     else echo "bad $key!\n";
+}
+echo "\n";
+
+foreach ($xwl_object_class as $test) {
+    $test = "XWL_$test";
+    echo "new $test:\n";
+    $object = new $test;
+    foreach ($object->property as $key => $property) {
+        $req = $object->required[$key] ? "true" : "false";
+        echo "    $key: ", get_class($property), " ($req)\n";
+    }
+    echo "\n";
 }

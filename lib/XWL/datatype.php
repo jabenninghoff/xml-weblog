@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.1 2003/04/22 17:37:57 loki Exp $
+// $Id: datatype.php,v 1.2 2003/04/22 19:25:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -260,7 +260,7 @@ class XWL_date extends XWL_datatype
     }
 }
 
-class XWL_image extends XWL_datatype
+class XWL_imagedata extends XWL_datatype
 {
     var $value;
     var $sql_type = "mediumblob NOT NULL";
@@ -279,7 +279,7 @@ class XWL_image extends XWL_datatype
 
 }
 
-class XWL_image_small extends XWL_datatype
+class XWL_imagedata_small extends XWL_datatype
 {
     var $value;
     var $sql_type = "blob NOT NULL";
