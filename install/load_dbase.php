@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.6 2002/10/26 05:19:52 loki Exp $
+// $Id: load_dbase.php,v 1.7 2002/10/27 07:46:19 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -32,6 +32,10 @@ $type = array(
     "XHTML_long" => "mediumtext NOT NULL"
 );
 
+// image types
+$mime_type = array("", "image/gif", "image/jpeg", "image/png",
+    "application/x-shockwave-flash", "PSD", "image/bmp", "image/tiff",
+    "image/tiff", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF"); 
 
 // table definitions
 
@@ -101,6 +105,7 @@ $image = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
     "src" => array("image", 1),
+    "type" => array("string", 1),
     "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
@@ -110,6 +115,7 @@ $icon = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
     "src" => array("image_small", 1),
+    "type" => array("string", 1),
     "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
@@ -163,7 +169,10 @@ foreach ($list as $name) {
     echo "loading image: $name...";
     $base = basename($name);
     $load_image = AddSlashes(fread(fopen($name, "r"), filesize($name)));
-    $db->query("insert into image values (0,'$base','$load_image','logo','','')");
+    $size = getimagesize($name);
+    $db->query("insert into image values (0,'$base','$load_image',
+        '{$mime_type[$size[2]]}','',$size[0],$size[1])");
+       
     echo "loaded.\n";
 }
 ?>
