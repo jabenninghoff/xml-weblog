@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.6 2003/04/16 21:36:46 loki Exp $
+// $Id: admin.php,v 1.1 2003/04/16 21:36:46 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -38,32 +38,13 @@
 require_once "include/auth.inc.php";
 
 // only display for authenticated users
-if (user_authenticated()) {
-
-    $user = fetch_auth_user();
-
-    echo "<block>\n";
-    echo "  <title>", ucfirst($user[userid]), "'s Menu</title>\n";
-    echo "  <content>\n";
-
-    if ($user['block']) {
-        echo $user['block'], "\n";
-    } else {
-        echo "<a href=\"user.php\">customize</a> your personal menu\n";
-    }
-
-    echo "  </content>\n";
-    echo "</block>\n";
-} else {
-    // display logon block
-    $page = basename($_SERVER['PHP_SELF']);
-
-    echo <<< END
+if (user_authenticated() && user_authorized("admin")) {
+echo <<< END
 <block>
-  <title>Access</title>
+  <title>Admin Menu</title>
   <content>
-    <a href="$page?login=1">Login</a><br class="br"/><br class="br"/>
-    If you do not have an account, you can <a href="user.php?mode=new">create</a> one.
+    <a href="admin.php">Administration</a><br class="br"/><br class="br"/>
+    Pending Articles: 0
   </content>
 </block>
 END;
