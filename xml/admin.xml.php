@@ -1,9 +1,9 @@
 <?php
-// $Id: admin.xml.php,v 1.13 2002/10/27 17:25:54 loki Exp $
+// $Id: admin.xml.php,v 1.14 2002/10/28 17:23:13 loki Exp $
 
-require_once "include/config.inc.php";
-require_once "include/functions.inc.php";
 require_once "include/auth.inc.php";
+require_once "include/db.inc.php";
+require_once "include/functions.inc.php";
 
 $display = array(
     "ID" => true,
@@ -23,9 +23,9 @@ $display = array(
 
 function form_error()
 {
-echo "      <content>\n";
-echo "        <p><b>Error: invalid post_type or post_mode</b></p>\n";
-echo "      </content>\n";
+    echo "      <content>\n";
+    echo "        <p><b>Error: invalid post_type or post_mode</b></p>\n";
+    echo "      </content>\n";
 }
 
 function admin_input($name, $type, $value, $mode) {
@@ -133,7 +133,7 @@ echo "          </table>\n";
 
 function display_form()
 {
-global $db,$type,$display;
+global $type,$display;
 
 // display variables
 $get_mode = $_GET['mode'];
@@ -144,13 +144,9 @@ if (!in_array($get_type,$type)) $get_type = $type[0];
 
 $get_id = valid_ID($_GET['id']);
 
-$schema = $db->getAll("select distinct property,datatype from schema where ".
-    "object='$get_type'", DB_FETCHMODE_ASSOC);
-
+$schema = fetch_schema($get_type);
 $object = fetch_type($get_type);
-
-$get_object = $db->getRow("select * from $get_type where id='$get_id'",
-    DB_FETCHMODE_ASSOC);
+$get_object = fetch_object($get_type, $get_id);
 
 if ($get_mode == "create") {
     echo "      <title>", ucfirst($get_type."s"), "</title>\n";
@@ -181,7 +177,7 @@ echo "      </content>\n";
 
 function process_form()
 {
-global $db,$type,$display;
+global $type,$display;
 
 $valid_mode = array("create", "edit", "delete");
 
@@ -194,15 +190,15 @@ if (!in_array($post_mode, $valid_mode) || !in_array($post_type, $type)) {
 
 if ($post_mode == "delete") {
     $id = valid_ID($_POST['id']);
-    $query = "DELETE from $post_type where id=$id";
-    $db->query($query);
-
-    echo "      <title>", ucfirst($post_type), " deleted</title>\n";
+    if (delete_object($post_type, $id)) {
+        echo "      <title>", ucfirst($post_type), " deleted</title>\n";
+    } else {
+        echo "      <title>Error deleting $post_type id=$id!</title>\n";
+    }
     return;
 }
 
-$schema = $db->getAll("select distinct property,datatype,required from schema ".
-    "where object='$post_type'", DB_FETCHMODE_ASSOC);
+$schema = fetch_schema($post_type);
 
 // valid-ize all data
 foreach ($schema as $s) {
@@ -245,20 +241,18 @@ if ($i) {
 
 
 // add to table & display if not missing any required values
-$query = ($post_mode == "edit") ? "UPDATE $post_type SET" :
-    "INSERT INTO $post_type SET";
-
-foreach ($schema as $s) {
-    $query = $query." ".$s['property']."='".$object[$s['property']]."',";
+if ($post_mode == "edit") {
+    $success = update_object($post_type, $object);
+} else {
+    $success = insert_object($post_type, $object);
 }
-$query = substr($query, 0, strlen($query)-1);
-$query = ($post_mode == "edit") ? $query." WHERE id='".$object['id']."'" :
-    $query;
-
-$db->query($query);
 
 $action = $post_mode == "edit" ? "updated" : "created";
-echo "      <title>", ucfirst($post_type), " $action</title>\n";
+if ($success) {
+    echo "      <title>", ucfirst($post_type), " $action</title>\n";
+} else {
+    echo "      <title>Error: ", ucfirst($post_type), " not $action</title>\n";
+}
 
 echo "      <content>\n";
 admin_results($object, $schema);
@@ -268,6 +262,7 @@ echo "      </content>\n";
 if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
     // standalone
     header('Content-Type: text/xml');
+
     // check authentication
     if (!user_authenticated() || !user_authorized("admin")) {
         unauthorized("private");
@@ -276,14 +271,14 @@ if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
 }
 
 // site variables
-$site = fetch_site(1);
+$site = fetch_site(base_url());
 $block = fetch_block();
 
 // admin.php variables
-$type = $db->getCol("select distinct object from schema group by object");
+$type = fetch_table_list();
 
+xml_declaration();
 ?>
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <?php echo "<!-- {$req_object['id']} -->\n"; ?>
 <page lang="en" title="<?php echo $site['name']; ?>">
 
