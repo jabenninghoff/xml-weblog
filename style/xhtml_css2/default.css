@@ -1,5 +1,6 @@
-/* $Id: default.css,v 1.2 2002/10/31 09:25:13 loki Exp $ */
+/* $Id: default.css,v 1.3 2002/11/01 15:27:23 loki Exp $ */
 
+/* default settings */
 body {
     font-family: helvetica, sans-serif;
     font: 10pt arial, sans-serif;
@@ -12,6 +13,47 @@ table {
     font: 10pt verdana, sans-serif;
 }
 
+img {
+    border-width: 0;
+}
+
+/* variants */
+a.img {
+    text-decoration: none;
+    word-spacing: 0.5em;
+}
+
+p.hrule {
+    clear: both;
+    border-bottom: 1px solid black;
+}
+
+table.head {
+    border: solid gray;
+}
+
+/* main sections */
+div.header {
+    margin-bottom: 2ex;
+}
+
+div.footer {
+    clear: both;
+    text-align: center;
+    border-top: 1px solid black;
+}
+
+/* subsections */
+div.message {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+div.byline {
+    clear: both;
+}
+
+/* extras */
 div.center {
     text-align: center;
 }
@@ -20,24 +62,8 @@ span.small {
     font-size: 75%;
 }
 
-a.img {
-    text-decoration: none;
-    word-spacing: 0.5em;
-}
-
-img {
-    border-width: 0;
-}
-
-table.head {
-    border: solid gray;
-}
-
-div.footer {
-    text-align: center;
-}
-
 span.topic-icon {
     float: right;
     margin-right: 1em;
 }
+
