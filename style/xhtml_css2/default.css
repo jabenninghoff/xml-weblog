@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.13 2002/11/14 05:37:33 loki Exp $ */
+/* $Id: default.css,v 1.14 2002/11/14 05:44:57 loki Exp $ */
 
 /* default settings */
 body {
@@ -36,6 +36,11 @@ p.hrule {
 
 p.break {
     clear: both;
+}
+
+p.zero {
+    padding: 0;
+    margin: 0;
 }
 
 table.head {
