@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.6 2002/11/01 22:43:40 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.7 2002/11/01 23:11:26 loki Exp $ -->
 
 <!--
    -
@@ -89,7 +89,7 @@
     <div class="header-content">
       <xsl:apply-templates select="content"/>
     </div>
-    <p/>
+    <p class="break"/>
   </div>
   <xsl:apply-templates select="message"/>
   <xsl:if test="not(message)">

@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.6 2002/11/01 22:43:40 loki Exp $ */
+/* $Id: default.css,v 1.7 2002/11/01 23:11:26 loki Exp $ */
 
 /* default settings */
 body {
@@ -25,6 +25,10 @@ a.img {
 
 p.hrule {
     border-bottom: 1px solid black;
+}
+
+p.break {
+    clear: both;
 }
 
 table.head {
