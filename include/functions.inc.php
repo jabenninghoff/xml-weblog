@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.19 2002/11/15 16:54:38 loki Exp $
+// $Id: functions.inc.php,v 1.20 2002/11/24 21:45:14 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -67,7 +67,7 @@ function process_code($string)
                     // got the filename ... include it
                     $file = basename(trim(substr($command, $cpos+9, $cpos2-($cpos+9))));
                     ob_start();
-                    require "code/$file";
+                    include "code/$file";
                     $results = ob_get_contents();
                     ob_end_clean();
                 } else die('error: missing closing " for include');
