@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.14 2004/04/30 21:24:19 loki Exp $
+// $Id: datatype.php,v 1.15 2004/05/01 07:15:31 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -454,6 +454,11 @@ class XWL_date extends XWL_datatype
         }
         $val = $this->value != "0000-00-00 00:00:00" ? $this->HTML_safe_value() : "";
         return "<input name=\"$name\" type=\"text\" maxlength=\"19\" size=\"20\" value=\"$val\"/>";
+    }
+
+    function iso8601_date()
+    {
+        return date('Ymd', strtotime($this->value))."T".date('H:i:s', strtotime($this->value));
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.2 2004/04/30 21:24:20 loki Exp $
+// $Id: index.php,v 1.3 2004/05/01 07:15:31 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -39,19 +39,81 @@
  */
 
 require_once "XWL.php";
+require_once "XML/RPC/Server.php";
+require_once "include/site.php";
+
+// rpc authorization routine
+function rpc_auth($user, $pass) {
+    global $xwl_db;
+
+    if ($user && XWL_string::valid($user)) {
+        $_auth_user = $xwl_db->fetch_user($user);
+    }
+    if (crypt($pass, $_auth_user->property['password']->value) != $_auth_user->property['password']->value) return false;
+
+    return true;
+}
 
 // we use the MetaWeblog & Blogger APIs
+
+$blogger = array(
+    "getRecentPosts"
+);
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
 // blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
+
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
+function blogger_getRecentPosts($params) {
+
+    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
+    $resp_array = array();
+
+    $username = $params->getParam(2);
+    $password = $params->getParam(3);
+    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
+        // user error 1
+        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
+    }
+
+    $numberOfPosts = $params->getParam(4);
+    $num = $numberOfPosts->scalarval();
+
+    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit']);
+
+    for ($i=0; $xwl_article[$i]; $i++) {
+        $resp_struct = array(
+            "userid" => new XML_RPC_Value($xwl_article[$i]->property['user_name']->value),
+            "dateCreated" => new XML_RPC_Value($xwl_article[$i]->property['date']->iso8601_date(), "dateTime.iso8601"),
+            "content" => new XML_RPC_Value($xwl_article[$i]->property['leader']->value),
+            "postid" => new XML_RPC_Value($xwl_article[$i]->property['id']->value)
+        );
+
+        $resp_array[$i] = new XML_RPC_Value($resp_struct, "struct");
+    }
+
+    return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
+}
+
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
+
 
 // metaWeblog.newPost
 // metaWeblog.editPost
 // metaWeblog.getCategories
 // metaWeblog.getPost
 // metaWeblog.getRecentPosts
+
+
+// build the server
+foreach (array("blogger", "metaWeblog") as $api) {
+    foreach ($$api as $m) {
+        $dispatch_map["$api.$m"] = array("function" => "${api}_$m");
+    }
+}
+
+// generate response
+$xml_rpc_server = new XML_RPC_Server($dispatch_map);
 
 ?>
