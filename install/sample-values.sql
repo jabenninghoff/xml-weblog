@@ -1,43 +1,41 @@
--- $Id: sample-values.sql,v 1.36 2004/07/12 04:58:09 loki Exp $
+-- $Id: sample-values.sql,v 1.37 2004/07/13 17:52:17 loki Exp $
 --
 -- XML-weblog sample values
 --
 
-/*
- * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. All advertising materials mentioning features or use of this software
- *    must display the following acknowledgement:
- *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
+-- Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+-- 1. Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in the
+--    documentation and/or other materials provided with the distribution.
+-- 3. All advertising materials mentioning features or use of this software
+--    must display the following acknowledgement:
+--	This product includes software developed by John Benninghoff.
+-- 4. Neither the name of the copyright holder nor the names of its 
+--    contributors may be used to endorse or promote products derived from
+--    this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+--  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+-- TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+-- PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+-- CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
 
-INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:00','<p>Welcome to <strong><a href=\"http://www.xml-weblog.org\">xml-weblog</a></strong>, the first fully buzzword-compliant weblog/portal engine.</p>\r\n<p>All content and most configuration information is stored on the database (currently MySQL, but in the future, additional databases will be supported) back-end, with all code residing on the web server. The intermediate content layer is a PHP-generated XML page, using the built-in xml-weblog format (dtd not yet written). This intermediate format is converted into XHTML or other formats using the XSLT/PHP front-end.</p>\r\n<p>This separation of content, logical presentation, and actual presentation (style) makes it easy to change the look &amp; feel of the site or present the site in multiple styles and formatted for different display devices (i.e. mobile/AvantGo).</p>\r\n<p><strong>Welcome!</strong></p>','<p>You\'re still here? Get to work and get the site set up !!</p>','en');
+INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:00','<p>Welcome to <strong><a href=\"http://www.xml-weblog.org\">xml-weblog</a></strong>, the first fully buzzword-compliant weblog/portal engine.</p>\r\n<p>All content and most configuration information is stored on the database (currently MySQL, but in the future, additional databases will be supported) back-end, with all code residing on the web server. The intermediate content layer is a PHP-generated XML page, using the built-in xml-weblog format (dtd not yet written). This intermediate format is converted into XHTML or other formats using the XSLT/PHP front-end.</p>\r\n<p>This separation of content, logical presentation, and actual presentation (style) makes it easy to change the look &amp; feel of the site or present the site in multiple styles and formatted for different display devices (i.e. mobile/AvantGo).</p>\r\n<p><strong>Welcome!</strong></p>','<p>You\'re still here? Get to work and get the site set up !!</p>',1,'en');
 
 INSERT INTO block VALUES (1,'left',1,1,'Main Menu','<a href=\"index.php\">Home</a><br class=\"br\"/>\r\n<a href=\"topic.php\">Topics</a><br class=\"br\"/>\r\n<a href=\"user.php\">Users</a>','','en');
 INSERT INTO block VALUES (2,'left',1,2,'sysblock','','archive','en');
