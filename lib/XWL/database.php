@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.1 2003/04/22 21:17:40 loki Exp $
+// $Id: database.php,v 1.2 2003/04/22 21:50:52 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -73,22 +73,26 @@ class XWL_database
         $result = $this->_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index", DB_FETCHMODE_ASSOC);
 
         foreach ($result as $res) {
-            $message[] =$this-> _load_object("XWL_message", $res);
+            $message[] = $this->_load_object("XWL_message", $res);
         }
         return $message;
+    }
+
+    function fetch_blocks()
+    {
+
+        $result = $this->_db->getAll("select * from block order by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+
+        foreach ($result as $res) {
+            $block[] = $this->_load_object("XWL_block", $res);
+        }
+        return $block;
     }
 }
 
 // unimplemented functions
 
 /*
-function xwl_db_fetch_block()
-{
-    global $xwl_db;
-
-    return $xwl_db->getAll("select * from block order by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
-}
-
 function xwl_db_fetch_article($limit, $start, $end)
 {
     global $xwl_db, $xwl_default_article_limit;
