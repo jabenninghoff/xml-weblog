@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.3 2002/10/20 00:20:25 loki Exp $
+// $Id: load_dbase.php,v 1.4 2002/10/24 18:41:30 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -118,7 +118,7 @@ $tables = array(
 
 ob_start();
 ?>
-CREATE TABLE datatype (
+CREATE TABLE schema (
   id int unsigned NOT NULL auto_increment,
   object varchar(255) NOT NULL default '',
   property varchar(255) NOT NULL default '',
@@ -131,7 +131,7 @@ foreach ($tables as $table) {
 
     // table schema
     foreach ($$table as $col => $t) {
-        echo "INSERT INTO datatype VALUES(0,'$table','$col','$t');\n";
+        echo "INSERT INTO schema VALUES(0,'$table','$col','$t');\n";
     }
     echo "\n";
 
