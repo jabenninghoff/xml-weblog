@@ -1,4 +1,4 @@
--- $Id: xml-mysql.sql,v 1.13 2002/10/18 22:00:12 loki Exp $
+-- $Id: xml-mysql.sql,v 1.14 2002/10/19 16:34:35 loki Exp $
 --
 -- XML MySQL database definitions / initial values
 
@@ -91,6 +91,20 @@ CREATE TABLE icon (
   height varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
 ) TYPE=MyISAM COMMENT='small images/icons (64K max)';
+
+--
+-- user/permission tables
+--
+
+CREATE TABLE user (
+  id int unsigned NOT NULL auto_increment,
+  userid varchar(255) NOT NULL default '',
+  password varchar(255) NOT NULL default '',
+  admin tinyint NOT NULL default 0,
+  PRIMARY KEY  (id)
+) TYPE=MyISAM COMMENT='users/rights';
+
+INSERT INTO user VALUES(1,admin,'',1);
 
 --
 -- test values
