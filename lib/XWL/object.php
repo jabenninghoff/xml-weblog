@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.17 2004/04/30 21:24:20 loki Exp $
+// $Id: object.php,v 1.18 2004/07/11 23:17:15 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -59,7 +59,7 @@ class XWL_object
 
     function _admin_input($prop, $mode) {
         $input  = "            <tr>\n";
-        $input .= "              <td><b>$prop</b></td>\n";
+        $input .= "              <td><strong>$prop</strong></td>\n";
         $input .= "              <td>";
         $input .= $this->property[$prop]->admin_input($prop, $mode);
         $input .= "</td>\n";
@@ -72,7 +72,7 @@ class XWL_object
     {
         if (!in_array($default, $option)) $default = $option[0];
         $input  = "            <tr>\n";
-        $input .= "              <td><b>$name</b></td>\n";
+        $input .= "              <td><strong>$name</strong></td>\n";
         $input .= "              <td><select name=\"$name\">\n";
         for ($i=0; $option[$i]; $i++) {
             $sel = $option[$i] == $default ? "selected=\"selected\" " : "";
@@ -339,7 +339,7 @@ class XWL_image extends XWL_object
 
     function _admin_input($prop, $mode) {
         if (in_array($prop, array("mime","width","height")) && $mode != "delete") {
-            return "<tr><td>$prop</td><td><i>automatically generated</i></td></tr>";
+            return "<tr><td>$prop</td><td><em>automatically generated</em></td></tr>";
         } else {
             return parent::_admin_input($prop, $mode);
         }

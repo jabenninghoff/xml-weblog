@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.17 2004/04/30 21:24:19 loki Exp $
+// $Id: user.php,v 1.18 2004/07/11 23:17:14 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -70,7 +70,7 @@ echo "    <form action=\"$userblock_page\" method=\"post\">\n";
 echo "      <div>\n";
 if (xwl_auth_user_authenticated()) {
     echo "        <input name=\"logout\" type=\"submit\" value=\"Logout\"/><br class=\"br\"/>\n";
-    echo "      You are currently logged in as <b>".$user->property['userid']->display_XML().".</b>\n";
+    echo "      You are currently logged in as <strong>".$user->property['userid']->display_XML().".</strong>\n";
     echo "      </div>\n";
     echo "    </form>";
 } else {

@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.32 2004/04/30 22:18:54 loki Exp $
+// $Id: admin.xml.php,v 1.33 2004/07/11 23:17:15 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // admin front page
@@ -126,11 +126,11 @@ function process_form($object_class, $edit_mode, $object_id)
         }
 
         if ($missing = $object->missing_required()) {
-            echo "        <p><b>please re-enter missing values:</b><i>";
+            echo "        <p><strong>please re-enter missing values:</strong><em>";
             foreach ($missing as $val) {
                 echo " $val";
             }
-            echo "</i></p>\n";
+            echo "</em></p>\n";
 
             // redraw form
             $act = "$page?class=$object_class&amp;mode=$edit_mode&amp;id=$object_id";
@@ -151,7 +151,7 @@ function process_form($object_class, $edit_mode, $object_id)
                 // dump results
                 echo "        <table>\n";
                 foreach ($object->property as $key => $prop) {
-                    echo "        <tr><td><b>$key</b></td><td>", $prop->HTML_safe_value(), "</td></tr>\n";
+                    echo "        <tr><td><strong>$key</strong></td><td>", $prop->HTML_safe_value(), "</td></tr>\n";
                 }
                 echo "        </table>\n";
             } else {

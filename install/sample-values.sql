@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.34 2004/04/30 21:24:19 loki Exp $
+-- $Id: sample-values.sql,v 1.35 2004/07/11 23:17:15 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -37,7 +37,7 @@
  *
  */
 
-INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:00','<p>Welcome to <b><a href=\"http://www.xml-weblog.org\">xml-weblog</a></b>, the first fully buzzword-compliant weblog/portal engine.</p>\r\n<p>All content and most configuration information is stored on the database (currently MySQL, but in the future, additional databases will be supported) back-end, with all code residing on the web server. The intermediate content layer is a PHP-generated XML page, using the built-in xml-weblog format (dtd not yet written). This intermediate format is converted into XHTML or other formats using the XSLT/PHP front-end.</p>\r\n<p>This separation of content, logical presentation, and actual presentation (style) makes it easy to change the look &amp; feel of the site or present the site in multiple styles and formatted for different display devices (i.e. mobile/AvantGo).</p>\r\n<p><b>Welcome!</b></p>','<p>You\'re still here? Get to work and get the site set up !!</p>','en');
+INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:00','<p>Welcome to <strong><a href=\"http://www.xml-weblog.org\">xml-weblog</a></strong>, the first fully buzzword-compliant weblog/portal engine.</p>\r\n<p>All content and most configuration information is stored on the database (currently MySQL, but in the future, additional databases will be supported) back-end, with all code residing on the web server. The intermediate content layer is a PHP-generated XML page, using the built-in xml-weblog format (dtd not yet written). This intermediate format is converted into XHTML or other formats using the XSLT/PHP front-end.</p>\r\n<p>This separation of content, logical presentation, and actual presentation (style) makes it easy to change the look &amp; feel of the site or present the site in multiple styles and formatted for different display devices (i.e. mobile/AvantGo).</p>\r\n<p><strong>Welcome!</strong></p>','<p>You\'re still here? Get to work and get the site set up !!</p>','en');
 
 INSERT INTO block VALUES (1,'left',1,1,'Main Menu','<a href=\"index.php\">Home</a><br class=\"br\"/>\r\n<a href=\"topic.php\">Topics</a><br class=\"br\"/>\r\n<a href=\"user.php\">Users</a>','','en');
 INSERT INTO block VALUES (2,'left',1,2,'sysblock','','archive','en');
@@ -45,7 +45,7 @@ INSERT INTO block VALUES (3,'left',1,3,'News Links','<a href=\"http://www.deadly
 INSERT INTO block VALUES (4,'left',1,4,'sysblock','','user','en');
 INSERT INTO block VALUES (5,'left',1,5,'sysblock','','admin','en');
 
-INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
+INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<strong>Under Construction:</strong> This site has not yet been configured.','en');
 
 INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',0,10,'xml-weblog','the first fully buzzword-compliant weblog engine','images/xml-weblog-logo.gif','xml-weblog sample site','<p class=\"zero\"><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br class=\"br\"/>Comments are owned by the Poster. The Rest &#169; 2002-2004 xml-weblog.org','<p>\r\n<a class=\"img\" href=\"http://httpd.apache.org\"><img src=\"images/apache_pb.gif\" alt=\"Powered by Apache\"/></a>\r\n<a class=\"img\" href=\"http://www.mysql.com\"><img src=\"images/mysql_pb.gif\" alt=\"Powered by MySQL\"/></a>\r\n<a class=\"img\" href=\"http://www.php.net\"><img src=\"images/php_pb.gif\" alt=\"Powered by PHP\"/></a>\r\n<code include=\"validxml.php\"/>\r\n<a class=\"img\" href=\"http://jigsaw.w3.org/css-validator/\"><img src=\"images/valid-css.gif\" alt=\"Valid CSS\"/></a>\r\n<code include=\"validrss.php\"/>\r\n</p>\r\n<p>\r\n<a class=\"img\" href=\"rss.php\"><img src=\"wl_icons/xml.gif\" alt=\"xml\"/></a> News aggregators can get a full RSS feed from <a href=\"rss.php\">rss.php</a>.<br class=\"br\"/>\r\n<code include=\"feeduri.php\"/>\r\n</p>','en');
 

@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.26 2004/04/30 21:24:20 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.27 2004/07/11 23:17:15 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -65,7 +65,7 @@
   <body>
     <xsl:comment> Only non-standards-compliant browsers should see the following message </xsl:comment>
     <p class="ahem">
-      <b>Note:</b> This site will look much better in a browser that supports 
+      <strong>Note:</strong> This site will look much better in a browser that supports 
       <a href="http://www.webstandards.org/upgrade/">web standards</a>,
       but it is accessible to any browser or Internet device.
     </p>
@@ -126,7 +126,7 @@
 </xsl:template>
 
 <xsl:template match="block">
-  <div class="block-title"><p class="zero"><b><xsl:value-of select="title"/></b></p></div>
+  <div class="block-title"><p class="zero"><strong><xsl:value-of select="title"/></strong></p></div>
   <div class="block-main"><xsl:copy-of select="content/text()|content/*"/></div>
 </xsl:template>
 
@@ -145,10 +145,10 @@
   </div>
   <div class="byline">
     <p class="zero">
-      posted by <b><xsl:value-of select="author/name"/></b> on
+      posted by <strong><xsl:value-of select="author/name"/></strong> on
       <xsl:value-of select="date"/>
       <xsl:if test="not(@content='show') and normalize-space(content)">
-        <b><a href="{url}">Read More...</a></b>
+        <strong><a href="{url}">Read More...</a></strong>
       </xsl:if>
     </p>
   </div>
@@ -160,8 +160,8 @@
 
 <xsl:template match="articlelist/article">
   <p>
-    <b><a href="{url}"><xsl:value-of select="title"/></a></b>
-    posted by <b><xsl:value-of select="author"/></b> on
+    <strong><a href="{url}"><xsl:value-of select="title"/></a></strong>
+    posted by <strong><xsl:value-of select="author"/></strong> on
     <xsl:value-of select="date"/>
   </p>
 </xsl:template>
@@ -177,7 +177,7 @@
         <xsl:if test="position()=1">
           <tr>
             <xsl:for-each select="property">
-              <td><b><xsl:value-of select="@name"/></b></td>
+              <td><strong><xsl:value-of select="@name"/></strong></td>
             </xsl:for-each>
           </tr>
         </xsl:if>
@@ -201,7 +201,7 @@
     <tr class="icon"><td>
       <a href="{link}" class="img"><img src="{icon}" alt="{name}"/></a>
     </td></tr>
-    <tr class="caption"><td><b><xsl:value-of select="name"/></b></td></tr>
+    <tr class="caption"><td><strong><xsl:value-of select="name"/></strong></td></tr>
   </table>
 </xsl:template>
 

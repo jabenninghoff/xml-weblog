@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.18 2004/07/11 22:02:57 loki Exp $
+// $Id: datatype.php,v 1.19 2004/07/11 23:17:15 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -139,7 +139,7 @@ class XWL_ID extends XWL_integer
         }
 
         $id = $this->value ? $this->value : 0;
-        $val = $this->value ? $this->value : "<i>next_id</i>";
+        $val = $this->value ? $this->value : "<em>next_id</em>";
         return "$val<input name=\"$name\" type=\"hidden\" value=\"$id\"/>";
     }
 }
