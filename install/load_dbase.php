@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.10 2002/10/29 18:19:46 loki Exp $
+// $Id: load_dbase.php,v 1.11 2002/10/29 23:28:51 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -85,12 +85,13 @@ $block = array(
     "language" => array("lang", 1)
 );
 
+// site -> site.id, topic -> topic.id, author -> user.id
 $article = array(
     "id" => array("ID", 1),
     "site" => array("int", 1),
     "topic" => array("int", 1),
     "title" => array("string", 1),
-    "author" => array("string", 1),
+    "user" => array("int", 1),
     "date" => array("date", 1),
     "leader" => array("XHTML_long", 1),
     "content" => array("XHTML_long", 0),
@@ -110,7 +111,6 @@ $image = array(
     "name" => array("string", 1),
     "src" => array("image", 1),
     "mime" => array("string", 1),
-    "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
 );
@@ -120,7 +120,6 @@ $icon = array(
     "name" => array("string", 1),
     "src" => array("image_small", 1),
     "mime" => array("string", 1),
-    "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
 );
@@ -175,7 +174,7 @@ foreach ($list as $name) {
     $load_image = AddSlashes(fread(fopen($name, "r"), filesize($name)));
     $size = getimagesize($name);
     $db->query("insert into image values (0,'$base','$load_image',
-        '{$mime_type[$size[2]]}','',$size[0],$size[1])");
+        '{$mime_type[$size[2]]}',$size[0],$size[1])");
        
     echo "loaded.\n";
 }
@@ -191,7 +190,7 @@ foreach ($list as $name) {
     $load_image = AddSlashes(fread(fopen($name, "r"), filesize($name)));
     $size = getimagesize($name);
     $db->query("insert into icon values (0,'$base','$load_image',
-        '{$mime_type[$size[2]]}','',$size[0],$size[1])");
+        '{$mime_type[$size[2]]}',$size[0],$size[1])");
        
     echo "loaded.\n";
 }
