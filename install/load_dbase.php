@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.1 2002/10/20 00:01:59 loki Exp $
+// $Id: load_dbase.php,v 1.2 2002/10/20 00:13:58 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -150,7 +150,11 @@ foreach ($query as $q) {
 ob_end_flush();
 
 echo "\n";
-$list = array("/tmp/logo.gif", "/tmp/valid-xhtml10.png");
+ob_start();
+include "./image_list.txt";
+$list = split("\n",trim(ob_get_contents()));
+ob_end_clean();
+
 foreach ($list as $name) {
     echo "loading image: $name...";
     $base = basename($name);
