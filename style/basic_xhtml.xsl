@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.18 2002/10/29 23:28:51 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.19 2002/10/30 15:43:03 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -72,18 +72,18 @@
   <h3><xsl:value-of select="title"/></h3>
   <p><img src="{topic/icon}" alt="{topic/name}"/></p>
   <xsl:copy-of select="leader/*"/>
-  <xsl:if test="@content">
+  <xsl:if test="@content='show'">
     <xsl:copy-of select="content/*"/>
     <hr/>
   </xsl:if>
     <p>
       posted by <b><xsl:value-of select="author"/></b> on
       <xsl:value-of select="date"/>
-      <xsl:if test="not(@content)">
+      <xsl:if test="not(@content='show')">
         <b><a href="{url}">Read More...</a></b>
       </xsl:if>
     </p>
-  <xsl:if test="not(@content)">
+  <xsl:if test="not(@content='show')">
     <hr/>
   </xsl:if>
 </xsl:template>
