@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.1 2002/10/28 17:23:13 loki Exp $
+// $Id: db.inc.php,v 1.2 2002/10/29 18:19:46 loki Exp $
 
 // connect
 require_once "include/config.inc.php";
@@ -110,7 +110,7 @@ function update_object($type, $object)
         $query .= " $field='$value',";
     }
     // strip the last comma & specify ID
-    $query = substr($query, 0, strlen($query)-1)." WHERE id='{$object['id']}";
+    $query = substr($query, 0, strlen($query)-1)." WHERE id='{$object['id']}'";
 
     $result = $xlw_db->query($query);
 
