@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.16 2004/07/10 00:12:21 loki Exp $
+// $Id: index.php,v 1.17 2004/07/10 02:48:23 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -318,8 +318,103 @@ function _newPost($params) {
     return $post_function($post, $publish);
 }
 
+function _blogger_edit($id, $content, $publish) {
+
+    global $xwl_db, $_xwl_auth_user;
+
+    if (!$post = $xwl_db->fetch_article($id)) {
+        // this doesn't work for some reason ???
+        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
+    }
+
+    $post->property['leader']->set_value($content->scalarval());
+
+    if ($post->missing_required()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
+    }
+
+    if ($xwl_db->edit_object("article", $post)) {
+        return new XML_RPC_Response(new XML_RPC_Value(1, "boolean"));
+    }
+
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+}
+
+function _metaWeblog_edit($id, $post_struct, $publish) {
+
+    global $xwl_db, $_xwl_auth_user;
+
+    if (!$post = $xwl_db->fetch_article($id)) {
+        // this doesn't work for some reason ???
+        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
+    }
+
+    // we use only the first category provided
+    $xmlarr = $post_struct->structmem("categories");
+    $xmlval = $xmlarr->arraymem(0);
+    $topic_str = $xmlval->scalarval();
+
+    $topic = $GLOBALS['xwl_default_topic'];
+    $xwl_topic = $xwl_db->fetch_topics();
+    foreach ($xwl_topic as $t) {
+        if ($t->property['name']->value == $topic_str) {
+            $topic = $t->property['id']->value;
+            break;
+        }
+    }
+
+    $post->property['topic']->set_value($topic);
+
+    $xmlval = $post_struct->structmem("title");
+    $post->property['title']->set_value($xmlval->scalarval());
+
+    $xmlval = $post_struct->structmem("description");
+    $post->property['leader']->set_value($xmlval->scalarval());
+
+    if ($post->missing_required()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
+    }
+
+    if ($xwl_db->edit_object("article", $post)) {
+        return new XML_RPC_Response(new XML_RPC_Value(1, "boolean"));
+    }
+
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+}
+
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
 // metaWeblog.editPost (postid, username, password, struct, publish) returns true
+function _editPost($params) {
+
+    global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
+
+    // get the post id, content/struct and publish bit
+    $p = $params->getParam(0+$_pshift);
+    $id = $p->scalarval();
+    $post = $params->getParam(3+$_pshift);
+    $p = $params->getParam(4+$_pshift);
+    $publish = $p->scalarval();
+
+    if (!$publish) {
+        // not publishing to home page is currently not supported.
+        // will be implemented with user submission system.
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
+    }
+
+    // check authorization - require admin for now
+    if (!xwl_auth_user_authorized("admin")) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOT_AUTHORIZED);
+    }
+
+    // validate $postid
+    if (!XWL_integer::valid($id)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
+    }
+
+    $post_function = "_${_xwl_xmlrpc_api}_edit";
+
+    return $post_function($id, $post, $publish);
+}
 
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
 function _deletePost($params) {
@@ -351,10 +446,12 @@ function _deletePost($params) {
 }
 
 $dispatch_map = array(
+    "blogger.editPost" => array("function" => "xwl_xmlrpc"),
     "blogger.deletePost" => array("function" => "xwl_xmlrpc"),
     "blogger.getPost" => array("function" => "xwl_xmlrpc"),
     "blogger.getRecentPosts" => array("function" => "xwl_xmlrpc"),
     "blogger.newPost" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.editPost" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getCategories" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getPost" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getRecentPosts" => array("function" => "xwl_xmlrpc"),
