@@ -1,16 +1,16 @@
-/* $Id: default.css,v 1.7 2002/11/01 23:11:26 loki Exp $ */
+/* $Id: default.css,v 1.8 2002/11/11 15:29:08 loki Exp $ */
 
 /* default settings */
 body {
     font-family: helvetica, sans-serif;
-    font: 10pt arial, sans-serif;
-    font: 10pt verdana, sans-serif;
+    font: 80% arial, sans-serif;
+    font: 80% verdana, sans-serif;
 }
 
 table {
     font-family: helvetica, sans-serif;
-    font: 10pt arial, sans-serif;
-    font: 10pt verdana, sans-serif;
+    font: 80% arial, sans-serif;
+    font: 80% verdana, sans-serif;
 }
 
 img {
