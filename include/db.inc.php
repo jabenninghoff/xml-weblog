@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.5 2002/11/01 17:58:49 loki Exp $
+// $Id: db.inc.php,v 1.6 2002/11/04 05:30:17 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -45,21 +45,21 @@ function fetch_site($url)
 {
     global $xwl_db;
 
-    return $xwl_db->getRow("select * from site where url='$url' or id=1 group by id desc", DB_FETCHMODE_ASSOC);
+    return $xwl_db->getRow("select * from site where url='$url' or id=1 order by id desc", DB_FETCHMODE_ASSOC);
 }
 
 function fetch_block()
 {
     global $xwl_db;
 
-    return $xwl_db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+    return $xwl_db->getAll("select * from block order by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
 }
 
 function fetch_message()
 {
     global $xwl_db;
 
-    return $xwl_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) group by message_index", DB_FETCHMODE_ASSOC);
+    return $xwl_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index", DB_FETCHMODE_ASSOC);
 }
 
 function fetch_article($limit)
@@ -68,7 +68,7 @@ function fetch_article($limit)
 
     if (!$limit || $limit <= 0) $limit = $xwl_article_default_limit;
 
-    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id group by article.date desc limit $limit";
+    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id order by article.date desc limit $limit";
     return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
 }
 
@@ -84,7 +84,7 @@ function fetch_topic()
 {
     global $xwl_db;
 
-    return $xwl_db->getAll("select * from topic group by id", DB_FETCHMODE_ASSOC);
+    return $xwl_db->getAll("select * from topic order by id", DB_FETCHMODE_ASSOC);
 }
 
 // image functions
@@ -118,7 +118,7 @@ function fetch_column_by_id($table, $column)
 {
     global $xwl_db;
 
-    $result = $xwl_db->getCol("select $column from $table group by id");
+    $result = $xwl_db->getCol("select $column from $table order by id");
     array_unshift($result, "");
     return $result;
 }
@@ -127,7 +127,7 @@ function fetch_type($type)
 {
     global $xwl_db;
 
-    return $xwl_db->getAll("select * from $type group by id", DB_FETCHMODE_ASSOC);
+    return $xwl_db->getAll("select * from $type order by id", DB_FETCHMODE_ASSOC);
 }
 
 function fetch_schema($type)
@@ -189,7 +189,7 @@ function fetch_table_list()
 {
     global $xwl_db;
 
-    return $xwl_db->getCol("select distinct object from schema group by object");
+    return $xwl_db->getCol("select distinct object from schema order by object");
 }
 
 ?>
