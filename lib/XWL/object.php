@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.19 2004/07/13 17:52:17 loki Exp $
+// $Id: object.php,v 1.20 2004/07/14 03:54:26 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -213,6 +213,7 @@ class XWL_block extends XWL_object
         $this->_add_property("title", "XWL_string", true);
         $this->_add_property("content", "XWL_XHTML_code", false);
         $this->_add_property("sysblock", "XWL_filename", false);
+        $this->_add_property("enabled", "XWL_boolean", true);
         $this->_add_property("language", "XWL_lang", true);
     }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.18 2004/07/09 17:56:15 loki Exp $
+// $Id: database.php,v 1.19 2004/07/14 03:54:26 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -97,8 +97,8 @@ class XWL_database
 
     function fetch_blocks()
     {
-        // get all blocks in the order they will be displayed
-        return $this->_fetch_multiple("XWL_block", "select * from block order by sidebar_align,sidebar_index,block_index");
+        // get all enabled blocks in the order they will be displayed
+        return $this->_fetch_multiple("XWL_block", "select * from block where enabled=1 order by sidebar_align,sidebar_index,block_index");
     }
 
     function fetch_article($id)

@@ -1,4 +1,4 @@
--- $Id: update_1.1_to_1.2.sql,v 1.1 2004/07/13 17:52:17 loki Exp $
+-- $Id: update_1.1_to_1.2.sql,v 1.2 2004/07/14 03:54:21 loki Exp $
 --
 -- xml-weblog 1.1 to 1.2 SQL update script
 --
@@ -40,3 +40,9 @@
 --
 ALTER TABLE article ADD COLUMN publish tinyint NOT NULL default 0 AFTER content;
 UPDATE article SET publish=1;
+
+--
+-- add block enabled bit
+--
+ALTER TABLE block ADD COLUMN enabled tinyint NOT NULL default 0 AFTER sysblock;
+UPDATE block SET enabled=1;
