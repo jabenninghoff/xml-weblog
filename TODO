@@ -11,5 +11,7 @@ Need:
 * (clean) php implementation of md5 digest auth
 
 Maybe Do:
-* multi-blog support
+* multiple category support
 * multiple language support
+* multi-blog support (on same db)
+* add client/gzip support (vs mod_gzip)
