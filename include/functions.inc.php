@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.16 2002/11/01 22:50:46 loki Exp $
+// $Id: functions.inc.php,v 1.17 2002/11/12 22:31:05 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -48,7 +48,7 @@ function validate_self()
     $uri = rawurlencode($uri);
 
     echo '<a class="img" href="http://validator.w3.org/check?uri=', $uri, ';ss=1">',
-          '<img src="image.php?name=valid-xhtml10.png" ',
+          '<img src="images/valid-xhtml10.png" ',
           'alt="Valid XHTML 1.0!" height="31" width="88"/></a>';
 }
 

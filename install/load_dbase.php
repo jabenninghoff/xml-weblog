@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.14 2002/11/01 17:58:50 loki Exp $
+// $Id: load_dbase.php,v 1.15 2002/11/12 22:31:05 loki Exp $
 // database/image loader
 
 /*
@@ -77,38 +77,5 @@ foreach ($query as $q) {
     $db->query(trim($q));
 } 
 ob_end_flush();
-
-echo "\n";
-ob_start();
-include "./image_list.txt";
-$list = split("\n",trim(ob_get_contents()));
-ob_end_clean();
-
-foreach ($list as $name) {
-    echo "loading image: $name...";
-    $base = basename($name);
-    $load_image = AddSlashes(fread(fopen($name, "r"), filesize($name)));
-    $size = getimagesize($name);
-    $db->query("insert into image values (0,'$base','$load_image',
-        '{$mime_type[$size[2]]}',$size[0],$size[1])");
-       
-    echo "loaded.\n";
-}
-
-ob_start();
-include "./icon_list.txt";
-$list = split("\n",trim(ob_get_contents()));
-ob_end_clean();
-
-foreach ($list as $name) {
-    echo "loading icon: $name...";
-    $base = basename($name);
-    $load_image = AddSlashes(fread(fopen($name, "r"), filesize($name)));
-    $size = getimagesize($name);
-    $db->query("insert into icon values (0,'$base','$load_image',
-        '{$mime_type[$size[2]]}',$size[0],$size[1])");
-       
-    echo "loaded.\n";
-}
 
 ?>
