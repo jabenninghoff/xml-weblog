@@ -1,5 +1,5 @@
 <?php
-// $Id: article.php,v 1.7 2003/04/16 03:58:20 loki Exp $
+// $Id: article.php,v 1.8 2003/04/16 21:35:42 loki Exp $
 // single article renderer
 
 /*
@@ -36,7 +36,14 @@
  *
  */
 
+require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
+
+// check authentication
+if (login() && !user_authenticated()) {
+    unauthorized("private");
+    exit;
+}
 
 // get php-formatted xml document (must be in the global context)
 ob_start();

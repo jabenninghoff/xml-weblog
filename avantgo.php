@@ -1,5 +1,5 @@
 <?php
-// $Id: avantgo.php,v 1.1 2003/04/16 17:34:43 loki Exp $
+// $Id: avantgo.php,v 1.2 2003/04/16 21:35:42 loki Exp $
 // front page renderer
 
 /*
@@ -36,7 +36,14 @@
  *
  */
 
+require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
+
+// check authentication
+if (login() && !user_authenticated()) {
+    unauthorized("private");
+    exit;
+}
 
 // get php-formatted xml document (must be in the global context)
 ob_start();

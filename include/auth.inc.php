@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.5 2003/04/16 03:58:20 loki Exp $
+// $Id: auth.inc.php,v 1.6 2003/04/16 21:37:06 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -42,6 +42,21 @@ if (isset($_SERVER['PHP_AUTH_USER'])) {
     $auth_user = fetch_user(safe_gpc_addslashes($_SERVER['PHP_AUTH_USER']));
 } else {
     $auth_user = false;
+}
+
+function login()
+{
+    $login = false;
+
+    if ($_GET['login'] || $_COOKIE['login']) {
+        $login = true;
+        setcookie('login', true);
+    } else {
+        // expire the cookie -- request to log out
+        setcookie('login', false, time());
+    }
+
+    return $login;
 }
 
 function user_authenticated()
