@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.20 2004/07/11 22:02:57 loki Exp $
+// $Id: index.php,v 1.21 2004/07/16 05:15:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -183,7 +183,8 @@ function _metaWeblog_translate_post($article) {
         "postid" => new XML_RPC_Value($id),
         "title" => new XML_RPC_Value($article->property['title']->value),
         "link" => new XML_RPC_Value($link),
-        "permaLink" => new XML_RPC_Value($link)
+        "permaLink" => new XML_RPC_Value($link),
+        "flNotOnHomePage" => new XML_RPC_Value(!$article->property['publish']->value, "boolean")
     );
 
     return new XML_RPC_Value($post_struct, "struct");
@@ -209,7 +210,7 @@ function _getPost($params) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
     }
 
-    if (!$article = $xwl_db->fetch_article($id)) {
+    if (!$article = $xwl_db->fetch_article($id, $_xwl_xmlrpc_api != "metaWeblog")) {
         // this doesn't work for some reason ???
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
@@ -240,7 +241,7 @@ function _getRecentPosts($params) {
 
     $translate_function = "_${_xwl_xmlrpc_api}_translate_post";
 
-    if (!$article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0)) {
+    if (!$article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0, $_xwl_xmlrpc_api != "metaWeblog")) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
     }
 
@@ -323,6 +324,12 @@ function _metaWeblog_post($post_struct, $publish) {
 
     $article = explode('<xwl function="split"/>', $description->scalarval());
 
+    // get the "Post to Home Page" flag if set (overrides publish parameter)
+    $flNotOnHomePage = $post_struct->structmem("flNotOnHomePage");
+    if ($flNotOnHomePage) {
+        $publish = !$flNotOnHomePage->scalarval();
+    }
+
     $post = new XWL_article;
 
     $post->property['site']->set_value($GLOBALS['xwl_default_site']);
@@ -332,6 +339,7 @@ function _metaWeblog_post($post_struct, $publish) {
     $post->property['date']->set_value("now");
     $post->property['leader']->set_value($article[0]);
     $post->property['content']->set_value($article[1]);
+    $post->property['publish']->set_value($publish);
     $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
 
     if ($post->missing_required()) {
@@ -339,7 +347,7 @@ function _metaWeblog_post($post_struct, $publish) {
     }
 
     if ($xwl_db->create_object("article", $post)) {
-        if (!$created_post = $xwl_db->fetch_article_last_id()) {
+        if (!$created_post = $xwl_db->fetch_article_last_id(false)) {
             // created, but we can't find it ???
             return new XML_RPC_Response(new XML_RPC_Value("0"));
         }
@@ -385,7 +393,7 @@ function _blogger_edit($id, $content, $publish) {
 
     global $xwl_db, $_xwl_auth_user;
 
-    if (!$post = $xwl_db->fetch_article($id)) {
+    if (!$post = $xwl_db->fetch_article($id, true)) {
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
@@ -408,7 +416,7 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
 
     global $xwl_db, $_xwl_auth_user;
 
-    if (!$post = $xwl_db->fetch_article($id)) {
+    if (!$post = $xwl_db->fetch_article($id, false)) {
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
@@ -448,11 +456,22 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
 
     $article = explode('<xwl function="split"/>', $description->scalarval());
 
+    // get the "Post to Home Page" flag if set (overrides publish parameter)
+    $flNotOnHomePage = $post_struct->structmem("flNotOnHomePage");
+    if ($flNotOnHomePage) {
+        $publish = !$flNotOnHomePage->scalarval();
+    }
+
+    // reset the date if re-publishing
+    if ($publish && !$post->property['publish']->value) {
+        $post->property['date']->set_value("now");
+    }
+
     $post->property['topic']->set_value($topic);
     $post->property['title']->set_value($title->scalarval());
     $post->property['leader']->set_value($article[0]);
     $post->property['content']->set_value($article[1]);
-
+    $post->property['publish']->set_value($publish);
 
     if ($post->missing_required()) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);

@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.28 2004/04/30 22:18:54 loki Exp $
+// $Id: index.xml.php,v 1.29 2004/07/16 05:15:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // front page
@@ -61,7 +61,7 @@ $start->set_value(XWL::magic_unslash($_GET['start']));
 $end = new XWL_datenum;
 $end->set_value(XWL::magic_unslash($_GET['end']));
 
-$xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit'], $start->value, $end->value);
+$xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit'], $start->value, $end->value, true);
 
 XWL::xml_declaration();
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.21 2004/04/30 22:18:54 loki Exp $
+// $Id: article.xml.php,v 1.22 2004/07/16 05:15:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // single article page
@@ -70,7 +70,7 @@ echo "    <main>\n";
 // fetch article
 $id = new XWL_ID;
 $id->set_value(XWL::magic_unslash($_GET['id']));
-$xwl_article = $xwl_db->fetch_article($id->SQL_safe_value());
+$xwl_article = $xwl_db->fetch_article($id->SQL_safe_value(), true);
 $xwl_article_value_xml = $xwl_article->XML_values();
 
 xwl_display_article($xwl_article_value_xml, 0, "show");

@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.20 2004/07/14 17:36:40 loki Exp $
+// $Id: database.php,v 1.21 2004/07/16 05:15:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -45,7 +45,14 @@ class XWL_database
 {
     // private variables
     var $_db;
-    var $_article_base_query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name, user.mail as user_mail from article, topic, user where article.topic = topic.id and article.user = user.id and publish = 1";
+    var $_article_base_query;
+    var $_article_base_query_unpublished;
+
+    function XWL_database()
+    {
+        $this->_article_base_query_unpublished = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name, user.mail as user_mail from article, topic, user where article.topic = topic.id and article.user = user.id";
+        $this->_article_base_query =  "$this->_article_base_query_unpublished and publish = 1";
+    }
 
     // private functions
     function _fetch_single($class, $query)
@@ -100,14 +107,19 @@ class XWL_database
         return $this->_fetch_multiple("XWL_block", "select * from block where enabled=1 order by sidebar_align,sidebar_index,block_index");
     }
 
-    function fetch_article($id)
+    function fetch_article($id, $published)
     {
         // get article by id
-        $query = "$this->_article_base_query and article.id = '$id'";
+        if ($published) {
+            $query = $this->_article_base_query;
+        } else {
+            $query = $this->_article_base_query_unpublished;
+        }
+
+        $query .= " and article.id = '$id'";
 
         return $this->_fetch_single("XWL_article", $query);
     }
-
 
     function fetch_article_first()
     {
@@ -123,25 +135,37 @@ class XWL_database
         return $this->_fetch_single("XWL_article", $query);
     }
 
-    function fetch_article_last_id()
+    function fetch_article_last_id($published)
     {
-        $query = "$this->_article_base_query order by article.id desc limit 1";
+        if ($published) {
+            $query = $this->_article_base_query;
+        } else {
+            $query = $this->_article_base_query_unpublished;
+        }
+
+        $query .= " order by article.id desc limit 1";
 
         return $this->_fetch_single("XWL_article", $query);
     }
 
-    function fetch_articles($limit, $start, $end)
+    function fetch_articles($limit, $start, $end, $published)
     {
+        if ($published) {
+            $query = $this->_article_base_query;
+        } else {
+            $query = $this->_article_base_query_unpublished;
+        }
+
         if (!$limit || $limit <= 0) $limit = 1;
 
         // fetch top ($limit) articles
         if ($start) {
-            $query = "$this->_article_base_query and article.date <= $start order by article.date desc limit $limit";
+            $query .= " and article.date <= $start order by article.date desc limit $limit";
         } elseif ($end) {
-            $query = "$this->_article_base_query and article.date >= $end order by article.date asc limit $limit";
+            $query .= " and article.date >= $end order by article.date asc limit $limit";
             return array_reverse($this->_fetch_multiple("XWL_article", $query));
         } else {
-            $query = "$this->_article_base_query order by article.date desc limit $limit";
+            $query .= " order by article.date desc limit $limit";
         }
 
         return $this->_fetch_multiple("XWL_article", $query);
