@@ -1,0 +1,31 @@
+/* $Id: basic.css,v 1.1 2003/04/16 17:34:55 loki Exp $ */
+
+/* basic CSS1 support */
+body {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: small;
+}
+
+td {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: small;
+}
+
+img {
+    border-width: 0;
+}
+
+h3 {
+    font-size: medium;
+}
+
+/* variants */
+a.img {
+    text-decoration: none;
+    border: none;
+}
+
+span.small {
+    font-size: x-small;
+}
+
