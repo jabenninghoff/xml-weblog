@@ -1,5 +1,6 @@
 <?php
-// $Id: config.inc.php,v 1.8 2003/04/17 17:52:12 loki Exp $
+// $Id: config.inc.php,v 1.9 2003/04/21 17:41:20 loki Exp $
+// configuration variables
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -42,12 +43,15 @@ $xwl_db_user = "xml";
 $xwl_db_password = "weblog";
 $xwl_db_database = "xml_weblog";
 
-// defaults
-$xwl_article_default_limit = 10;
+// global defaults
+$xwl_default_article_limit = 10;
 $xwl_default_site = 1;
 $xwl_default_topic = 1;
 $xwl_default_user = 1;
 $xwl_default_lang = "en";
 $xwl_default_style = "xhtml_css2";
+
+// auth defaults
+$xwl_auth_realm = "private";
 
 ?>

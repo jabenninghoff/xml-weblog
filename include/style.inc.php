@@ -1,5 +1,6 @@
 <?php
-// $Id: style.inc.php,v 1.6 2003/04/17 17:52:12 loki Exp $
+// $Id: style.inc.php,v 1.7 2003/04/21 17:41:20 loki Exp $
+// style/xml rendering module
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,21 +36,25 @@
  *
  */
 
-function style()
+require_once "include/functions.inc.php";
+
+// public functions
+
+function xwl_style_get()
 {
     global $xwl_default_style;
 
-    $style = valid_filename($_GET['style']);
+    $style = xwl_valid_filename($_GET['style']);
 
     return $style ? $style : $xwl_default_style;
 }
 
-function render_page($xml, $style)
+function xwl_style_render_page($xml, $style)
 {
 
     // load the stylesheet
     ob_start();
-    require "style/".valid_filename($style)."/main.xsl";
+    require "style/".xwl_valid_filename($style)."/main.xsl";
     $xsl = ob_get_contents();
     ob_end_clean();
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.21 2003/04/16 03:58:20 loki Exp $
+// $Id: admin.xml.php,v 1.22 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -131,21 +131,21 @@ function admin_form_article($object, $type, $schema, $mode)
     foreach ($schema as $s) {
         switch ($s['property']) {
             case "site":
-                $menu = fetch_column_by_id("site", "url");
+                $menu = xwl_db_fetch_column_by_id("site", "url");
                 echo "            <tr>\n";
                 admin_input_select("site", $menu, $object['site'] ? $object['site'] : $xwl_default_site);
                 echo "            </tr>\n";
                 break;
 
             case "topic":
-                $menu = fetch_column_by_id("topic", "name");
+                $menu = xwl_db_fetch_column_by_id("topic", "name");
                 echo "            <tr>\n";
                 admin_input_select("topic", $menu, $object['topic'] ? $object['topic'] : $xwl_default_topic);
                 echo "            </tr>\n";
                 break;
 
             case "user":
-                $menu = fetch_column_by_id("user", "userid");
+                $menu = xwl_db_fetch_column_by_id("user", "userid");
                 echo "            <tr>\n";
                 admin_input_select("user", $menu, $object['user'] ? $object['user'] : $xwl_default_user);
                 echo "            </tr>\n";
@@ -275,11 +275,11 @@ if ($get_mode != "edit" && $get_mode != "delete") $get_mode = "create";
 $get_type = $_GET['type'];
 if (!in_array($get_type,$type)) $get_type = $type[0];
 
-$get_id = valid_ID($_GET['id']);
+$get_id = xwl_valid_ID($_GET['id']);
 
-$schema = fetch_schema($get_type);
-$object = fetch_type($get_type);
-$get_object = fetch_object($get_type, $get_id);
+$schema = xwl_db_fetch_schema($get_type);
+$object = xwl_db_fetch_type($get_type);
+$get_object = xwl_db_fetch_object($get_type, $get_id);
 
 if ($get_mode == "create") {
     echo "      <title>", ucfirst($get_type."s"), "</title>\n";
@@ -357,8 +357,8 @@ if (!in_array($post_mode, $valid_mode) || !in_array($post_type, $type)) {
 }
 
 if ($post_mode == "delete") {
-    $id = valid_ID($_POST['id']);
-    if (delete_object($post_type, $id)) {
+    $id = xwl_valid_ID($_POST['id']);
+    if (xwl_db_delete_object($post_type, $id)) {
         echo "      <title>", ucfirst($post_type), " deleted</title>\n";
     } else {
         echo "      <title>Error deleting $post_type id=$id!</title>\n";
@@ -366,7 +366,7 @@ if ($post_mode == "delete") {
     return;
 }
 
-$schema = fetch_schema($post_type);
+$schema = xwl_db_fetch_schema($post_type);
 
 // valid-ize all data
 if ($admin_form_processor[$post_type]) {
@@ -414,9 +414,9 @@ if ($i) {
 
 // add to table & display if not missing any required values
 if ($post_mode == "edit") {
-    $success = update_object($post_type, $object);
+    $success = xwl_db_update_object($post_type, $object);
 } else {
-    $success = insert_object($post_type, $object);
+    $success = xwl_db_insert_object($post_type, $object);
 }
 
 $action = $post_mode == "edit" ? "updated" : "created";
@@ -437,18 +437,18 @@ if (($page = basename($_SERVER['PHP_SELF']))  == "admin.xml.php") {
     header('Content-Type: text/xml');
 
     // check authentication
-    if (!user_authenticated() || !user_authorized("admin")) {
-        unauthorized("private");
+    if (!xwl_auth_user_authenticated() || !xwl_auth_user_authorized("admin")) {
+        xwl_auth_unauthorized("private");
         exit;
     }
 }
 
 // site variables
-$site = fetch_site(base_url());
-$block = fetch_block();
+$site = xwl_db_fetch_site(base_url());
+$block = xwl_db_fetch_block();
 
 // admin.php variables
-$type = fetch_table_list();
+$type = xwl_db_fetch_table_list();
 
 xml_declaration();
 ?>

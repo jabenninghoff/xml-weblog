@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.4 2003/04/16 03:58:20 loki Exp $
+// $Id: topic.xml.php,v 1.5 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -44,9 +44,9 @@ if (basename($_SERVER['PHP_SELF']) == "topic.xml.php") {
 }
 
 // build variables
-$site = fetch_site(base_url());
-$block = fetch_block();
-$topic = fetch_topic();
+$site = xwl_db_fetch_site(base_url());
+$block = xwl_db_fetch_block();
+$topic = xwl_db_fetch_topic();
 
 xml_declaration();
 ?>
@@ -71,8 +71,8 @@ if (!isset($_GET['id'])) {
     }
     echo "    </topiclist>\n";
 } else {
-    $id = valid_id($_GET['id']);
-    $article = fetch_article_by_topic($id);
+    $id = xwl_valid_id($_GET['id']);
+    $article = xwl_db_fetch_article_by_topic($id);
     echo "    <articlelist>\n";
     echo "      <heading>{$topic[$id-1]['name']}</heading>\n";
     $i = 1;

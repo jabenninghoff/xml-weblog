@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.11 2003/04/16 03:58:20 loki Exp $
+// $Id: article.xml.php,v 1.12 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -45,12 +45,12 @@ if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
 }
 
 // build variables
-$site = fetch_site(base_url());
-$block = fetch_block();
+$site = xwl_db_fetch_site(base_url());
+$block = xwl_db_fetch_block();
 
-$id = valid_ID($_GET['id']);
-$topic = fetch_topic();
-$article = fetch_article_single($id);
+$id = xwl_valid_ID($_GET['id']);
+$topic = xwl_db_fetch_topic();
+$article = xwl_db_fetch_article_single($id);
 
 xml_declaration();
 ?>

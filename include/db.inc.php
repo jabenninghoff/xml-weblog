@@ -1,5 +1,6 @@
 <?php
-// $Id: db.inc.php,v 1.11 2003/04/16 03:58:20 loki Exp $
+// $Id: db.inc.php,v 1.12 2003/04/21 17:41:20 loki Exp $
+// database functional abstraction module
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,38 +36,41 @@
  *
  */
 
-// connect
 require_once "include/config.inc.php";
 require_once "DB.php";
+
+// connect
 $xwl_db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
 
+// public functions
+
 // page functions
-function fetch_site($url)
+function xwl_db_fetch_site($url)
 {
     global $xwl_db;
 
     return $xwl_db->getRow("select * from site where url='$url' or id=1 order by id desc", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_block()
+function xwl_db_fetch_block()
 {
     global $xwl_db;
 
     return $xwl_db->getAll("select * from block order by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_message()
+function xwl_db_fetch_message()
 {
     global $xwl_db;
 
     return $xwl_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_article($limit, $start, $end)
+function xwl_db_fetch_article($limit, $start, $end)
 {
-    global $xwl_db, $xwl_article_default_limit;
+    global $xwl_db, $xwl_default_article_limit;
 
-    if (!$limit || $limit <= 0) $limit = $xwl_article_default_limit;
+    if (!$limit || $limit <= 0) $limit = $xwl_default_article_limit;
 
     if ($start) {
         $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date <= $start order by article.date desc limit $limit";
@@ -80,7 +84,7 @@ function fetch_article($limit, $start, $end)
     }
 }
 
-function fetch_article_first()
+function xwl_db_fetch_article_first()
 {
     global $xwl_db;
 
@@ -88,7 +92,7 @@ function fetch_article_first()
     return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
 }
 
-function fetch_article_last()
+function xwl_db_fetch_article_last()
 {
     global $xwl_db;
 
@@ -96,7 +100,7 @@ function fetch_article_last()
     return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
 }
 
-function fetch_article_single($id)
+function xwl_db_fetch_article_single($id)
 {
     global $xwl_db;
 
@@ -104,7 +108,7 @@ function fetch_article_single($id)
     return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
 }
 
-function fetch_article_by_topic($topic)
+function xwl_db_fetch_article_by_topic($topic)
 {
     global $xwl_db;
 
@@ -112,7 +116,7 @@ function fetch_article_by_topic($topic)
     return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
 }
 
-function fetch_topic()
+function xwl_db_fetch_topic()
 {
     global $xwl_db;
 
@@ -120,14 +124,14 @@ function fetch_topic()
 }
 
 // image functions
-function fetch_image($name)
+function xwl_db_fetch_image($name)
 {
     global $xwl_db;
 
     return $xwl_db->getRow("select * from image where name='$name'", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_icon($name)
+function xwl_db_fetch_icon($name)
 {
     global $xwl_db;
 
@@ -135,7 +139,7 @@ function fetch_icon($name)
 }
 
 // auth functions
-function fetch_user($userid)
+function xwl_db_fetch_user($userid)
 {
     global $xwl_db;
 
@@ -146,7 +150,7 @@ function fetch_user($userid)
 }
 
 // admin functions
-function fetch_column_by_id($table, $column)
+function xwl_db_fetch_column_by_id($table, $column)
 {
     global $xwl_db;
 
@@ -155,28 +159,28 @@ function fetch_column_by_id($table, $column)
     return $result;
 }
 
-function fetch_type($type)
+function xwl_db_fetch_type($type)
 {
     global $xwl_db;
 
     return $xwl_db->getAll("select * from $type order by id", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_schema($type)
+function xwl_db_fetch_schema($type)
 {
     global $xwl_db;
 
     return $xwl_db->getAll("select distinct property,datatype,required from schema where object='$type'", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_object($type, $id)
+function xwl_db_fetch_object($type, $id)
 {
     global $xwl_db;
 
     return $xwl_db->getRow("select * from $type where id='$id'", DB_FETCHMODE_ASSOC);
 }
 
-function delete_object($type, $id)
+function xwl_db_delete_object($type, $id)
 {
     global $xwl_db;
 
@@ -185,7 +189,7 @@ function delete_object($type, $id)
     return !(DB::isError($result));
 }
 
-function update_object($type, $object)
+function xwl_db_update_object($type, $object)
 {
     global $xwl_db;
 
@@ -201,7 +205,7 @@ function update_object($type, $object)
     return !(DB::isError($result));
 }
 
-function insert_object($type, $object)
+function xwl_db_insert_object($type, $object)
 {
     global $xwl_db;
 
@@ -217,7 +221,7 @@ function insert_object($type, $object)
     return !(DB::isError($result));
 }
 
-function fetch_table_list()
+function xwl_db_fetch_table_list()
 {
     global $xwl_db;
 

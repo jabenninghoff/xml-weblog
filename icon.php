@@ -1,5 +1,5 @@
 <?php
-// $Id: icon.php,v 1.3 2003/04/16 03:58:20 loki Exp $
+// $Id: icon.php,v 1.4 2003/04/21 17:41:20 loki Exp $
 // icon renderer
 
 /*
@@ -39,7 +39,7 @@
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
-$icon = fetch_icon(safe_gpc_addslashes($_GET['name']));
+$icon = xwl_db_fetch_icon(xwl_valid_string($_GET['name']));
 
 header("Content-Type: {$icon['type']}");
 echo $icon['src'];

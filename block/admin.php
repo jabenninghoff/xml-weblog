@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.php,v 1.1 2003/04/16 21:36:46 loki Exp $
+// $Id: admin.php,v 1.2 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -37,8 +37,8 @@
 
 require_once "include/auth.inc.php";
 
-// only display for authenticated users
-if (user_authenticated() && user_authorized("admin")) {
+// only display for authenticated administrators
+if (xwl_auth_user_authenticated() && xwl_auth_user_authorized("admin")) {
 echo <<< END
 <block>
   <title>Admin Menu</title>

@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.10 2003/04/17 17:51:21 loki Exp $
+// $Id: sidebar.xml.php,v 1.11 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -43,7 +43,7 @@ if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {
     header('Content-Type: text/xml');
     xml_declaration();
     echo "<page>\n";
-    $block = fetch_block();
+    $block = xwl_db_fetch_block();
 }
 
 echo "  <!-- left or right sidebar(s), outermost is index 0 -->\n";
@@ -69,7 +69,7 @@ while ($block[$i]) {
             echo "    </block>\n";
         } else {
             // run sysblock code
-            include "block/".valid_filename($block[$i]['sysblock'].".php");
+            include "block/".xwl_valid_filename($block[$i]['sysblock'].".php");
         }
         $i++;
     }

@@ -1,4 +1,4 @@
-/* $Id: sidebar_right.css,v 1.10 2002/11/14 23:42:13 loki Exp $ */
+/* $Id: sidebar_right.css,v 1.11 2003/04/21 17:41:20 loki Exp $ */
 
 div.sidebar-right {
     float: right;
@@ -8,4 +8,3 @@ div.sidebar-right {
 div.main {
     margin-right: 170px;
 }
-

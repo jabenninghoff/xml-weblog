@@ -1,5 +1,6 @@
 <?php
-// $Id: user.php,v 1.7 2003/04/16 21:50:40 loki Exp $
+// $Id: user.php,v 1.8 2003/04/21 17:41:20 loki Exp $
+// user logon/personal menu block
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -38,9 +39,9 @@
 require_once "include/auth.inc.php";
 
 // only display for authenticated users
-if (user_authenticated()) {
+if (xwl_auth_user_authenticated()) {
 
-    $user = fetch_auth_user();
+    $user = xwl_auth_user_fetch();
 
     echo "<block>\n";
     echo "  <title>", ucfirst($user[userid]), "'s Menu</title>\n";
@@ -57,7 +58,6 @@ if (user_authenticated()) {
 } else {
     // display logon block
     $page = basename($_SERVER['PHP_SELF']);
-
     echo <<< END
 <block>
   <title>Access</title>

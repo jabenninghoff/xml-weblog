@@ -1,5 +1,6 @@
 <?php
-// $Id: functions.inc.php,v 1.23 2003/04/17 17:48:20 loki Exp $
+// $Id: functions.inc.php,v 1.24 2003/04/21 17:41:20 loki Exp $
+// core xml-weblog functions
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,24 +36,42 @@
  *
  */
 
+// basic functions
+
 function xml_declaration()
 {
-    echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n";
+    echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n"; //<?
 }
 
-// W3C valid XTML 1.0 logo/link
-function validate_self()
+function base_url()
 {
-    $uri = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
-    if ($_SERVER['QUERY_STRING']) $uri .= "?".$_SERVER['QUERY_STRING'];
-    $uri = rawurlencode($uri);
+    $url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 
-    echo '<a class="img" href="http://validator.w3.org/check?uri=', $uri, ';ss=1">',
-      '<img src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88"/></a>';
+    return substr($url,0,strrpos($url,"/")+1);
 }
+
+// private functions
+
+function safe_gpc_stripslashes($string)
+{
+    return get_magic_quotes_gpc() ? stripslashes($string) : $string;
+}
+
+function safe_gpc_addslashes($string)
+{
+    return get_magic_quotes_gpc() ? $string : addslashes($string);
+}
+
+function only_has($source,$valid)
+{
+    if (strspn($source,$valid) == strlen($source)) return true;
+    else return false;
+}
+
+// public functions
 
 // replace <code include="file.php"/> with include "code/file.php"
-function process_code($string)
+function xwl_process_code($string)
 {
     // Loop through to find the dynamic code processing instruction
     while ( ($pos = strpos( $string, '<code' )) !== FALSE ) {
@@ -64,7 +83,7 @@ function process_code($string)
             if (($cpos = strpos($command, 'include="')) !== FALSE) {
                 if (($cpos2 = strpos( $command, '"', $cpos + 9)) !== FALSE) {
                     // got the filename ... include it
-                    $file = valid_filename(trim(substr($command, $cpos+9, $cpos2-($cpos+9))));
+                    $file = xwl_valid_filename(trim(substr($command, $cpos+9, $cpos2-($cpos+9))));
                     ob_start();
                     include "code/$file";
                     $results = ob_get_contents();
@@ -79,35 +98,9 @@ function process_code($string)
     return $string;
 }
 
-function base_url()
-{
-    $url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+// validity checks
 
-    return substr($url,0,strrpos($url,"/")+1);
-}
-
-function safe_gpc_stripslashes($string)
-{
-    return get_magic_quotes_gpc() ? stripslashes($string) : $string;
-}
-
-function safe_gpc_addslashes($string)
-{
-    return get_magic_quotes_gpc() ? $string : addslashes($string);
-}
-
-function date_to_datenum($date)
-{
-    return preg_replace("'[- :]'i","",$date);
-}
-
-function only_has($source,$valid)
-{
-    if (strspn($source,$valid) == strlen($source)) return true;
-    else return false;
-}
-
-function valid_ID($id)
+function xwl_valid_ID($id)
 {
     $num =  "0123456789";
 
@@ -115,7 +108,7 @@ function valid_ID($id)
     else return "";
 }
 
-function valid_URI($uri)
+function xwl_valid_URI($uri)
 {
     $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     $num =  "0123456789";
@@ -152,7 +145,7 @@ function valid_URI($uri)
     return $uri;
 }
 
-function valid_filename($file)
+function xwl_valid_filename($file)
 {
     $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     $num =  "0123456789";
@@ -162,20 +155,20 @@ function valid_filename($file)
     else return "";
 }
 
-function valid_boolean($b)
+function xwl_valid_boolean($b)
 {
     if (isset($b)) return "1";
     else return "0";
 }
 
-function valid_date($date)
+function xwl_valid_date($date)
 {
     if (!$date) return "0000-00-00 00:00:00";
     if (($timestamp = strtotime($date)) === -1) return "";
     else return date("Y-m-d H:i:s",$timestamp);
 }
 
-function valid_datenum($datenum)
+function xwl_valid_datenum($datenum)
 {
     $num =  "0123456789";
 
@@ -183,7 +176,7 @@ function valid_datenum($datenum)
     else return "";
 }
 
-function valid_image($file)
+function xwl_valid_image($file)
 {
     if (!is_uploaded_file($file['tmp_name'])) return "";
     if (!getimagesize($file['tmp_name'])) return "";
@@ -191,7 +184,7 @@ function valid_image($file)
     return addslashes(fread(fopen($file['tmp_name'], "r"), filesize($file['tmp_name'])));
 }
 
-function valid_image_small($file)
+function xwl_valid_image_small($file)
 {
     if (!is_uploaded_file($file['tmp_name'])) return "";
     if (!getimagesize($file['tmp_name'])) return "";
@@ -199,7 +192,7 @@ function valid_image_small($file)
     return addslashes(fread(fopen($file['tmp_name'], "r"), filesize($file['tmp_name'])));
 }
 
-function valid_int($int)
+function xwl_valid_int($int)
 {
     $num =  "0123456789";
 
@@ -207,7 +200,7 @@ function valid_int($int)
     else return "";
 }
 
-function valid_lang($lang)
+function xwl_valid_lang($lang)
 {
     // valid rfc1766 language codes
     if (preg_match("/^[a-zA-Z]{2}$/", $lang)) return $lang;
@@ -216,30 +209,30 @@ function valid_lang($lang)
     return "";
 }
 
-function valid_string($str)
+function xwl_valid_string($str)
 {
     return addslashes(htmlspecialchars(safe_gpc_stripslashes($str)));
 }
 
-function valid_string_XHTML($str)
+function xwl_valid_string_XHTML($str)
 {
     $tags = "<a><b><i><s><span>";
     return addslashes(strip_tags(safe_gpc_stripslashes($str),$tags));
 }
 
-function valid_XHTML_code($xhtml)
+function xwl_valid_XHTML_code($xhtml)
 {
     $tags = "<a><b><i><s><span><pre><br><br/><img><p><code>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
-function valid_XHTML_fragment($xhtml)
+function xwl_valid_XHTML_fragment($xhtml)
 {
     $tags = "<a><b><i><s><span><pre><br><br/><img>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
-function valid_XHTML_long($xhtml)
+function xwl_valid_XHTML_long($xhtml)
 {
     $tags = "<a><b><i><s><span><blockquote><table><tr><td><ul><ol><li><pre><br><br/><img><p>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));

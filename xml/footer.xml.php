@@ -1,5 +1,5 @@
 <?php
-// $Id: footer.xml.php,v 1.7 2003/04/16 03:58:20 loki Exp $
+// $Id: footer.xml.php,v 1.8 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -42,7 +42,7 @@ if (basename($_SERVER['PHP_SELF']) == "footer.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     xml_declaration();
-    $site = fetch_site(base_url());
+    $site = xwl_db_fetch_site(base_url());
 }
 ?>
   <!-- footer: bottom of page, includes disclaimer -->
@@ -51,6 +51,6 @@ if (basename($_SERVER['PHP_SELF']) == "footer.xml.php") {
       <?php echo trim($site['disclaimer']), "\n"; ?>
     </disclaimer>
     <content>
-      <?php echo trim(process_code($site['footer_content'])), "\n"; ?>
+      <?php echo trim(xwl_process_code($site['footer_content'])), "\n"; ?>
     </content>
   </footer>

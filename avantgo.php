@@ -1,6 +1,6 @@
 <?php
-// $Id: avantgo.php,v 1.3 2003/04/17 17:52:12 loki Exp $
-// front page renderer
+// $Id: avantgo.php,v 1.4 2003/04/21 17:41:20 loki Exp $
+// avantgo front page renderer
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -40,8 +40,8 @@ require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
 
 // check authentication
-if (login() && !user_authenticated()) {
-    unauthorized("private");
+if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
+    xwl_auth_unauthorized($xwl_auth_realm);
     exit;
 }
 
@@ -53,5 +53,5 @@ require "xml/index.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-render_page($xml, "avantgo");
+xwl_style_render_page($xml, "avantgo");
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.14 2003/04/16 03:58:20 loki Exp $
+// $Id: header.xml.php,v 1.15 2003/04/21 17:41:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -42,8 +42,8 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     xml_declaration();
-    $site = fetch_site(base_url());
-    $message = fetch_message();
+    $site = xwl_db_fetch_site(base_url());
+    $message = xwl_db_fetch_message();
 }
 ?>
   <!-- header: top of the page, with logo, slogan, etc.  -->
@@ -55,7 +55,7 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
     <url><?php echo $site['url']; ?></url>
     <description><?php echo $site['description']; ?></description>
     <content>
-      <?php echo trim(process_code($site['header_content'])), "\n"; ?>
+      <?php echo trim(xwl_process_code($site['header_content'])), "\n"; ?>
     </content>
 
     <!-- zero or more messages, topmost is index 0 -->

@@ -1,5 +1,6 @@
 <?php
-// $Id: article.inc.php,v 1.4 2003/04/16 03:58:20 loki Exp $
+// $Id: article.inc.php,v 1.5 2003/04/21 17:41:20 loki Exp $
+// display article on index.xml.php or article.xml.php page
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.

@@ -1,5 +1,6 @@
 <?php
-// $Id: auth.inc.php,v 1.9 2003/04/17 13:47:42 loki Exp $
+// $Id: auth.inc.php,v 1.10 2003/04/21 17:41:20 loki Exp $
+// authentication & authorization module
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -38,13 +39,20 @@
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
+// private globals
+$auth_user = "";
+
+// initialization
 if (isset($_SERVER['PHP_AUTH_USER'])) {
-    $auth_user = fetch_user(safe_gpc_addslashes($_SERVER['PHP_AUTH_USER']));
+    $auth_user = xwl_db_fetch_user(xwl_valid_string($_SERVER['PHP_AUTH_USER']));
 } else {
     $auth_user = false;
 }
 
-function login()
+
+// public functions
+
+function xwl_auth_login()
 {
     // see if the user explicity requested a login
     if ($_GET['login']) {
@@ -66,7 +74,7 @@ function login()
     return $_COOKIE['login'];
 }
 
-function user_authenticated()
+function xwl_auth_user_authenticated()
 {
 global $auth_user;
 
@@ -76,7 +84,7 @@ global $auth_user;
     return true;
 }
 
-function user_authorized($priv)
+function xwl_auth_user_authorized($priv)
 {
 global $auth_user;
 
@@ -86,18 +94,18 @@ global $auth_user;
     return true;
 }
 
-function fetch_auth_user()
+function xwl_auth_user_fetch()
 {
 global $auth_user;
 
     return $auth_user;
 }
 
-function unauthorized($realm)
+function xwl_auth_unauthorized($realm)
 {
     header('WWW-Authenticate: Basic realm="'.$realm.'"');
     header('HTTP/1.0 401 Unauthorized');
-?>
+    echo <<< END
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <HTML><HEAD>
 <TITLE>401 Authorization Required</TITLE>
@@ -107,7 +115,7 @@ function unauthorized($realm)
 requested. Either you supplied the wrong credentials (e.g., bad password), or
 your browser doesn't understand how to supply the credentials required.</P>
 </BODY></HTML>
-<?php
+END;
     exit;
 }
 ?>

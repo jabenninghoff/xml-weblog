@@ -1,5 +1,6 @@
 <?php
-// $Id: archive.php,v 1.5 2003/04/16 03:58:20 loki Exp $
+// $Id: archive.php,v 1.6 2003/04/21 17:41:20 loki Exp $
+// newer/older articles selection block
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,6 +36,15 @@
  *
  */
 
+require_once "include/db.inc.php";
+
+// private functions
+function date_to_datenum($date)
+{
+    return preg_replace("'[- :]'i","",$date);
+}
+
+// only draw on the index page (only place where it makes sense)
 if (basename($_SERVER['PHP_SELF']) == "index.php") {
     echo "<block>\n";
     echo "  <title>Archives</title>\n";
@@ -44,10 +54,10 @@ if (basename($_SERVER['PHP_SELF']) == "index.php") {
     $a = end($article);
     $s = date_to_datenum($a['date']);
 
-    $first_a = fetch_article_first();
-    $last_a = fetch_article_last();
+    $first_a = xwl_db_fetch_article_first();
+    $last_a = xwl_db_fetch_article_last();
 
-    if (($start || $end) && date_to_datenum($first_a['date']) != $e) {
+    if (($xwl_article_start || $xwl_article_end) && date_to_datenum($first_a['date']) != $e) {
         echo "<a href=\"index.php?end=$e\">Newer Articles</a><br class=\"br\"/>\n";
     } else {
         echo "Newer Articles<br class=\"br\"/>\n";

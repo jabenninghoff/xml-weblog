@@ -1,5 +1,5 @@
 <?php
-// $Id: image.php,v 1.10 2003/04/16 03:58:20 loki Exp $
+// $Id: image.php,v 1.11 2003/04/21 17:41:20 loki Exp $
 // image renderer
 
 /*
@@ -39,7 +39,7 @@
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
-$image = fetch_image(safe_gpc_addslashes($_GET['name']));
+$image = xwl_db_fetch_image(xwl_valid_string($_GET['name']));
 
 header("Content-Type: {$image['type']}");
 echo $image['src'];
