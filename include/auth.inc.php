@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.13 2003/10/22 21:44:35 loki Exp $
+// $Id: auth.inc.php,v 1.14 2003/11/30 02:35:49 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
@@ -56,8 +56,13 @@ if (isset($_SERVER['PHP_AUTH_USER']) && XWL_string::valid($_SERVER['PHP_AUTH_USE
 // public functions
 function xwl_auth_login()
 {
-    // see if the user explicity requested a login
-    if ($_GET['login']) {
+    global $_xwl_auth_user, $xwl_site_value_xml;
+
+    // see if the user explicity requested a login & there's no existing cookie
+    if (($_GET['login'] || $_POST['login']) && !$_COOKIE['login']) {
+
+        // flush any logout cookies
+        setcookie('logout', false);
 
         /*
          * Some browsers (K-Meleon) only send credentials when asked, so to
@@ -67,20 +72,36 @@ function xwl_auth_login()
          * efficient that way. *sigh* This isn't too intrusive, since pretty
          * much everyone silently accepts session cookies.
          */
-        setcookie('login', true);
+        if ($_xwl_auth_user->property['always_login']->value) {
+            // set a cookie to expire in 90 days
+            setcookie('login', true, time()+60*60*24*90);
+        } else {
+            // set a session cookie
+            setcookie('login', true);
+        }
 
         return true;
     }
 
-    // this will be true (only) if the session cookie has been sent.
-    return $_COOKIE['login'];
+    // see if the user explicitly requested a logout
+    if ($_GET['logout'] || $_POST['logout']) {     
+        // flush the login cookie & kill the login
+        setcookie('login', false);
+        setcookie('logout', true);
+        header("Location: ".$xwl_site_value_xml['url']);
+        exit;
+    }
+
+    // this will be true (only) if the session cookie has been sent & user is not logged out.
+    return ($_COOKIE['login'] && !$_COOKIE['logout']);
 }
 
 function xwl_auth_user_authenticated()
 {
-global $_xwl_auth_user;
+    global $_xwl_auth_user;
 
-    if (!$_xwl_auth_user) return false;
+    if (!$_xwl_auth_user || $_COOKIE['logout']) return false;
+
     if (crypt($_SERVER['PHP_AUTH_PW'], $_xwl_auth_user->property['password']->value) != $_xwl_auth_user->property['password']->value) return false;
 
     return true;

@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.13 2003/11/29 07:19:40 loki Exp $
+// $Id: object.php,v 1.14 2003/11/30 02:35:49 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -302,6 +302,7 @@ class XWL_user extends XWL_object
         $this->_add_property("userid", "XWL_userid", true);
         $this->_add_property("password", "XWL_password", true);
         $this->_add_property("admin", "XWL_boolean", true);
+        $this->_add_property("always_login", "XWL_boolean", true);
         $this->_add_property("block", "XWL_XHTML_fragment", false);
     }
 }

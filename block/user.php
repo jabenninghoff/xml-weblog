@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.11 2003/10/22 21:44:35 loki Exp $
+// $Id: user.php,v 1.12 2003/11/30 02:35:49 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -40,6 +40,10 @@
 
 require_once "include/auth.inc.php";
 
+$userblock_page = basename($_SERVER['PHP_SELF']);
+if ($_SERVER['QUERY_STRING']) $userblock_page .= "?".$_SERVER['QUERY_STRING'];
+$userblock_page = htmlspecialchars($userblock_page);
+
 // only display for authenticated users
 if (xwl_auth_user_authenticated()) {
 
@@ -55,16 +59,23 @@ if (xwl_auth_user_authenticated()) {
         echo "<a href=\"user.php\">Customize</a> your personal menu\n";
     }
 
+    echo "    <br class=\"br\"/>\n";
+    echo "    <br class=\"br\"/>\n";
+    echo "    <form action=\"$userblock_page\" method=\"post\">\n";
+    echo "      <input name=\"logout\" type=\"submit\" value=\"Logout\"/>\n";
+    echo "    </form>\n";
+
     echo "  </content>\n";
     echo "</block>\n";
 } else {
     // display logon block
-    $page = basename($_SERVER['PHP_SELF']);
     echo <<< END
 <block>
   <title>Access</title>
   <content>
-    <a href="$page?login=1">Login</a><br class="br"/><br class="br"/>
+    <form action="$userblock_page" method="post">
+      <input name="login" type="submit" value="Login"/>
+    </form>
     If you do not have an account, you can <a href="user.php?mode=new">create</a> one.
   </content>
 </block>
