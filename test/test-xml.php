@@ -1,9 +1,9 @@
 <?php
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
-include "include/functions.inc.php";
+require_once "functions.inc.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-<!-- $Id: test-xml.php,v 1.7 2002/07/23 07:13:50 loki Exp $ -->
+<!-- $Id: test-xml.php,v 1.8 2002/10/17 05:01:43 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>Title</title>

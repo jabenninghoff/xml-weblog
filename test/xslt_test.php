@@ -1,9 +1,9 @@
 <?php
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
-require_once "../include/functions.inc.php";
+require_once "functions.inc.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "/DTD/xhtml1-strict.dtd">
-<!-- $Id: xslt_test.php,v 1.4 2002/10/15 04:15:51 loki Exp $ -->
+<!-- $Id: xslt_test.php,v 1.5 2002/10/17 05:01:43 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>XSLT transform test</title>
@@ -12,7 +12,7 @@ require_once "../include/functions.inc.php";
 <?php
 // get php-formatted xml document
 ob_start();
-require "../template.php";
+require "template.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
