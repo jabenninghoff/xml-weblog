@@ -1,3 +1,2 @@
-./image/logo.gif
+./image/xml-weblog-logo.png
 ./image/valid-xhtml10.png
-./image/ramblo.jpg

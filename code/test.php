@@ -1,3 +1,0 @@
-<?php
-validate_self();
-?>

@@ -1,20 +1,40 @@
--- $Id: sample-values.sql,v 1.5 2002/10/28 17:23:13 loki Exp $
+-- $Id: sample-values.sql,v 1.6 2002/10/29 18:19:46 loki Exp $
 --
 -- XML-weblog sample values
 --
 
---
--- test site "technomagik"
---
+INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!','Loki','2002-10-29 11:53:00','<p>Welcome to <b><a href=\"http://www.xml-weblog.org\">xml-weblog</a></b>, the first fully buzzword-compliant weblog/portal engine.</p>\r\n<p>All content and most configuration information is stored on the database (currently MySQL, but in the future, additional databases will be supported) back-end, with all code residing on the web server. The intermediate content layer is a PHP-generated XML page, using the built-in xml-weblog format (dtd not yet written). This intermediate format is converted into XHTML or other formats using the XSLT/PHP front-end.</p>\r\n<p>This separation of content, logical presentation, and actual presentation (style) makes it easy to change the look &amp; feel of the site or present the site in multiple styles and formatted for different display devices (i.e. mobile/AvantGo).</p>\r\n<p><b>Welcome!</b></p>','','en');
 
-INSERT INTO article VALUES (1,1,1,'Some Mail Someone Sent Me','Loki','2002-10-16 12:00:00','<p>Here\'s some interesting email I got.</p>','<p>Blah blah blah blah blah. Blah. Blah Blah Blah. What else do you expect from this ?</p>','en');
-INSERT INTO article VALUES (2,1,1,'Test Article 2','Loki','2002-10-17 19:08:05','<p>First milestone is <b>complete!</b></p>','<p>Successfully retrieved articles, blocks, topics, and site configuration from MySQL back-end.</p>\r\n<p>Process:<br/>MySQL > PHP > XML document > XSLT transform > XHTML page</p>','en');
-INSERT INTO article VALUES (3,1,1,'Milestone 2 complete!','Loki','2002-10-26 18:35:00','<p>Milestone 2 is <b>complete</b>!!!</p><p><img src=\"image.php?name=ramblo.jpg\" alt=\"Ramblo\"/></p>\r\n','<p>The admininstration page is now fully functional, complete with validation of all user input. Although it doesn\'t look pretty, the code provides a basic weblog/portal.</p>\r\n<p>Now in 1.0-alpha status, the only remaining features to implement (for version 1.0) are: built-in authentication (for the admininstration page), and custom forms processsing (to make site management easier). Once that\'s done, I plan on releasing a beta version (tarball only - no CVS access yet) for testing, and then work on site design/presentation.</p>','en');
-INSERT INTO block VALUES (1,'left',0,0,'News Sites','<a href=\"http://www.deadly.org/\">OpenBSD Journal</a><br/>\r\n<a href=\"http://daily.daemonnews.org/\">daemonnews</a><br/>\r\n<a href=\"http://slashdot.org/\">Slashdot</a><br/>','en');
-INSERT INTO block VALUES (2,'left',0,1,'Bogus Block','This block is <b>bogus!!</b>','en');
-INSERT INTO message VALUES (1,0,'2002-10-17 00:00:00','0000-00-00 00:00:00','<b>NOTE: this is only a prototype; don\'t expect anything to work.</b>','en');
-INSERT INTO site VALUES (1,'http://www.technomagik.net/test/',10,'XML-Weblog test site','We need a slogan !!','logo.gif','Test site for XML-Weblog development (description)','<a href=\"http://www.google.com\">Search</a>','All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest (c) 2002 tm.net\r\n','<code include=\"test.php\"/>','en');
-INSERT INTO site VALUES (2,'http://www.technomagik.net/private/xml-weblog/',20,'XML-Weblog development site','We <b>have</b> a slogan !!','logo.gif','XML-Weblog development site','<a href=\"http://www.google.com\">Search</a>','All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest (c) 2002 tm.net','<code include=\"test.php\"/>','en');
-INSERT INTO topic VALUES (1,'No Topic','Default (no topic)','');
-INSERT INTO user VALUES (1,'admin','$1$kXmNiSGW$/QbzcHRWRegZikkjhIyi90',1);
-INSERT INTO user VALUES (2,'loki','$1$IHaet2Gc$/6LbO2epMz2LGpanowGMA0',1);
+INSERT INTO block VALUES (1,'left',1,1,'News Links','<a href=\"http://www.deadly.org\">OpenBSD Journal</a><br/>\r\n<a href=\"http://daily.daemonnews.org\">daemonnews</a><br/>\r\n<a href=\"http://www.bsdtoday.com\">BSD Today</a><br/>\r\n<a href=\"http://www.macosrumors.com\">MacOS Rumors</a><br/>\r\n<a href=\"http://apple.slashdot.org\">Slashdot (Apple)</a><br/>\r\n<a href=\"http://bsd.slashdot.org\">Slashdot (BSD)</a><br/>\r\n<a href=\"http://yro.slashdot.org\">Slashdot (YRO)</a><br/>\r\n<a href=\"http://slashdot.org\">Slashdot</a>\r\n','en');
+
+INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
+
+INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','xml-weblog-logo.png','xml-weblog sample site','<p><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest &#169; 2002 xml-weblog.org','<p><code include=\"validxml.php\"/></p>','en');
+
+INSERT INTO topic VALUES (1,'No Topic','No topic.','blank.png');
+INSERT INTO topic VALUES (2,'Announcements','Site Information and Announcements.','announce.png');
+INSERT INTO topic VALUES (3,'Apple','Apple Computer, Mac OS X, and all things Macintosh.','apple.png');
+INSERT INTO topic VALUES (4,'BSD','BSD and Berkeley-derived Unices: FreeBSD, NetBSD, OpenBSD, and Darwin.','bsd.png');
+INSERT INTO topic VALUES (5,'Books','Book news and reviews.','books.png');
+INSERT INTO topic VALUES (6,'Bugs','xml-weblog bug reports.','bugs.png');
+INSERT INTO topic VALUES (7,'Censorship','censorship and attacks on free speech principles.','censorship.png');
+INSERT INTO topic VALUES (8,'Courts','The Courts and Legal matters.','courts.png');
+INSERT INTO topic VALUES (9,'Games','Computer, board, card, and other games.','games.png');
+INSERT INTO topic VALUES (10,'Hackers','The dark side of computer security.','hackers.png');
+INSERT INTO topic VALUES (11,'Hardware','Computer and Electronic hardware and equipment.','hardware.png');
+INSERT INTO topic VALUES (12,'Humor','Humor. Laugh, damn it!','humor.png');
+INSERT INTO topic VALUES (13,'Mail','Messages from the aether.','mail.png');
+INSERT INTO topic VALUES (14,'Microsoft','Microsoft Corporation and all things Bill.','microsoft.png');
+INSERT INTO topic VALUES (15,'Miscellaneous','Random stuff.','misc.png');
+INSERT INTO topic VALUES (16,'Money','Money, Business, and Economics.','money.png');
+INSERT INTO topic VALUES (17,'Music','Music on CD, LP, MP3, and live events.','music.png');
+INSERT INTO topic VALUES (18,'News','News from the outside world.','news.png');
+INSERT INTO topic VALUES (19,'Privacy','Privacy in the digital age.','privacy.png');
+INSERT INTO topic VALUES (20,'Security','Computer and Network security.','security.png');
+INSERT INTO topic VALUES (21,'Sites','Interesting places to visit on the web.','sites.png');
+INSERT INTO topic VALUES (22,'Software','Software and programming.','software.png');
+INSERT INTO topic VALUES (23,'Technology','Modern and post-modern technology.','technology.png');
+INSERT INTO topic VALUES (24,'XML-Weblog','XML-Weblog site management engine','xml-weblog.png');
+
+INSERT INTO user VALUES (1,'admin','$1$djcMXWAa$C7BumIUNqvkpTcabiU9IT0',1);
+INSERT INTO user VALUES (2,'loki','$1$dk3BJfNA$0u1ZFF3PvBy24L0Z.wZdb/',1);
