@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.3 2002/10/17 20:29:42 loki Exp $
+// $Id: sidebar.xml.php,v 1.4 2002/10/18 00:12:34 loki Exp $
 
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
@@ -32,7 +32,7 @@ while ($block[$i]) {
            $block[$i]['sidebar_index'] == $index) {
         echo '    <block index="', $block[$i]['block_index'], '">', "\n";
         echo "      <title>", $block[$i]['title'], "</title>\n";
-        echo "      <content>", $block[$i]['content'], "</content>\n";
+        echo "      <content>\n", $block[$i]['content'], "\n      </content>\n";
         echo "    </block>\n";
         $i++;
     }
