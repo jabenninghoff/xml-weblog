@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.php,v 1.4 2002/10/31 00:41:29 loki Exp $
+// $Id: admin.php,v 1.5 2002/11/01 17:00:28 loki Exp $
 // admin front page
 
 include_once "include/auth.inc.php";
@@ -26,7 +26,11 @@ $arguments = array(
 // render & display the document using xslt
 $xh = xslt_create();
 $result = xslt_process($xh, 'arg:/_xml', $style_path, NULL, $arguments);
-print $result;
+
+// textarea hack
+$result = str_replace("%enter_text%", "", $result);
+
+echo $result;
 
 xslt_free($xh);
 ?>

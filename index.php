@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.6 2002/10/31 00:41:29 loki Exp $
+// $Id: index.php,v 1.7 2002/11/01 17:00:28 loki Exp $
 // front page renderer
 
 include_once "include/style.inc.php";
@@ -19,7 +19,7 @@ $arguments = array(
 // render & display the document using xslt
 $xh = xslt_create();
 $result = xslt_process($xh, 'arg:/_xml', $style_path, NULL, $arguments);
-print $result;
+echo $result;
 
 xslt_free($xh);
 ?>
