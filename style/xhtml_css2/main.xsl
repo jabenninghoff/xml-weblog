@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.23 2003/10/22 21:44:36 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.24 2003/12/06 20:12:37 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -127,7 +127,7 @@
 
 <xsl:template match="block">
   <div class="block-title"><p class="zero"><b><xsl:value-of select="title"/></b></p></div>
-  <div class="block-main"><p class="zero"><xsl:copy-of select="content/text()|content/*"/></p></div>
+  <div class="block-main"><xsl:copy-of select="content/text()|content/*"/></div>
 </xsl:template>
 
 <xsl:template match="article">
