@@ -1,5 +1,5 @@
 <?php
-// $Id: footer.xml.php,v 1.10 2003/04/22 21:26:31 loki Exp $
+// $Id: footer.xml.php,v 1.11 2003/10/20 19:23:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -38,6 +38,13 @@
 
 require_once "XWL.php";
 require_once "include/site.php";
+require_once "include/auth.inc.php";
+
+// check authentication
+if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
+    xwl_auth_unauthorized($xwl_auth_realm);
+    exit;
+}
 
 if (basename($_SERVER['PHP_SELF']) == "footer.xml.php") {
     // standalone
