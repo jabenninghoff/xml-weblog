@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.24 2003/04/16 21:37:10 loki Exp $
+-- $Id: sample-values.sql,v 1.25 2003/04/17 16:03:28 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -73,6 +73,3 @@ INSERT INTO topic VALUES (21,'Sites','Interesting places to visit on the web.','
 INSERT INTO topic VALUES (22,'Software','Software and programming.','wl_icons/software.png');
 INSERT INTO topic VALUES (23,'Technology','Modern and post-modern technology.','wl_icons/technology.png');
 INSERT INTO topic VALUES (24,'XML-Weblog','XML-Weblog site management engine','wl_icons/xml-weblog.png');
-
-INSERT INTO user VALUES (1,'admin','$1$djcMXWAa$C7BumIUNqvkpTcabiU9IT0',1, '');
-INSERT INTO user VALUES (2,'loki','$1$dk3BJfNA$0u1ZFF3PvBy24L0Z.wZdb/',1, '');

@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.17 2003/04/16 03:58:20 loki Exp $
+// $Id: load_dbase.php,v 1.18 2003/04/17 16:03:28 loki Exp $
 // database/image loader
 
 /*
@@ -69,7 +69,12 @@ foreach ($tables as $table) {
     echo "  PRIMARY KEY (id)\n";
     echo ") TYPE=MyISAM;\n\n";
 }
+
 include "./sample-values.sql";
+
+// generate default admin password using system default encryption algorithm
+echo "\nINSERT INTO user VALUES (1,'admin','", crypt("weblog"), "',1,'');\n";
+
 // match unix/dos/mac newline
 $query = preg_split("/;[(\n)(\r\n)(\cM)]/",ob_get_contents());
 foreach ($query as $q) {
