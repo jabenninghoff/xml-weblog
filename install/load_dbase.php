@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.7 2002/10/27 07:46:19 loki Exp $
+// $Id: load_dbase.php,v 1.8 2002/10/27 15:58:18 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -105,7 +105,7 @@ $image = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
     "src" => array("image", 1),
-    "type" => array("string", 1),
+    "mime" => array("string", 1),
     "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
@@ -115,7 +115,7 @@ $icon = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
     "src" => array("image_small", 1),
-    "type" => array("string", 1),
+    "mime" => array("string", 1),
     "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
