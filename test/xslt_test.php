@@ -1,9 +1,9 @@
 <?php
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
-include_once "../include/functions.inc.php";
+require_once "../include/functions.inc.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "/DTD/xhtml1-strict.dtd">
-<!-- $Id: xslt_test.php,v 1.3 2002/10/12 02:29:42 loki Exp $ -->
+<!-- $Id: xslt_test.php,v 1.4 2002/10/15 04:15:51 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>XSLT transform test</title>
@@ -11,9 +11,10 @@ include_once "../include/functions.inc.php";
   <body>
 <?php
 // get php-formatted xml document
-$xmlData = fopen ("http://loki:luzer@www.technomagik.net/private/xml/template.php", "r");
-while ($line = fgets ($xmlData))
-    $xml .= $line;
+ob_start();
+require "../template.php";
+$xml = ob_get_contents();
+ob_end_clean();
 
 $arguments = array(
      '/_xml' => $xml

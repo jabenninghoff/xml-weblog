@@ -1,9 +1,10 @@
 <?php
-include_once "../include/functions.inc.php";
+require_once "../include/functions.inc.php";
 // get php-formatted xml document
-$xmlData = fopen ("http://loki:luzer@www.technomagik.net/private/xml/template.pp", "r");
-while ($line = fgets ($xmlData))
-    $xml .= $line;
+ob_start();
+require "../template.php";
+$xml = ob_get_contents();
+ob_end_clean();
 
 $arguments = array(
      '/_xml' => $xml
