@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.2 2002/11/17 21:53:56 loki Exp $
+// $Id: topic.xml.php,v 1.3 2002/11/24 22:13:24 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -38,7 +38,7 @@
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
-if (basename($_SERVER['PHP_SELF']) == "topics.xml.php") {
+if (basename($_SERVER['PHP_SELF']) == "topic.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 }
@@ -71,7 +71,21 @@ if (!isset($_GET['id'])) {
     }
     echo "    </topiclist>\n";
 } else {
-    echo "<content><p/></content>\n";
+    $id = valid_id($_GET['id']);
+    $article = fetch_article_by_topic($id);
+    echo "    <articlelist>\n";
+    echo "      <heading>{$topic[$id-1]['name']}</heading>\n";
+    $i = 1;
+    foreach ($article as $a) {
+        echo "        <article index=\"$i\">\n";
+        echo "          <url>article.php?id={$a['id']}</url>\n";
+        echo "          <title>{$a['title']}</title>\n";
+        echo "          <author>{$a['author']}</author>\n";
+        echo "          <date>{$a['date']}</date>\n";
+        echo "        </article>\n";
+        $i++;
+    }
+    echo "</articlelist>\n";
 }
 ?>
   </main>

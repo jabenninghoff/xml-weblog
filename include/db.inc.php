@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.6 2002/11/04 05:30:17 loki Exp $
+// $Id: db.inc.php,v 1.7 2002/11/24 22:13:09 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -76,8 +76,16 @@ function fetch_article_single($id)
 {
     global $xwl_db;
 
-    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id and article.id='$id'";
+    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id and article.id=$id";
     return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
+}
+
+function fetch_article_by_topic($topic)
+{
+    global $xwl_db;
+
+    $query = "select article.*, user.userid as author from article,user where article.user=user.id and article.topic='$topic' order by article.date desc";
+    return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
 }
 
 function fetch_topic()
