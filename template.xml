@@ -1,66 +1,45 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: template.xml,v 1.3 2001/12/28 09:37:03 death Exp $ -->
+<!-- $Id: template.xml,v 1.4 2001/12/31 17:13:35 death Exp $ -->
 
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
 <page>
 
-    <!-- header: always appears at the top of the page -->
-    <header>insert header here</header>
+    <!-- header: top of the page -->
+    <header>header goes here</header>
+
+    <!-- footer: bottom of page -->
+    <footer>footer goes here</footer>
 
     <!--
-    block: basic unit of weblog. A block of space in one of 3 columns, left,
-    center, right.
+    block: basic unit of weblog. a block of space in left or right sidebar, or
+    in the main page area.
+
+    attributes:
+
+      weight: for determining placement on page. normally lower weighted blocks
+      appear at the top of the page, however may appear in any order in XML document.
+
+      class: left, right or main. Location of block in sidebar or in main section.
     -->
-    <block weight="0" class="left" id="3">
-        <title><!-- #PCDATA title here --></title>
-        <content><!-- weblog/XHTML content block here --></content>
+    <block weight="0" class="left">
+
+	<!-- block title: name of block -->
+        <title>#PCDATA title goes here</title>
+
+	<!-- block content -->
+        <content>content goes here</content>
+
     </block>
 
-    <block weight="1" class="left" id="2">
-        <title>Title</title>
-    	<content>insert block here</content>
+    <!-- main block(s). Usually a single block; index page displays stories -->
+    <block class="main">
+        <title>home</title>
+
+        <!-- content: -->
+        <content object="" />
+
     </block>
 
-    <block weight="2" class="left" id="4">
-        <title>Title</title>
-    	<content>insert block here</content>
-    </block>
-
-    <!-- right blocks -->
-    <block weight="0" class="right" id="3">
-        <title>Title</title>
-    	<content>insert block here</content>
-    </block>
-
-    <block weight="1" class="right" id="17">
-        <title>Title</title>
-    	<content>insert block here</content>
-    </block>
-
-    <block weight="2" class="right" id="12">
-        <title>Title</title>
-    	<content>insert block here</content>
-    </block>
-
-    <!-- center block(s). Usually a single block; main page displays stories -->
-    <block class="main" id="1" script="home.php">
-        <title>index</title>
-        <content>
-            <!-- main story section goes here -->
-            <story id="1231203">
-                <author url="mailto:loki@technomagik.net">Loki</author>
-                <date>2001/12/18 17:49:12</date>
-                <title>#PCDATA title goes here</title>
-                <content>XHTML Story text goes here</content>
-                <comment id="390098">
-		    <author>jason</author>
-		    <date>2001/12/18 19:02:13</date>
-                    <content>First Post!!!</content>
-		</comment>
-            </story>
-        </content>
-    </block>
-    <footer>insert footer here</footer>
 </page>
