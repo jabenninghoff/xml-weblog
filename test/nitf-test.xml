@@ -1,9 +1,8 @@
-<?xml version="1.0"?>
-<!--
-<!DOCTYPE nitf SYSTEM "../nitf-3-0.dtd">
--->
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE nitf SYSTEM "dtd/nitf-3-0.dtd">
 <nitf>
 <head>
+	<title type="main">Article Title</title>
 	<tobject tobject.type="news">
 		<tobject.subject
 			tobject.subject.refnum="17000000"
