@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.4 2002/11/01 15:30:54 loki Exp $ */
+/* $Id: default.css,v 1.5 2002/11/01 17:24:28 loki Exp $ */
 
 /* default settings */
 body {
@@ -39,6 +39,7 @@ div.header {
 div.footer {
     clear: both;
     text-align: center;
+    margin-top: 2ex;
     border-top: 1px solid black;
 }
 
