@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.13 2003/12/01 16:13:09 loki Exp $
+// $Id: user.php,v 1.14 2003/12/01 16:48:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -59,26 +59,23 @@ if (xwl_auth_user_authenticated()) {
         echo "<a href=\"user.php\">Customize</a> your personal menu\n";
     }
 
-    echo "    <br class=\"br\"/>\n";
-    echo "    <br class=\"br\"/>\n";
-    echo "    <object><form action=\"$userblock_page\" method=\"post\">\n";
-    echo "      <div><input name=\"logout\" type=\"submit\" value=\"Logout\"/></div>\n";
-    echo "    </form></object>\n";
-
     echo "  </content>\n";
     echo "</block>\n";
-} else {
-    // display logon block
-    echo <<< END
-<block>
-  <title>Access</title>
-  <content>
-    <object><form action="$userblock_page" method="post">
-      <div><input name="login" type="submit" value="Login"/></div>
-    </form></object>
-    If you do not have an account, you can <a href="user.php?mode=new">create</a> one.
-  </content>
-</block>
-END;
 }
+
+// display login/logout block
+echo "<block>";
+echo "  <title>Access</title>";
+echo "  <content>";
+echo "    <object><form action=\"$userblock_page\" method=\"post\">";
+if (xwl_auth_user_authenticated()) {
+    echo "      <div><input name=\"logout\" type=\"submit\" value=\"Logout\"/></div>\n";
+    echo "    </form></object>";
+} else {
+    echo "      <div><input name=\"login\" type=\"submit\" value=\"Login\"/></div>";
+    echo "    </form></object>";
+    echo "    If you do not have an account, you can <a href=\"user.php?mode=new\">create</a> one.";
+}
+echo "  </content>";
+echo "</block>";
 ?>
