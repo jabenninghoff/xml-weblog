@@ -1,15 +1,18 @@
 <?php
-// $Id: config.inc.php,v 1.4 2002/10/29 23:28:51 loki Exp $
+// $Id: config.inc.php,v 1.5 2002/11/01 03:32:06 loki Exp $
 
 // database configuration
-$xlw_db_type = "mysql";         // currently, only mysql is supported
-$xlw_db_server = "localhost";
-$xlw_db_user = "xml";
-$xlw_db_password = "weblog";
-$xlw_db_database = "xml_weblog";
+$xwl_db_type = "mysql";         // currently, only mysql is supported
+$xwl_db_server = "localhost";
+$xwl_db_user = "xml";
+$xwl_db_password = "weblog";
+$xwl_db_database = "xml_weblog";
 
 // defaults
-$xlw_article_default_limit = 10;
+$xwl_article_default_limit = 10;
 $xwl_default_site = 1;
+$xwl_default_topic = 1;
+$xwl_default_user = 1;
+$xwl_default_lang = "en";
 
 ?>

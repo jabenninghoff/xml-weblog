@@ -1,25 +1,11 @@
 <?php
-// $Id: admin.xml.php,v 1.14 2002/10/28 17:23:13 loki Exp $
+// $Id: admin.xml.php,v 1.15 2002/11/01 03:32:09 loki Exp $
 
 require_once "include/auth.inc.php";
+require_once "include/config.inc.php";
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
-
-$display = array(
-    "ID" => true,
-    "URI" => true,
-    "boolean" => true,
-    "date" => false,
-    "image" => false,
-    "image_small" => false,
-    "int" => true,
-    "lang" => true,
-    "string" => true,
-    "string_XHTML" => true,
-    "XHTML_code" => false,
-    "XHTML_fragment" => false,
-    "XHTML_long" => false
-);
+require_once "include/types.inc.php";
 
 function form_error()
 {
@@ -29,6 +15,8 @@ function form_error()
 }
 
 function admin_input($name, $type, $value, $mode) {
+
+    global $xwl_default_lang;
 
     echo "              <td><b>", ucfirst($name), "</b></td>\n";
 
@@ -71,6 +59,7 @@ function admin_input($name, $type, $value, $mode) {
         break;
 
     case "lang":
+        $value = $value ? $value : $xwl_default_lang;
         echo '<input name="', $name, '" type="text" maxlength="255" size="5" ',
             'value="', $value, '"/>';
         break;
@@ -79,7 +68,7 @@ function admin_input($name, $type, $value, $mode) {
     case "XHTML_fragment":
     case "XHTML_long":
         if (!$value) $value = "enter_text";
-        echo '<textarea name="', $name, '" cols="40" rows="4">';
+        echo '<textarea name="', $name, '" cols="48" rows="8">';
         echo "$value</textarea>";
         break;
 
@@ -91,19 +80,101 @@ function admin_input($name, $type, $value, $mode) {
     echo "</td>\n";
 }
 
+function admin_input_select($name, $menu, $default)
+{
+    echo "              <td><b>", ucfirst($name), "</b></td>\n";
+    echo "              <td><select name=\"$name\">\n";
+    for ($i=1; $menu[$i]; $i++) {
+        echo "                <option ", $i==$default ? "selected=\"selected\" " : "", "value=\"$i\">$menu[$i]</option>\n";
+    }
+    echo "              </select></td>\n";
+}
+
+//
+// custom form handlers
+//
+
+function admin_form_article($object, $type, $schema, $mode)
+{
+    global $xwl_default_site, $xwl_default_topic, $xwl_default_user;
+
+    echo "          <table>\n";
+    foreach ($schema as $s) {
+        switch ($s['property']) {
+            case "site":
+                $menu = fetch_column_by_id("site", "url");
+                echo "            <tr>\n";
+                admin_input_select("site", $menu, $object['site'] ? $object['site'] : $xwl_default_site);
+                echo "            </tr>\n";
+                break;
+
+            case "topic":
+                $menu = fetch_column_by_id("topic", "name");
+                echo "            <tr>\n";
+                admin_input_select("topic", $menu, $object['topic'] ? $object['topic'] : $xwl_default_topic);
+                echo "            </tr>\n";
+                break;
+
+            case "user":
+                $menu = fetch_column_by_id("user", "userid");
+                echo "            <tr>\n";
+                admin_input_select("user", $menu, $object['user'] ? $object['user'] : $xwl_default_user);
+                echo "            </tr>\n";
+                break;
+
+            default:
+                echo "            <tr>\n";
+                admin_input($s['property'], $s['datatype'],
+                    htmlspecialchars($object[$s['property']]), $mode);
+                echo "            </tr>\n";
+                break;
+        }
+    }
+    echo "          </table>\n";
+}
+
+function admin_form_block($object, $type, $schema, $mode)
+{
+    echo "          <table>\n";
+    foreach ($schema as $s) {
+        if ($s['property'] == "sidebar_align") {
+            $right_select = $object['sidebar_align'] == "right" ? " selected=\"selected\" " : "";
+            echo "            <tr>\n";
+            echo "              <td><b>Sidebar_align</b></td>\n";
+            echo "              <td><select name=\"sidebar_align\">\n";
+            echo "              <option>left</option>\n";
+            echo "              <option$right_select>right</option>\n";
+            echo "            </select></td>\n";
+            echo "            </tr>\n";
+        } else {
+            echo "            <tr>\n";
+            admin_input($s['property'], $s['datatype'],
+                htmlspecialchars($object[$s['property']]), $mode);
+            echo "            </tr>\n";
+        }
+    }
+    echo "          </table>\n";
+}
 
 function admin_form($object, $type, $schema, $mode)
 {
+global $admin_form_handler;
+
 echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" ",
     "method=\"post\" enctype=\"multipart/form-data\">\n";
-echo "          <table>\n";
-foreach ($schema as $s) {
-    echo "            <tr>\n";
-    admin_input($s['property'], $s['datatype'],
-        htmlspecialchars($object[$s['property']]), $mode);
-    echo "            </tr>\n";
+if ($admin_form_handler[$type]) {
+    $admin_form_handler[$type]($object, $type, $schema, $mode);
+} else {
+    // default handler
+    echo "          <table>\n";
+    foreach ($schema as $s) {
+        echo "            <tr>\n";
+        admin_input($s['property'], $s['datatype'],
+            htmlspecialchars($object[$s['property']]), $mode);
+        echo "            </tr>\n";
+    }
+    echo "          </table>\n";
 }
-echo "          </table>\n";
 echo "          <p>\n";
 echo '            <input name="mode" type="hidden" value="', $mode, '"/>',"\n";
 echo '            <input name="type" type="hidden" value="', $type, '"/>',"\n";
@@ -133,7 +204,7 @@ echo "          </table>\n";
 
 function display_form()
 {
-global $type,$display;
+global $type,$admin_display;
 
 // display variables
 $get_mode = $_GET['mode'];
@@ -154,7 +225,7 @@ if ($get_mode == "create") {
     foreach ($object as $obj) {
         echo "      <object type=\"$get_type\">\n";
         foreach ($schema as $s) {
-            if ($display[$s['datatype']]) {
+            if ($admin_display[$s['datatype']]) {
                 echo "        ";
                 echo "<property name=\"{$s['property']}\">",
                     htmlspecialchars($obj[$s['property']]), "</property>\n";
@@ -177,7 +248,7 @@ echo "      </content>\n";
 
 function process_form()
 {
-global $type,$display;
+global $type;
 
 $valid_mode = array("create", "edit", "delete");
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.12 2002/10/31 08:41:09 loki Exp $
+// $Id: load_dbase.php,v 1.13 2002/11/01 03:32:09 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -8,14 +8,14 @@ require_once "include/config.inc.php";
 require_once "include/types.inc.php";
 require_once "DB.php";
 
-$db = DB::connect("$xlw_db_type://$xlw_db_user:$xlw_db_password@$xlw_db_server/$xlw_db_database", true);
+$db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
 
 if (DB::isError($db)) {
-    $link = mysql_pconnect($xlw_db_server, $xlw_db_user, $xlw_db_password)
+    $link = mysql_pconnect($xwl_db_server, $xwl_db_user, $xwl_db_password)
         or die("Error: couldn't connect!\n");
-    mysql_create_db($xlw_db_database)
+    mysql_create_db($xwl_db_database)
         or die("Error: couldn't create database!\n");
-    $db = DB::connect("$xlw_db_type://$xlw_db_user:$xlw_db_password@$xlw_db_server/$xlw_db_database", true);
+    $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
     if (DB::isError($db)) die("Error: WTF Happened ?\n");
 } else die("Error: database already exists. not installing.\n");
 

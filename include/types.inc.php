@@ -1,5 +1,5 @@
 <?php
-// $Id: types.inc.php,v 1.1 2002/10/31 08:41:09 loki Exp $
+// $Id: types.inc.php,v 1.2 2002/11/01 03:32:06 loki Exp $
 // xml-weblog type definitions
 
 // basic datatype definitions
@@ -18,6 +18,30 @@ $type = array(
     "XHTML_fragment" => "text NOT NULL",
     "XHTML_long" => "mediumtext NOT NULL"
 );
+
+// display in admin tables
+$admin_display = array(
+    "ID" => true,
+    "URI" => true,
+    "boolean" => true,
+    "date" => false,
+    "image" => false,
+    "image_small" => false,
+    "int" => true,
+    "lang" => true,
+    "string" => true,
+    "string_XHTML" => true,
+    "XHTML_code" => false,
+    "XHTML_fragment" => false,
+    "XHTML_long" => false
+);
+
+// custom admin form handlers
+$admin_form_handler = array(
+    "article" => "admin_form_article",
+    "block" => "admin_form_block"
+);
+
 
 // image types for getimagesize()
 $mime_type = array("", "image/gif", "image/jpeg", "image/png",
