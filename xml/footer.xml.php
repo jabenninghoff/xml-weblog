@@ -1,5 +1,5 @@
 <?php
-// $Id: footer.xml.php,v 1.9 2003/04/21 20:54:12 loki Exp $
+// $Id: footer.xml.php,v 1.10 2003/04/22 21:26:31 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,22 +36,24 @@
  *
  */
 
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/site.php";
 
 if (basename($_SERVER['PHP_SELF']) == "footer.xml.php") {
     // standalone
     header('Content-Type: text/xml');
-    xml_declaration();
-    $site = xwl_db_fetch_site(base_url());
+    XWL::xml_declaration();
 }
-?>
+echo <<< END
   <!-- footer: bottom of page, includes disclaimer -->
   <footer>
     <disclaimer>
-      <?php echo trim($site['disclaimer']), "\n"; ?>
+      {$xwl_site_value_xml['disclaimer']}
     </disclaimer>
     <content>
-      <?php echo trim(xwl_process_code($site['footer_content'])), "\n"; ?>
+      {$xwl_site_value_xml['footer_content']}
     </content>
   </footer>
+
+END;
+?>
