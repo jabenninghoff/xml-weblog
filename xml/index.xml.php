@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.18 2003/04/23 16:10:27 loki Exp $
+// $Id: index.xml.php,v 1.19 2003/04/23 18:55:23 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -42,7 +42,7 @@ require_once "include/article.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     // standalone
-    header('Content-Type: text/plain');
+    header('Content-Type: text/xml');
 }
 
 XWL::xml_declaration();
@@ -57,14 +57,6 @@ echo "\n";
 
 echo "  <!-- main: main section of document. index page contains articles. -->\n";
 echo "    <main>\n";
-
-/*
-// build variables
-$xwl_article_start = xwl_valid_datenum($_GET['start']);
-$xwl_article_end = xwl_valid_datenum($_GET['end']);
-
-$article = xwl_db_fetch_article($site['article_limit'],$xwl_article_start,$xwl_article_end);
-*/
 
 // fetch articles
 $xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit']);
