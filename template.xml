@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: template.xml,v 1.9 2002/10/11 19:30:48 loki Exp $ -->
+<!-- $Id: template.xml,v 1.10 2002/10/12 01:08:21 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
 <page>
-  <language>active language (generated)</language>
+  <!-- active language (generated) -->
+  <language>x-klingon</language>
 
   <!-- (HTML) title -->
   <title>page title (generated)</title>
