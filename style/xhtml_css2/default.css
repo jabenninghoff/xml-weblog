@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.3 2002/11/01 15:27:23 loki Exp $ */
+/* $Id: default.css,v 1.4 2002/11/01 15:30:54 loki Exp $ */
 
 /* default settings */
 body {
@@ -24,7 +24,6 @@ a.img {
 }
 
 p.hrule {
-    clear: both;
     border-bottom: 1px solid black;
 }
 
@@ -50,7 +49,6 @@ div.message {
 }
 
 div.byline {
-    clear: both;
 }
 
 /* extras */
