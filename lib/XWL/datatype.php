@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.3 2003/04/22 21:17:40 loki Exp $
+// $Id: datatype.php,v 1.4 2003/04/22 21:26:31 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -73,7 +73,7 @@ class XWL_datatype
 
     function display_XML()
     {
-        return $this->HTML_safe_value();
+        return trim($this->HTML_safe_value());
     }
 }
 
@@ -199,7 +199,7 @@ class XWL_string_XHTML extends XWL_string
     function display_XML()
     {
         // should already be valid XML
-        return $this->value;
+        return trim($this->value);
     }
 }
 
@@ -329,7 +329,7 @@ class XWL_XHTML extends XWL_datatype
     function display_XML()
     {
         // should already be valid XML
-        return $this->value;
+        return trim($this->value);
     }
 }
 
@@ -340,7 +340,7 @@ class XWL_XHTML_code extends XWL_XHTML
     function display_XML()
     {
         // process <code/> tags - result should be valid XML
-        return XWL::process_code($this->value);
+        return trim(XWL::process_code($this->value));
     }
 }
 
