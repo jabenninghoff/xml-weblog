@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.11 2003/11/01 04:11:44 loki Exp $
+// $Id: database.php,v 1.12 2003/11/01 20:33:45 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -167,6 +167,32 @@ class XWL_database
         return $this->_fetch_single("XWL_$class", $query);
     }
 
+    function delete_object($class, $id)
+    {
+        // delete object
+        $result = $this->_db->query("DELETE from $class where id=$id");
+        return !(DB::isError($result));
+    }
+
+    function edit_object($class, $object)
+    {
+        $query  = "UPDATE $class SET";
+        $query .= $object->query_string();
+        $query .= " WHERE id='".$object->property['id']->SQL_safe_value()."'";
+
+        $result = $this->_db->query($query);
+        return !(DB::isError($result));
+    }
+
+    function create_object($class, $object)
+    {
+        $query = "INSERT INTO $class SET";
+        $query .= $object->query_string();
+
+        $result = $this->_db->query($query);
+        return !(DB::isError($result));
+    }
+
     // auth functions
     function fetch_user($userid)
     {
@@ -199,70 +225,6 @@ function xwl_db_fetch_icon($name)
     return $xwl_db->getRow("select * from icon where name='$name'", DB_FETCHMODE_ASSOC);
 }
 
-// admin functions
-function xwl_db_fetch_column_by_id($table, $column)
-{
-    global $xwl_db;
-
-    $result = $xwl_db->getCol("select $column from $table order by id");
-    array_unshift($result, "");
-    return $result;
-}
-
-function xwl_db_fetch_schema($type)
-{
-    global $xwl_db;
-
-    return $xwl_db->getAll("select distinct property,datatype,required from schema where object='$type'", DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_delete_object($type, $id)
-{
-    global $xwl_db;
-
-    $result = $xwl_db->query("DELETE from $type where id=$id");
-
-    return !(DB::isError($result));
-}
-
-function xwl_db_update_object($type, $object)
-{
-    global $xwl_db;
-
-    $query = "UPDATE $type SET";
-    foreach ($object as $field => $value) {
-        $query .= " $field='$value',";
-    }
-    // strip the last comma & specify ID
-    $query = substr($query, 0, strlen($query)-1)." WHERE id='{$object['id']}'";
-
-    $result = $xwl_db->query($query);
-
-    return !(DB::isError($result));
-}
-
-function xwl_db_insert_object($type, $object)
-{
-    global $xwl_db;
-
-    $query = "INSERT INTO $type SET";
-    foreach ($object as $field => $value) {
-        $query .= " $field='$value',";
-    }
-    // strip the last comma
-    $query = substr($query, 0, strlen($query)-1);
-
-    $result = $xwl_db->query($query);
-
-    return !(DB::isError($result));
-}
-
-function xwl_db_fetch_table_list()
-{
-    global $xwl_db;
-
-    return $xwl_db->getCol("select distinct object from schema order by object");
-}
 */
 
 ?>
