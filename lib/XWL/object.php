@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.10 2003/11/24 03:20:11 loki Exp $
+// $Id: object.php,v 1.11 2003/11/24 03:23:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -249,6 +249,10 @@ class XWL_article extends XWL_object
         $this->_add_property("topic_name", "XWL_string", false);
         $this->_add_property("topic_icon", "XWL_URI", false);
         $this->_add_property("user_name", "XWL_string", false);
+
+        foreach ($this->linked_properties as $p) {
+            $this->property[$p]->sql_type = "";
+        }
     }
 
     function query_string()

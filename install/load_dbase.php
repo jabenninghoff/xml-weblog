@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.20 2003/10/22 21:44:36 loki Exp $
+// $Id: load_dbase.php,v 1.21 2003/11/24 03:23:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database/image loader
@@ -41,7 +41,7 @@
 header('Content-Type: text/plain');
 
 require_once "include/config.inc.php";
-require_once "include/types.inc.php";
+require_once "XWL.php";
 require_once "DB.php";
 
 $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
@@ -54,19 +54,14 @@ if (DB::isError($db)) {
 } else die("Error: database already exists. not installing.\n");
 
 ob_start();
-echo $create_schema_query, "\n\n";
 
-foreach ($tables as $table) {
+foreach ($xwl_object_class as $class) {
 
-    // table schema
-    foreach ($$table as $col => $t) {
-        echo "INSERT INTO schema VALUES(0,'$table','$col','$t[0]',$t[1]);\n";
-    }
-    echo "\n";
-
-    echo "CREATE TABLE $table (\n";
-    foreach ($$table as $col => $t) {
-        echo "  $col {$type[$t[0]]},\n";
+    echo "CREATE TABLE $class (\n";
+    $xwl_class = "XWL_$class";
+    $obj = new $xwl_class;
+    foreach ($obj->property as $name => $prop) {
+        if ($prop->sql_type) echo "  $name {$prop->sql_type},\n";
     }
     echo "  PRIMARY KEY (id)\n";
     echo ") TYPE=MyISAM;\n\n";
@@ -75,13 +70,13 @@ foreach ($tables as $table) {
 include "./sample-values.sql";
 
 // generate default admin password using system default encryption algorithm
-echo "\nINSERT INTO user VALUES (1,'admin','", crypt("weblog"), "',1,'');\n";
+echo "\nINSERT INTO user VALUES (1, 'Administrator', 'www@xml-weblog.org', 'admin','", crypt("weblog"), "',1,'');\n";
 
 // match unix/dos/mac newline
 $query = preg_split("/;[(\n)(\r\n)(\cM)]/",ob_get_contents());
 foreach ($query as $q) {
     $db->query(trim($q));
 }
-ob_end_flush();
 
+ob_end_flush();
 ?>
