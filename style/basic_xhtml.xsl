@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.12 2002/10/19 16:34:35 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.13 2002/10/19 18:36:55 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -22,7 +22,7 @@
         <td valign="top">
           <xsl:apply-templates select="sidebar"/>
         </td>
-        <td>
+        <td valign="top">
           <xsl:apply-templates select="main"/>
         </td>
       </tr>
@@ -91,6 +91,29 @@
   <xsl:if test="not(@content)">
     <hr/>
   </xsl:if>
+</xsl:template>
+
+<xsl:template match="admin">
+  <xsl:apply-templates select="menu"/>
+  <p><xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text></p>
+  <table>
+    <tr>
+    <xsl:for-each select="object[1]/property">
+      <th><xsl:value-of select="@name"/></th>
+    </xsl:for-each>
+    </tr>
+    <xsl:for-each select="object">
+      <tr>
+        <xsl:for-each select="property">
+          <td><xsl:copy-of select="./text()|./*"/></td>
+        </xsl:for-each>
+      </tr>
+    </xsl:for-each>
+  </table>
+</xsl:template>
+
+<xsl:template match="menu">
+  <a href="{@link}"><xsl:value-of select="."/></a>
 </xsl:template>
 
 <xsl:template match="text()">
