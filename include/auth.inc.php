@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.7 2003/04/16 22:27:42 loki Exp $
+// $Id: auth.inc.php,v 1.8 2003/04/16 23:05:55 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -46,8 +46,20 @@ if (isset($_SERVER['PHP_AUTH_USER'])) {
 
 function login()
 {
-    // see if the user requested a login
-    return $_GET['login'];
+    // see if the user explicity requested a login
+    if ($_GET['login']) {
+
+        /*
+         * some browsers (K-Meleon) only send credentials when asked, so to
+         * force them to give up the user & pass we set a cookie.
+         */
+        setcookie('login', true);
+
+        return true;
+    }
+
+    // this will be true if the session cookie has been sent.
+    return $_COOKIE['login'];
 }
 
 function user_authenticated()
