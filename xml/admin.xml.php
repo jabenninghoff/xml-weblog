@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.3 2002/10/20 00:34:54 loki Exp $
+// $Id: admin.xml.php,v 1.4 2002/10/21 06:25:17 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -16,9 +16,35 @@ if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
 }
 
 // build variables
-$site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
-$block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
+$site = fetch_site(1);
+$block = fetch_block();
+$object = $db->getCol("select distinct object from datatype group by object");
 
+$mode = $_GET['mode'];
+$id = valid_ID($_GET['id']);
+
+$type = $_GET['type'];
+if (!in_array($type,$object)) $type = $object[0];
+
+$q = "select distinct property,datatype from datatype where object='$type'";
+$property = $db->getAll($q, DB_FETCHMODE_ASSOC);
+$object_table = fetch_type($type);
+
+$display = array(
+    "ID" => true,
+    "URI" => true,
+    "boolean" => true,
+    "date" => false,
+    "image" => false,
+    "image-small" => false,
+    "int" => true,
+    "lang" => true,
+    "string" => true,
+    "string-XHTML" => true,
+    "XHTML-code" => false,
+    "XHTML-fragment" => false,
+    "XHTML-long" => false
+);
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <page lang="en" title="<?php echo $site['name']; ?>">
@@ -29,25 +55,37 @@ $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,b
 
   <main>
     <admin>
-      <menu link="?menu=site">Site Configuration</menu>
-      <menu link="?menu=article">Articles</menu>
-      <menu link="?menu=block">Blocks</menu>
-      <menu link="?menu=message">Messages</menu>
-      <menu link="?menu=topic">Topics</menu>
-      <menu link="?menu=user">Users</menu>
 <?php
-for ($i=0; $block[$i]; $i++) {
+if ($mode == "edit") {
+echo "      <title>Edit</title>\n";
+} else if ($mode == "delete") {
+echo "      <title>Delete</title>\n";
+} else {
 ?>
-      <object class="block">
-        <property name="id"><?php echo $block[$i]['id']; ?></property>
-        <property name="align"><?php echo $block[$i]['sidebar_align']; ?></property>
-        <property name="sindex"><?php echo $block[$i]['sidebar_index']; ?></property>
-        <property name="bindex"><?php echo $block[$i]['block_index']; ?></property>
-        <property name="title"><?php echo $block[$i]['title']; ?></property>
-        <property><?php echo '<a href="?menu=block&amp;op=edit&amp;id=', $block[$i]['id'], '">edit</a>'; ?></property>
-        <property><?php echo '<a href="?menu=block&amp;op=delete&amp;id=', $block[$i]['id'], '">delete</a>'; ?></property>
+      <title><?php echo ucfirst($type."s"); ?></title>
+<?php
+foreach ($object as $item) {
+?> 
+      <menu link="?type=<?php echo $item; ?>"><?php echo ucfirst($item."s"); ?></menu>
+<?php
+}
+foreach ($object_table as $obj) {
+?>
+      <object type="<?php echo $type; ?>">
+<?php
+    foreach ($property as $p) {
+        if ($display[$p['datatype']]) {
+            echo "        ";
+            echo '<property name="'.$p['property'].'">'.
+                $obj[$p['property']]."</property>\n";
+        }
+    }
+?>
+        <property><a href="?type=<?php echo $type; ?>&amp;mode=edit&amp;id=<?php echo $obj['id']; ?>">edit</a></property>
+        <property><a href="?type=<?php echo $type; ?>&amp;mode=delete&amp;id=<?php echo $obj['id']; ?>">delete</a></property>
       </object>
 <?php
+}
 }
 ?>
     </admin>

@@ -78,4 +78,26 @@ global $db;
 
 return $db->getAll("select * from topic group by id", DB_FETCHMODE_ASSOC);
 }
+
+function fetch_type($type)
+{
+global $db;
+
+return $db->getAll("select * from $type group by id", DB_FETCHMODE_ASSOC);
+}
+
+function safe_gpc_addslashes($string)
+{
+return get_magic_quotes_gpc() ? $string : addslashes($string);
+}
+
+function valid_ID($id)
+{
+if (strspn($id,"012345679") == strlen($id)) {
+    return $id;
+} else {
+    return "";
+}
+}
+
 ?>
