@@ -1,5 +1,5 @@
 <?php
-// $Id: avantgo_article.php,v 1.1 2003/04/17 18:09:45 loki Exp $
+// $Id: avantgo_article.php,v 1.2 2003/04/21 15:49:52 loki Exp $
 // single article renderer
 
 /*
@@ -39,6 +39,15 @@
 require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
 
+/*
+ * The only reason why we have to have avantgo_article.php is because avantgo
+ * seems to choke on the following link:
+ *     <a href="article.php?id=47&amp;style=avantgo">Read More...</a>
+ * A bare & can't be used in style/avantgo/main.xsl, that is invalid xml.
+ *
+ * There should be a better fix for this.
+ */
+
 // check authentication
 if (login() && !user_authenticated()) {
     unauthorized("private");
@@ -47,6 +56,8 @@ if (login() && !user_authenticated()) {
 
 // get php-formatted xml document (must be in the global context)
 ob_start();
+
+// we use the same article.xml page for avantgo_article.php
 require "xml/article.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
