@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.17 2002/10/26 05:19:52 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.18 2002/10/29 23:28:51 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -38,7 +38,6 @@
     <tr>
        <td><a href="index.php"><img src="{logo}" alt="{name}"/></a></td>
        <td>
-         <xsl:copy-of select="description/text()|description/*"/><br/>
          <xsl:apply-templates select="content"/><br/>
        </td>
     </tr>
@@ -71,11 +70,7 @@
 
 <xsl:template match="article">
   <h3><xsl:value-of select="title"/></h3>
-  <xsl:for-each select="id|topic|language">
-    <xsl:value-of select="name()"/>: <xsl:value-of select="."/>
-    <xsl:text> </xsl:text>
-  </xsl:for-each>
-  <br/>
+  <p><img src="{topic/icon}" alt="{topic/name}"/></p>
   <xsl:copy-of select="leader/*"/>
   <xsl:if test="@content">
     <xsl:copy-of select="content/*"/>
