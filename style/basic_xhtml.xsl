@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.10 2002/10/18 22:00:12 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.11 2002/10/19 07:55:43 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -45,7 +45,11 @@
   </table>
   <p class="center"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
   <hr/>
-  <p class="center"><xsl:copy-of select="message/text()|message/*"/></p>
+  <xsl:apply-templates select="message"/>
+</xsl:template>
+
+<xsl:template match="message">
+  <p class="center"><xsl:copy-of select="./text()|./*"/></p>
   <hr/>
 </xsl:template>
 
@@ -69,16 +73,20 @@
   </xsl:for-each>
   <br/>
   <xsl:copy-of select="leader/*"/>
-  <p>
-    posted by <b><xsl:value-of select="author"/></b> on
-    <xsl:value-of select="date"/><br/>
-    <b><a href="{url}">Read More...</a></b>
-  </p>
-
-  <!-- main content not normally displayed here -->
-  <p><i>main content:</i></p>
-  <xsl:copy-of select="content/*"/>
-  <hr/>
+  <xsl:if test="@content">
+    <xsl:copy-of select="content/*"/>
+    <hr/>
+  </xsl:if>
+    <p>
+      posted by <b><xsl:value-of select="author"/></b> on
+      <xsl:value-of select="date"/>
+      <xsl:if test="not(@content)">
+        <b><a href="{url}">Read More...</a></b>
+      </xsl:if>
+    </p>
+  <xsl:if test="not(@content)">
+    <hr/>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="text()">
