@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.21 2003/11/24 03:23:56 loki Exp $
+// $Id: load_dbase.php,v 1.22 2003/12/01 00:38:34 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database/image loader
@@ -70,7 +70,7 @@ foreach ($xwl_object_class as $class) {
 include "./sample-values.sql";
 
 // generate default admin password using system default encryption algorithm
-echo "\nINSERT INTO user VALUES (1, 'Administrator', 'www@xml-weblog.org', 'admin','", crypt("weblog"), "',1,'');\n";
+echo "\nINSERT INTO user VALUES (1, 'Administrator', 'www@xml-weblog.org', 'admin','", crypt("weblog"), "',1,0,'');\n";
 
 // match unix/dos/mac newline
 $query = preg_split("/;[(\n)(\r\n)(\cM)]/",ob_get_contents());
