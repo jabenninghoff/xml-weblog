@@ -1,7 +1,7 @@
 <?php
-// $Id: index.xml.php,v 1.3 2002/10/17 05:04:15 loki Exp $
-require_once "functions.inc.php";
-require_once "config.inc.php";
+// $Id: index.xml.php,v 1.4 2002/10/17 05:45:33 loki Exp $
+require_once "include/functions.inc.php";
+require_once "include/config.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     // standalone
@@ -15,9 +15,9 @@ $site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
 <!-- XML-weblog front page -->
 <page lang="en" title="technomagik.net (generated)">
 
-<?php require "header.xml.php"; ?>
+<?php require "xml/header.xml.php"; ?>
 
-<?php require "sidebar.xml.php"; ?>
+<?php require "xml/sidebar.xml.php"; ?>
 
   <!-- main: main section of document. index page contains articles. -->
   <main>
@@ -52,6 +52,6 @@ $site = $db->getRow("select * from site where id=1", DB_FETCHMODE_ASSOC);
     </article>
   </main>
 
-<?php require "footer.xml.php"; ?>
+<?php require "xml/footer.xml.php"; ?>
 
 </page>
