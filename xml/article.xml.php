@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.1 2002/10/19 07:55:43 loki Exp $
+// $Id: article.xml.php,v 1.2 2002/10/19 15:49:21 loki Exp $
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
 
@@ -18,7 +18,6 @@ $id = $_GET['id'];
 $article = $db->getRow("select * from article where id='$id'", DB_FETCHMODE_ASSOC);
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<!-- XML-weblog front page -->
 <page lang="en" title="<?php echo $site['name']; ?>">
 
 <?php require "xml/header.xml.php"; ?>
