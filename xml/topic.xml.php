@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.1 2002/11/17 03:46:16 loki Exp $
+// $Id: topic.xml.php,v 1.2 2002/11/17 21:53:56 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -58,16 +58,22 @@ xml_declaration();
 
   <!-- main: main section of document. index page contains articles. -->
   <main>
-    <topiclist>
 <?php
-foreach ($topic as $t) {
-    echo "      <topic>\n";
-    echo "        <name>{$t['name']}</name>\n";
-    echo "        <icon>{$t['icon']}</icon>\n";
-    echo "      </topic>\n";
+// if no id, present topic list
+if (!isset($_GET['id'])) {
+    echo "    <topiclist>\n";
+    foreach ($topic as $t) {
+        echo "      <topic>\n";
+        echo "        <name>{$t['name']}</name>\n";
+        echo "        <icon>{$t['icon']}</icon>\n";
+        echo "        <link>topic.php?id={$t['id']}</link>\n";
+        echo "      </topic>\n";
+    }
+    echo "    </topiclist>\n";
+} else {
+    echo "<content><p/></content>\n";
 }
 ?>
-    </topiclist>
   </main>
 
 <?php require "xml/footer.xml.php"; ?>
