@@ -1,6 +1,6 @@
 To Do:
 * finish up XML-RPC interface (1.1 release) - top priority
-* 304 Not Modified response (rss?, pages?) if no changes (last-modified)
+* support conditional GET (news aggregators) (snap)
 * add WAP style (snap)
 * add user story submission - with XML-RPC support (?) (snap)
 * add user signup/preferences screen (1.2)
