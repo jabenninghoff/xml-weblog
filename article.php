@@ -1,8 +1,6 @@
 <?php
-// $Id: article.php,v 1.1 2002/10/19 07:55:43 loki Exp $
+// $Id: article.php,v 1.2 2002/10/20 00:34:54 loki Exp $
 // front page renderer
-
-require_once "include/functions.inc.php";
 
 // get php-formatted xml document
 ob_start();
