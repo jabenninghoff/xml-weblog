@@ -1,6 +1,8 @@
 <?php
-// $Id: header.xml.php,v 1.17 2003/04/22 21:17:40 loki Exp $
+// $Id: site.php,v 1.1 2003/04/22 21:17:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
+// sitewide (dynamic) global variables
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -37,38 +39,18 @@
  */
 
 require_once "XWL.php";
-require_once "include/site.php";
+require_once "include/config.inc.php";
 
-if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
-    // standalone
-    header('Content-Type: text/xml');
-    XWL::xml_declaration();
+// database initialization
+$xwl_db = new XWL_database;
+$xwl_db->connect($xwl_db_type, $xwl_db_user, $xwl_db_password, $xwl_db_server, $xwl_db_database);
+
+// site configuration
+$xwl_site = $xwl_db->fetch_site(XWL::base_url());
+
+// convert to _xml values for convenience
+foreach ($xwl_site->property as $key => $value) {
+    $xwl_site_value_xml[$key] = $value->display_XML();
 }
 
-echo <<< END
-  <!-- header: top of the page, with logo, slogan, etc.  -->
-  <header>
-    <!-- <banner>[banner: not implemented]</banner> -->
-    <logo>{$xwl_site_value_xml['logo']}</logo>
-    <name>{$xwl_site_value_xml['name']}</name>
-    <slogan>{$xwl_site_value_xml['slogan']}</slogan>
-    <url>{$xwl_site_value_xml['url']}</url>
-    <description>{$xwl_site_value_xml['description']}</description>
-    <content>
-      {$xwl_site_value_xml['header_content']}
-    </content>
-
-
-END;
-
-// messages
-echo "    <!-- zero or more messages, topmost is index 0 -->\n";
-$xwl_message = $xwl_db->fetch_messages();
-
-for ($i=0; $xwl_message[$i]; $i++) {
-    echo "    <message index=\"$i\">\n";
-    echo $xwl_message[$i]->property['content']->display_XML(), "\n";
-    echo "    </message>\n";
-}
-echo "  </header>\n";
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.3 2003/04/22 19:25:27 loki Exp $
+// $Id: XWL.php,v 1.4 2003/04/22 21:17:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -41,6 +41,7 @@
 // XWL modules
 require_once "XWL/datatype.php";
 require_once "XWL/object.php";
+require_once "XWL/database.php";
 
 // core functions
 class XWL
@@ -102,6 +103,7 @@ class XWL
 }
 
 // test section
+if (basename($_SERVER['PHP_SELF']) == "XWL.php") {
 header('Content-Type: text/plain');
 
 XWL::xml_declaration();
@@ -140,4 +142,6 @@ foreach ($xwl_object_class as $test) {
         echo "    $key: ", get_class($property), " ($req)\n";
     }
     echo "\n";
+}
+
 }
