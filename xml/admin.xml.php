@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.16 2002/11/01 16:46:21 loki Exp $
+// $Id: admin.xml.php,v 1.17 2002/11/01 17:00:28 loki Exp $
 
 require_once "include/auth.inc.php";
 require_once "include/config.inc.php";
@@ -67,7 +67,7 @@ function admin_input($name, $type, $value, $mode) {
     case "XHTML_code":
     case "XHTML_fragment":
     case "XHTML_long":
-        if (!$value) $value = "enter_text";
+        if (!$value) $value = "%enter_text%";
         echo '<textarea name="', $name, '" cols="48" rows="8">';
         echo "$value</textarea>";
         break;
