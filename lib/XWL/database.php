@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.10 2003/11/01 02:19:56 loki Exp $
+// $Id: database.php,v 1.11 2003/11/01 04:11:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -73,6 +73,11 @@ class XWL_database
     function connect($type, $user, $password, $server, $database)
     {
         $this->_db = DB::connect("$type://$user:$password@$server/$database", true);
+
+        // fetch globals
+        $GLOBALS['XWL_topic_list'] = $this->_db->getAll("select id,name from topic", DB_FETCHMODE_ASSOC);
+        $GLOBALS['XWL_site_list'] = $this->_db->getAll("select id,name from site", DB_FETCHMODE_ASSOC);
+        $GLOBALS['XWL_user_list'] = $this->_db->getAll("select id,userid as name from user", DB_FETCHMODE_ASSOC);
     }
 
     function fetch_site($url)

@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.7 2003/11/01 02:19:56 loki Exp $
+// $Id: object.php,v 1.8 2003/11/01 04:11:44 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -75,7 +75,7 @@ class XWL_object
         $input .= "              <td><b>$name</b></td>\n";
         $input .= "              <td><select name=\"$name\">\n";
         for ($i=0; $option[$i]; $i++) {
-            $sel = $i == $default ? "selected=\"selected\" " : "";
+            $sel = $option[$i] == $default ? "selected=\"selected\" " : "";
             $input .= "                <option ".$sel." value=\"$value[$i]\">$option[$i]</option>\n";
         }
         $input .= "              </select></td>\n";
@@ -241,6 +241,15 @@ class XWL_article extends XWL_object
     function _admin_input($prop, $mode) {
         if (in_array($prop, $this->linked_properties)) {
             return;
+        } elseif (in_array($prop, array("site","topic","user"))) {
+            $i = 0;
+            foreach ($GLOBALS["XWL_{$prop}_list"] as $item) {
+                if ($this->property[$prop]->value == $item['id']) $def = $item['name'];
+                $opt[$i] = $item['name'];
+                $val[$i] = $item['id'];
+                $i++;
+            }
+            return $this->_admin_input_select($prop, $opt, $val, $def);
         } else {
             return parent::_admin_input($prop, $mode);
         }

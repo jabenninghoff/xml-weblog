@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.6 2003/10/22 21:44:36 loki Exp $
+// $Id: XWL.php,v 1.7 2003/11/01 04:13:06 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -42,6 +42,16 @@
 require_once "XWL/datatype.php";
 require_once "XWL/object.php";
 require_once "XWL/database.php";
+
+/*
+ * the class globals are necessary in order to give the article object access
+ * to the list of sites, topics, and users. does this really belong here ?
+ * need to rethink/research how exactly the class should be organized.
+ */
+// class globals
+$GLOBALS['XWL_topic_list'] = array();
+$GLOBALS['XWL_site_list'] = array();
+$GLOBALS['XWL_user_list'] = array();
 
 // core functions
 class XWL
