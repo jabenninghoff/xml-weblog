@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.8 2002/11/25 00:42:06 loki Exp $
+// $Id: db.inc.php,v 1.9 2002/11/25 04:03:17 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -62,14 +62,22 @@ function fetch_message()
     return $xwl_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index", DB_FETCHMODE_ASSOC);
 }
 
-function fetch_article($limit)
+function fetch_article($limit, $start, $end)
 {
     global $xwl_db, $xwl_article_default_limit;
 
     if (!$limit || $limit <= 0) $limit = $xwl_article_default_limit;
 
-    $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit $limit";
-    return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
+    if ($start) {
+        $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date <= $start order by article.date desc limit $limit";
+        return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
+    } else if ($end) {
+        $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date >= $end order by article.date limit $limit";
+        return array_reverse($xwl_db->getAll($query, DB_FETCHMODE_ASSOC));
+    } else {
+        $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit $limit";
+        return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
+    }
 }
 
 function fetch_article_single($id)

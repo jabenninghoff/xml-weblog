@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.20 2002/11/24 21:45:14 loki Exp $
+// $Id: functions.inc.php,v 1.21 2002/11/25 04:03:17 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -97,6 +97,11 @@ function safe_gpc_addslashes($string)
     return get_magic_quotes_gpc() ? $string : addslashes($string);
 }
 
+function date_to_datenum($date)
+{
+    return preg_replace("'[- :]'i","",$date);
+}
+
 function only_has($source,$valid)
 {
     if (strspn($source,$valid) == strlen($source)) return true;
@@ -159,6 +164,14 @@ function valid_date($date)
     if (!$date) return "0000-00-00 00:00:00";
     if (($timestamp = strtotime($date)) === -1) return "";
     else return date("Y-m-d H:i:s",$timestamp);
+}
+
+function valid_datenum($datenum)
+{
+    $num =  "0123456789";
+
+    if (only_has($datenum,$num) && strlen($datenum) == 14) return $datenum;
+    else return "";
 }
 
 function valid_image($file)

@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.13 2002/11/25 00:42:06 loki Exp $
+// $Id: index.xml.php,v 1.14 2002/11/25 04:03:17 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -40,11 +40,14 @@ require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
 // build variables
+$start = valid_datenum($_GET['start']);
+$end = valid_datenum($_GET['end']);
+
 $site = fetch_site(base_url());
 $block = fetch_block();
 $message = fetch_message();
 $topic = fetch_topic();
-$article = fetch_article($site['article_limit']);
+$article = fetch_article($site['article_limit'],$start,$end);
 
 if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     // standalone
