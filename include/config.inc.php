@@ -1,5 +1,5 @@
 <?php
-// $Id: config.inc.php,v 1.13 2004/04/30 21:24:19 loki Exp $
+// $Id: config.inc.php,v 1.14 2004/07/10 17:45:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // configuration variables
@@ -55,5 +55,8 @@ $xwl_default_style = "xhtml_css2";
 
 // auth defaults
 $xwl_auth_realm = "private";
+
+// xmlrpc defaults
+$xwl_blogger_title = date("F j, Y");
 
 ?>

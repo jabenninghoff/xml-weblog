@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.18 2004/07/10 04:36:12 loki Exp $
+// $Id: index.php,v 1.19 2004/07/10 17:45:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -44,6 +44,7 @@ require_once "include/auth.inc.php";
 require_once "XML/RPC/Server.php";
 
 // XML-RPC errors
+define('_XWL_XMLRPC_ERROR_INVALID_PARMS', $GLOBALS['xmlrpcerruser']+1);
 define('_XWL_XMLRPC_ERROR_AUTH_FAIL', $GLOBALS['xmlrpcerruser']+11);
 define('_XWL_XMLRPC_ERROR_NOT_AUTHORIZED', $GLOBALS['xmlrpcerruser']+12);
 define('_XWL_XMLRPC_ERROR_NOSSL', $GLOBALS['xmlrpcerruser']+19);
@@ -54,6 +55,7 @@ define('_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH', $GLOBALS['xmlrpcerruser']+29);
 define('_XWL_XMLRPC_ERROR_NOTFOUND_POSTID', $GLOBALS['xmlrpcerruser']+31);
 define('_XWL_XMLRPC_ERROR_DB_ERROR', $GLOBALS['xmlrpcerruser']+32);
 
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_PARMS] = "%s failed: invalid parameters.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_AUTH_FAIL] = "authentication failed: bad username/password.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOT_AUTHORIZED] = "%s failed: user not authorized for supplied method.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOSSL] = "authentication failed: not using SSL.";
@@ -78,7 +80,7 @@ $_pshift = 0;
 
 function xwl_xmlrpc($params) {
 
-    global $xwl_db, $xwl_site_value_xml, $_xwl_auth_user, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
+    global $xwl_db, $_xwl_auth_user, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
 
     // make sure we are using SSL if available
     if ($xwl_site_value_xml['ssl_port'] && !$_SERVER['HTTPS']) {
@@ -95,12 +97,17 @@ function xwl_xmlrpc($params) {
 
     $username = $params->getParam(1+$_pshift);
     $password = $params->getParam(2+$_pshift);
+
+    if (!$username || !$password) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
     $user = $username->scalarval();
     $pass = $password->scalarval();
 
     // we have to fetch $_xwl_auth_user ourselves
-    if ($user && XWL_string::valid($user)) {
-        $_xwl_auth_user = $xwl_db->fetch_user($user);
+    if ($user && XWL_string::valid($user) && $_xwl_auth_user = $xwl_db->fetch_user($user)) {
+        // we have a valid user
     } else {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_AUTH_FAIL);
     }
@@ -121,16 +128,19 @@ function _getCategories($params) {
 
     global $xwl_db, $xwl_site_value_xml;
 
-    $xwl_topic = $xwl_db->fetch_topics();
+    if (!$topic = $xwl_db->fetch_topics()) {
+        // something is really wrong...
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+    }
 
-    for ($i=0; $xwl_topic[$i]; $i++) {
+    foreach ($topic as $t) {
         $resp_struct = array(
-            "description" => new XML_RPC_Value($xwl_topic[$i]->property['description']->value),
-            "htmlUrl" => new XML_RPC_Value($xwl_site_value_xml['url']."topic.php?id=".$xwl_topic[$i]->property['id']->value),
+            "description" => new XML_RPC_Value($t->property['description']->value),
+            "htmlUrl" => new XML_RPC_Value($xwl_site_value_xml['url']."topic.php?id=".$t->property['id']->value),
             "rssUrl" => new XML_RPC_Value("")
         );
 
-        $resp_array[$xwl_topic[$i]->property['name']->value] = new XML_RPC_Value($resp_struct, "struct");
+        $resp_array[$t->property['name']->value] = new XML_RPC_Value($resp_struct, "struct");
     }
 
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "struct"));
@@ -176,6 +186,12 @@ function _getPost($params) {
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
     $postid = $params->getParam(0+$_pshift);
+
+    if (!$postid) {
+        // this should never happen, but check anyway
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
     $id = $postid->scalarval();
 
     // validate $postid
@@ -183,14 +199,14 @@ function _getPost($params) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
     }
 
-    if (!$xwl_article = $xwl_db->fetch_article($id)) {
+    if (!$article = $xwl_db->fetch_article($id)) {
         // this doesn't work for some reason ???
-        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
     $translate_function = "_${_xwl_xmlrpc_api}_translate_post";
 
-    return new XML_RPC_Response($translate_function($xwl_article));
+    return new XML_RPC_Response($translate_function($article));
 }
 
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
@@ -199,8 +215,13 @@ function _getRecentPosts($params) {
 
     global $xwl_db, $xwl_site_value_xml, $_xwl_xmlrpc_api, $_pshift;
 
-    $numberOfPosts = $params->getParam(3+$_pshift);
-    $num = $numberOfPosts->scalarval();
+    $numPosts = $params->getParam(3+$_pshift);
+
+    if (!$numPosts) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $num = $numPosts->scalarval();
 
     // validate numberOfPosts
     if (!XWL_integer::valid($num)) {
@@ -209,10 +230,12 @@ function _getRecentPosts($params) {
 
     $translate_function = "_${_xwl_xmlrpc_api}_translate_post";
 
-    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
+    if (!$article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+    }
 
-    for ($i=0; $xwl_article[$i]; $i++) {
-        $resp_array[$i] = $translate_function($xwl_article[$i]);
+    for ($i=0; $article[$i]; $i++) {
+        $resp_array[$i] = $translate_function($article[$i]);
     }
 
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
@@ -226,7 +249,7 @@ function _blogger_post($content, $publish) {
 
     $post->property['site']->set_value($GLOBALS['xwl_default_site']);
     $post->property['topic']->set_value($GLOBALS['xwl_default_topic']);
-    $post->property['title']->set_value(date("F j, Y"));
+    $post->property['title']->set_value($GLOBALS['xwl_blogger_title']);
     $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
     $post->property['date']->set_value("now");
     $post->property['leader']->set_value($content->scalarval());
@@ -237,8 +260,11 @@ function _blogger_post($content, $publish) {
     }
 
     if ($xwl_db->create_object("article", $post)) {
-        $created_post = $xwl_db->fetch_article_last_id();
-        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value, "int"));
+        if (!$created_post = $xwl_db->fetch_article_last_id()) {
+            // created, but we can't find it ???
+            return new XML_RPC_Response(new XML_RPC_Value("0"));
+        }
+        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value));
     }
 
     return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
@@ -248,17 +274,33 @@ function _metaWeblog_post($post_struct, $publish) {
 
     global $xwl_db, $_xwl_auth_user;
 
-    $post = new XWL_article;
+    // extract the topic, title, and content
+    if ($post_struct->kindOf() != "struct") {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
 
-    $post->property['site']->set_value($GLOBALS['xwl_default_site']);
+    $categories = $post_struct->structmem("categories");
+    $title = $post_struct->structmem("title");
+    $description = $post_struct->structmem("description");
+
+    if (!$categories || !$title || !$description || $categories->kindOf() != "array") {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
 
     // we use only the first category provided
-    $xmlarr = $post_struct->structmem("categories");
-    $xmlval = $xmlarr->arraymem(0);
-    $topic_str = $xmlval->scalarval();
+    $cat = $categories->arraymem(0);
+
+    if (!$cat) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $topic_str = $cat->scalarval();
+
+    if (!$xwl_topic = $xwl_db->fetch_topics()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+    }
 
     $topic = $GLOBALS['xwl_default_topic'];
-    $xwl_topic = $xwl_db->fetch_topics();
     foreach ($xwl_topic as $t) {
         if ($t->property['name']->value == $topic_str) {
             $topic = $t->property['id']->value;
@@ -266,17 +308,14 @@ function _metaWeblog_post($post_struct, $publish) {
         }
     }
 
+    $post = new XWL_article;
+
+    $post->property['site']->set_value($GLOBALS['xwl_default_site']);
     $post->property['topic']->set_value($topic);
-
-    $xmlval = $post_struct->structmem("title");
-    $post->property['title']->set_value($xmlval->scalarval());
-
+    $post->property['title']->set_value($title->scalarval());
     $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
     $post->property['date']->set_value("now");
-
-    $xmlval = $post_struct->structmem("description");
-    $post->property['leader']->set_value($xmlval->scalarval());
-
+    $post->property['leader']->set_value($description->scalarval());
     $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
 
     if ($post->missing_required()) {
@@ -284,7 +323,10 @@ function _metaWeblog_post($post_struct, $publish) {
     }
 
     if ($xwl_db->create_object("article", $post)) {
-        $created_post = $xwl_db->fetch_article_last_id();
+        if (!$created_post = $xwl_db->fetch_article_last_id()) {
+            // created, but we can't find it ???
+            return new XML_RPC_Response(new XML_RPC_Value("0"));
+        }
         return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value));
     }
 
@@ -299,10 +341,15 @@ function _newPost($params) {
 
     // get the post content/struct and publish bit
     $post = $params->getParam(3+$_pshift);
-    $p = $params->getParam(4+$_pshift);
-    $publish = $p->scalarval();
+    $publish = $params->getParam(4+$_pshift);
 
-    if (!$publish) {
+    if (!$post || !$publish) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $pub = $publish->scalarval();
+
+    if (!$pub) {
         // not publishing to home page is currently not supported.
         // will be implemented with user submission system.
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
@@ -323,7 +370,6 @@ function _blogger_edit($id, $content, $publish) {
     global $xwl_db, $_xwl_auth_user;
 
     if (!$post = $xwl_db->fetch_article($id)) {
-        // this doesn't work for some reason ???
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
@@ -345,17 +391,36 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
     global $xwl_db, $_xwl_auth_user;
 
     if (!$post = $xwl_db->fetch_article($id)) {
-        // this doesn't work for some reason ???
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
+    // extract the topic, title, and content
+    if ($post_struct->kindOf() != "struct") {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $categories = $post_struct->structmem("categories");
+    $title = $post_struct->structmem("title");
+    $description = $post_struct->structmem("description");
+
+    if (!$categories || !$title || !$description || $categories->kindOf() != "array") {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
     // we use only the first category provided
-    $xmlarr = $post_struct->structmem("categories");
-    $xmlval = $xmlarr->arraymem(0);
-    $topic_str = $xmlval->scalarval();
+    $cat = $categories->arraymem(0);
+
+    if (!$cat) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $topic_str = $cat->scalarval();
+
+    if (!$xwl_topic = $xwl_db->fetch_topics()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+    }
 
     $topic = $GLOBALS['xwl_default_topic'];
-    $xwl_topic = $xwl_db->fetch_topics();
     foreach ($xwl_topic as $t) {
         if ($t->property['name']->value == $topic_str) {
             $topic = $t->property['id']->value;
@@ -364,12 +429,8 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
     }
 
     $post->property['topic']->set_value($topic);
-
-    $xmlval = $post_struct->structmem("title");
-    $post->property['title']->set_value($xmlval->scalarval());
-
-    $xmlval = $post_struct->structmem("description");
-    $post->property['leader']->set_value($xmlval->scalarval());
+    $post->property['title']->set_value($title->scalarval());
+    $post->property['leader']->set_value($description->scalarval());
 
     if ($post->missing_required()) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
@@ -389,13 +450,18 @@ function _editPost($params) {
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
     // get the post id, content/struct and publish bit
-    $p = $params->getParam(0+$_pshift);
-    $id = $p->scalarval();
+    $postid = $params->getParam(0+$_pshift);
     $post = $params->getParam(3+$_pshift);
-    $p = $params->getParam(4+$_pshift);
-    $publish = $p->scalarval();
+    $publish = $params->getParam(4+$_pshift);
 
-    if (!$publish) {
+    if (!$postid || !$post || !$publish) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $id = $postid->scalarval();
+    $pub = $publish->scalarval();
+
+    if (!$pub) {
         // not publishing to home page is currently not supported.
         // will be implemented with user submission system.
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
@@ -421,13 +487,18 @@ function _deletePost($params) {
 
     global $xwl_db, $_pshift;
 
-    // get the postid and publish bit
-    $p = $params->getParam(0+$_pshift);
-    $postid = $p->scalarval();
-    $p = $params->getParam(3+$_pshift);
-    $publish = $p->scalarval();
+    // get the post id, content/struct and publish bit
+    $postid = $params->getParam(0+$_pshift);
+    $publish = $params->getParam(3+$_pshift);
 
-    if (!$publish) {
+    if (!$postid || !$publish) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_PARMS);
+    }
+
+    $id = $postid->scalarval();
+    $pub = $publish->scalarval();
+
+    if (!$pub) {
         // not publishing to home page is currently not supported.
         // will be implemented with user submission system.
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
@@ -438,11 +509,16 @@ function _deletePost($params) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOT_AUTHORIZED);
     }
 
-    if ($xwl_db->delete_object("article", $postid)) {
+    // validate $postid
+    if (!XWL_integer::valid($id)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
+    }
+
+    if ($xwl_db->delete_object("article", $id)) {
         return new XML_RPC_Response(new XML_RPC_Value(1, "boolean"));
     }
 
-    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
 }
 
 $dispatch_map = array(
