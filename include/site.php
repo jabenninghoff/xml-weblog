@@ -1,5 +1,5 @@
 <?php
-// $Id: site.php,v 1.2 2003/04/23 16:10:27 loki Exp $
+// $Id: site.php,v 1.3 2003/04/23 21:05:07 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // sitewide (dynamic) global variables
@@ -47,11 +47,7 @@ $xwl_db->connect($xwl_db_type, $xwl_db_user, $xwl_db_password, $xwl_db_server, $
 
 // site configuration
 $xwl_site = $xwl_db->fetch_site(XWL::base_url());
-
-// convert to _xml values for convenience
-foreach ($xwl_site->property as $key => $value) {
-    $xwl_site_value_xml[$key] = $value->display_XML();
-}
+$xwl_site_value_xml = $xwl_site->XML_values();
 
 // set missing values with defaults
 if (!$xwl_site_value_xml['article_limit'])
