@@ -1,4 +1,4 @@
-/* $Id: default.css,v 1.9 2002/11/12 21:46:29 loki Exp $ */
+/* $Id: default.css,v 1.10 2002/11/13 23:54:18 loki Exp $ */
 
 /* default settings */
 body {
@@ -25,6 +25,7 @@ a.img {
 
 p.hrule {
     border-bottom: 1px solid black;
+    clear: both;
 }
 
 p.break {
@@ -43,7 +44,7 @@ div.header {
 div.footer {
     clear: both;
     text-align: center;
-    margin-top: 2ex;
+    margin-top: 4ex;
     border-top: 1px solid black;
 }
 
