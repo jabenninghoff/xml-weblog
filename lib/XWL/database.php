@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.19 2004/07/14 03:54:26 loki Exp $
+// $Id: database.php,v 1.20 2004/07/14 17:36:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -43,10 +43,9 @@ require_once "DB.php";
 
 class XWL_database
 {
-    var $_db;
-    var $_article_base_query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name, user.mail as user_mail from article, topic, user where article.topic = topic.id and article.user = user.id";
-
     // private variables
+    var $_db;
+    var $_article_base_query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.name as user_name, user.mail as user_mail from article, topic, user where article.topic = topic.id and article.user = user.id and publish = 1";
 
     // private functions
     function _fetch_single($class, $query)
