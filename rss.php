@@ -1,8 +1,8 @@
 <?php
-// $Id: style.inc.php,v 1.11 2003/11/03 06:31:01 loki Exp $
+// $Id: rss.php,v 1.1 2003/11/03 06:31:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
-// style/xml rendering module
+// avantgo front page renderer
 
 /*
  * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
@@ -38,49 +38,18 @@
  *
  */
 
-require_once "XWL.php";
-require_once "include/config.inc.php";
+require_once "include/style.inc.php";
 
-// public functions
+// get php-formatted xml document (must be in the global context)
+ob_start();
 
-function xwl_style_get()
-{
-    global $xwl_default_style;
+// we use the same index.xml page for avantgo.php
+require "xml/index.xml.php";
+$xml = ob_get_contents();
+ob_end_clean();
 
+$style = new XWL_filename;
+$style->set_value("rss");
 
-    $style = new XWL_filename;
-
-    if (!$style->set_value($_GET['style'])) $style->set_value($xwl_default_style);
-
-    return $style;
-}
-
-function xwl_style_render_page($xml, $style)
-{
-
-    // load the stylesheet
-    ob_start();
-    require "style/{$style->value}/main.xsl";
-    $xsl = ob_get_contents();
-    ob_end_clean();
-
-    $arguments = array(
-         '/_xml' => $xml,
-         '/_xsl' => $xsl
-    );
-
-    // render & display the document using xslt
-    $xh = xslt_create();
-    $result = xslt_process($xh, 'arg:/_xml', 'arg:/_xsl', NULL, $arguments);
-
-    // textarea hack
-    $result = str_replace("%enter_text%", "", $result);
-
-    // cdata hack
-    $result = str_replace("%cdata_open%", "<![CDATA[", $result);
-    $result = str_replace("%cdata_close%", "]]>", $result);
-
-    echo $result;
-    xslt_free($xh);
-}
+xwl_style_render_page($xml, $style);
 ?>

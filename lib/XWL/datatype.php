@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.9 2003/11/01 20:33:46 loki Exp $
+// $Id: datatype.php,v 1.10 2003/11/03 06:31:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -364,6 +364,12 @@ class XWL_date extends XWL_datatype
 
         $this->value = date("Y-m-d H:i:s",$timestamp);
         return true;
+    }
+
+    function HTML_safe_value()
+    {
+        // convert date to RFC 822 format
+        return date('r', strtotime($this->value));
     }
 
     function admin_input($name, $mode)
