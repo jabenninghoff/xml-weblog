@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.19 2004/09/23 18:53:21 loki Exp $
+// $Id: auth.inc.php,v 1.20 2005/02/01 18:34:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
@@ -38,9 +38,9 @@
  *
  */
 
-require_once "config.php";
 require_once "XWL.php";
 require_once "include/site.php";
+require_once "include/config.inc.php";
 
 // private globals
 $_xwl_auth_user = NULL;

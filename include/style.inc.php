@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.16 2004/09/23 18:53:21 loki Exp $
+// $Id: style.inc.php,v 1.17 2005/02/01 18:34:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // style/xml rendering module
@@ -38,8 +38,8 @@
  *
  */
 
-require_once "config.php";
 require_once "XWL.php";
+require_once "include/config.inc.php";
 
 // public functions
 
