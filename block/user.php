@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.14 2003/12/01 16:48:56 loki Exp $
+// $Id: user.php,v 1.15 2003/12/01 17:06:39 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
@@ -43,11 +43,10 @@ require_once "include/auth.inc.php";
 $userblock_page = basename($_SERVER['PHP_SELF']);
 if ($_SERVER['QUERY_STRING']) $userblock_page .= "?".$_SERVER['QUERY_STRING'];
 $userblock_page = htmlspecialchars($userblock_page);
+$user = xwl_auth_user_fetch();
 
 // only display for authenticated users
 if (xwl_auth_user_authenticated()) {
-
-    $user = xwl_auth_user_fetch();
 
     echo "<block>\n";
     echo "  <title>", ucfirst($user->property['userid']->display_XML()), "'s Menu</title>\n";
@@ -70,6 +69,7 @@ echo "  <content>";
 echo "    <object><form action=\"$userblock_page\" method=\"post\">";
 if (xwl_auth_user_authenticated()) {
     echo "      <div><input name=\"logout\" type=\"submit\" value=\"Logout\"/></div>\n";
+    echo "    You are currently logged in as <b>".$user->property['userid']->display_XML().".</b>";
     echo "    </form></object>";
 } else {
     echo "      <div><input name=\"login\" type=\"submit\" value=\"Login\"/></div>";
