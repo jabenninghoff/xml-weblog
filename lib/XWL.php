@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.1 2003/04/22 14:07:37 loki Exp $
+// $Id: XWL.php,v 1.2 2003/04/22 17:37:57 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -38,295 +38,93 @@
  *
  */
 
-// defines
-define('_XWL_UNSIGNED_INT_MAX', 4294967295); // 4 byte unsigned int
-define('_XWL_STRING_MAXLEN',    255);
+// XWL modules
+require_once "XWL/datatype.php";
 
-// private functions
-function _only_has($source, $valid_chars)
+// core functions
+class XWL
 {
-    if (strspn($source, $valid_chars) == strlen($source)) return true;
-    else return false;
-}
-
-// basic datatype definitions
-class XWL_datatype
-{
-    var $value;
-    var $sql_type;
-    var $admin_display;
-
-    function set_value($input)
+    // private functions
+    function _only_has($source, $valid_chars)
     {
-        // tests - return false on failure
-
-        $this->value = $input;
-        return true;
+        if (strspn($source, $valid_chars) == strlen($source)) return true;
+        else return false;
     }
-}
 
-class XWL_ID extends XWL_datatype
-{
-    var $value = 0;
-    var $sql_type = "int unsigned NOT NULL auto_increment";
-    var $admin_display = true;
-
-    function set_value($input)
+    function _safe_gpc_stripslashes($string)
     {
-        // positive integers only
-        if (!is_numeric($input) || $input < 0 || $input > _XWL_UNSIGNED_INT_MAX) return false;
-
-        $this->value = $input;
-        return true;
+        return get_magic_quotes_gpc() ? stripslashes($string) : $string;
     }
-}
 
-class XWL_URI extends XWL_datatype
-{
-    var $value = "";
-    var $sql_type = "varchar(255) NOT NULL default ''";
-    var $admin_display = true;
-
-    function set_value($input)
+    // public functions
+    function xml_declaration()
     {
-        $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $num =  "0123456789";
-        $dns = "-.";
-        $url = "$-_.+"."!*'(),%";
-        $path = "/";
-        $query = ";:@&=";
-
-        // strings only
-        if (!is_string($input) || strlen($input) > _XWL_STRING_MAXLEN) return false;
-
-        $parsed_uri = parse_url($input);
-    
-        // sanity check - make sure we parsed_uri right
-        $new_uri = "";
-        if (isset($parsed_uri['scheme'])) $new_uri .= "$parsed_uri[scheme]://";
-        if (isset($parsed_uri['pass'])) $new_uri .= "$parsed_uri[user]:$parsed_uri[pass]@";
-        elseif (isset($parsed_uri['user'])) $uri .= "$parsed_uri[user]@";
-        if (isset($parsed_uri['host'])) $new_uri .= $parsed_uri['host'];
-        if (isset($parsed_uri['port'])) $new_uri .= ":$parsed_uri[port]";
-        if (isset($parsed_uri['path'])) $new_uri .= $parsed_uri['path'];
-        if (isset($parsed_uri['query'])) $new_uri .= "?$parsed_uri[query]";
-        if (isset($parsed_uri['fragment'])) $new_uri .= "#$parsed_uri[fragment]";
-        if ($input != $new_uri) return false;
-
-        // check each component
-        if ($parsed_uri['scheme'] && $parsed_uri['scheme'] != "http") return false;
-        if (!_only_has($parsed_uri['user'],$alpha.$num.$url)) return false;
-        if (!_only_has($parsed_uri['pass'],$alpha.$num.$url)) return false;
-        if (!_only_has($parsed_uri['host'],$alpha.$num.$dns)) return false;
-        if (!_only_has($parsed_uri['port'],$num)) return false;
-        if (!_only_has($parsed_uri['path'],$alpha.$num.$url.$path.$query)) return false;
-        if (!_only_has($parsed_uri['query'],$alpha.$num.$url.$query)) return false;
-        if (!_only_has($parsed_uri['fragment'],$alpha.$num.$url)) return false;
-    
-        // uri is OK!
-        $this->value = $input;
-        return true;
+        echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n"; //<?
     }
-}
 
-class XWL_boolean extends XWL_datatype
-{
-    var $value = false;
-    var $sql_type = "tinyint NOT NULL default 0";
-    var $admin_display = true;
-
-    function set_value($input)
+    function base_url()
     {
-        // simply cast the value to a boolean type
-        $value = (boolean) $input;
+        $url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 
-        // always works.
-        return true;
+        return substr($url,0,strrpos($url,"/")+1);
     }
-}
 
-class XWL_date extends XWL_datatype
-{
-    var $value = "0000-00-00 00:00:00";
-    var $sql_type = "datetime NOT NULL default '0000-00-00 00:00:00'";
-    var $admin_display = false;
-
-    function set_value($input)
+    // replace <code include="file.php"/> with include "code/file.php"
+    function process_code($string)
     {
-        // accept blank (false) input as the "zero" date
-        if (!$input) {
-            $this->value = "0000-00-00 00:00:00";
-            return true;
+        // Loop through to find the dynamic code processing instruction
+        while ( ($pos = strpos( $string, '<code' )) !== FALSE ) {
+            // find the end of the instruction
+            if ( ($pos2 = strpos( $string, '/>', $pos + 6)) !== FALSE) {
+                // extract the command
+                $command = trim( substr( $string, $pos + 6, $pos2 - ($pos + 6) ) );
+                // parse the command
+                if (($cpos = strpos($command, 'include="')) !== FALSE) {
+                    if (($cpos2 = strpos( $command, '"', $cpos + 9)) !== FALSE) {
+                        // got the filename ... include it
+                        $file = new XWL_filename;
+                        if ($file->set_value(trim(substr($command, $cpos+9, $cpos2-($cpos+9))))) {
+                            ob_start();
+                            include "code/$file->value";
+                            $results = ob_get_contents();
+                            ob_end_clean();
+                        } else die('error: invalid filename');
+                    } else die('error: missing closing " for include');
+                }
+            } else die('error: missing closing /> for <code tag');
+
+        // paste the results and rescan
+        $string = substr($string, 0, $pos) . $results . substr($string, $pos2 + 2);
         }
-
-        // allow any php-parseable time/date string
-        if (($timestamp = strtotime($input)) === -1) return false;
-
-        $this->value = date("Y-m-d H:i:s",$timestamp);
-        return true;
+        return $string;
     }
 }
 
 // test section
 header('Content-Type: text/plain');
 
+XWL::xml_declaration();
+echo XWL::process_code("<p><code include=\"date.php\"/></p>\n");
+echo "my base_url: ", XWL::base_url(), "\n";
+echo "\n";
+
 $test_values = array(
     "XWL_ID" => "801928",
     "XWL_URI" => "http://www.technomagik.net/index.php",
     "XWL_boolean" => "1",
     "XWL_date" => "7/17/71",
+    "XWL_integer" => "655536",
+    "XWL_string" => "this is a string. >><<&&''''\"\\",
+    "XWL_lang" => "x-klingon",
+    "XWL_string_XHTML" => "<p><b>XHTML</b> test.</p>",
+    "XWL_XHTML" => "<p>base XHTML class - do not use</p>",
+    "XWL_XHTML_code" => "<p>XHTML_code</p>",
+    "XWL_XHTML_fragment" => "<p>XHTML_fragment</p>",
+    "XWL_XHTML_long" => "<p>XHTML_long</p>",
 );
 
 foreach ($test_values as $key => $test) {
     $object = new $key;
-    if ($object->set_value($test)) echo $object->value, "\n";
+    if ($object->set_value($test)) echo $object->HTML_safe_value(), " | ", $object->SQL_safe_value(), "\n";
     else echo "bad $key!\n";
 }
-
-$type = array(
-    "image" => "mediumblob NOT NULL",
-    "image_small" => "blob NOT NULL",
-    "int" => "int unsigned NOT NULL default 0",
-    "lang" => "varchar(255) NOT NULL default 'en'",
-    "string" => "varchar(255) NOT NULL default ''",
-    "string_XHTML" => "varchar(255) NOT NULL default ''",
-    "XHTML_code" => "text NOT NULL",
-    "XHTML_fragment" => "text NOT NULL",
-    "XHTML_long" => "mediumtext NOT NULL"
-);
-
-// display in admin tables
-$admin_display = array(
-    "image" => false,
-    "image_small" => false,
-    "int" => true,
-    "lang" => true,
-    "string" => true,
-    "string_XHTML" => true,
-    "XHTML_code" => false,
-    "XHTML_fragment" => false,
-    "XHTML_long" => false
-);
-
-// custom admin form handlers
-$admin_form_handler = array(
-    "article" => "admin_form_article",
-    "block" => "admin_form_block",
-    "icon" => "admin_form_image",
-    "image" => "admin_form_image",
-    "user" => "admin_form_user"
-);
-
-// custom admin form processors
-$admin_form_processor = array(
-    "icon" => "process_form_image",
-    "image" => "process_form_image",
-    "user" => "process_form_user"
-);
-
-// image types for getimagesize()
-$mime_type = array("", "image/gif", "image/jpeg", "image/png",
-    "application/x-shockwave-flash", "PSD", "image/bmp", "image/tiff",
-    "image/tiff", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF");
-
-// table definitions
-
-// $object = array(
-//     "field" => array("type", required),
-
-$site = array(
-    "id" => array("ID", 1),
-    "url" => array("URI", 1),
-    "article_limit" => array("int", 1),
-    "name" => array("string", 1),
-    "slogan" => array("string_XHTML", 0),
-    "logo" => array("URI", 0),
-    "description" => array("XHTML_fragment", 0),
-    "header_content" => array("XHTML_code", 0),
-    "disclaimer" => array("XHTML_fragment", 0),
-    "footer_content" => array("XHTML_code", 0),
-    "language" => array("lang", 1)
-);
-
-$message = array(
-    "id" => array("ID", 1),
-    "message_index" => array("int", 1),
-    "start_date" => array("date", 0),
-    "end_date" => array("date", 0),
-    "content" => array("XHTML_fragment", 1),
-    "language" => array("lang", 1)
-);
-
-$topic = array(
-    "id" => array("ID", 1),
-    "name" => array("string", 1),
-    "description" => array("XHTML_fragment", 0),
-    "icon" => array("URI", 1)
-);
-
-$block = array(
-    "id" => array("ID", 1),
-    "sidebar_align" => array("string", 1),
-    "sidebar_index" => array("int", 1),
-    "block_index" => array("int", 1),
-    "title" => array("string", 1),
-    "content" => array("XHTML_code", 0),
-    "sysblock" => array("string", 0),
-    "language" => array("lang", 1)
-);
-
-// site -> site.id, topic -> topic.id, author -> user.id
-$article = array(
-    "id" => array("ID", 1),
-    "site" => array("int", 1),
-    "topic" => array("int", 1),
-    "title" => array("string", 1),
-    "user" => array("int", 1),
-    "date" => array("date", 1),
-    "leader" => array("XHTML_long", 1),
-    "content" => array("XHTML_long", 0),
-    "language" => array("lang", 1)
-);
-
-$user = array(
-    "id" => array("ID", 1),
-    "userid" => array("string", 1),
-    "password" => array("string", 1),
-    "admin" => array("boolean", 1),
-    "block" => array("XHTML_fragment", 0)
-);
-
-// image-BLOB tables
-$image = array(
-    "id" => array("ID", 1),
-    "name" => array("string", 1),
-    "src" => array("image", 1),
-    "mime" => array("string", 1),
-    "width" => array("int", 0),
-    "height" => array("int", 0)
-);
-
-$icon = array(
-    "id" => array("ID", 1),
-    "name" => array("string", 1),
-    "src" => array("image_small", 1),
-    "mime" => array("string", 1),
-    "width" => array("int", 0),
-    "height" => array("int", 0)
-);
-
-$tables = array(
-    "site", "message", "topic", "block", "article", "user", "image", "icon"
-);
-
-$create_schema_query =
-"CREATE TABLE schema (
-  id int unsigned NOT NULL auto_increment,
-  object varchar(255) NOT NULL default '',
-  property varchar(255) NOT NULL default '',
-  datatype varchar(255) NOT NULL default 'string',
-  required tinyint NOT NULL default 1,
-  PRIMARY KEY (id)
-) TYPE=MyISAM;";
-
-?>
