@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.15 2004/07/09 23:12:33 loki Exp $
+// $Id: index.php,v 1.16 2004/07/10 00:12:21 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -251,11 +251,32 @@ function _metaWeblog_post($post_struct, $publish) {
     $post = new XWL_article;
 
     $post->property['site']->set_value($GLOBALS['xwl_default_site']);
-    $post->property['topic']->set_value($GLOBALS['xwl_default_topic']);
-    $post->property['title']->set_value(date("F j, Y"));
+
+    // we use only the first category provided
+    $xmlarr = $post_struct->structmem("categories");
+    $xmlval = $xmlarr->arraymem(0);
+    $topic_str = $xmlval->scalarval();
+
+    $topic = $GLOBALS['xwl_default_topic'];
+    $xwl_topic = $xwl_db->fetch_topics();
+    foreach ($xwl_topic as $t) {
+        if ($t->property['name']->value == $topic_str) {
+            $topic = $t->property['id']->value;
+            break;
+        }
+    }
+
+    $post->property['topic']->set_value($topic);
+
+    $xmlval = $post_struct->structmem("title");
+    $post->property['title']->set_value($xmlval->scalarval());
+
     $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
     $post->property['date']->set_value("now");
-    $post->property['leader']->set_value("<p>metaWeblog post</p>");
+
+    $xmlval = $post_struct->structmem("description");
+    $post->property['leader']->set_value($xmlval->scalarval());
+
     $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
 
     if ($post->missing_required()) {
