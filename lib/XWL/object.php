@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.3 2003/04/23 04:34:13 loki Exp $
+// $Id: object.php,v 1.4 2003/04/23 15:50:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -50,6 +50,7 @@ class XWL_object
     var $property;
     var $required;
 
+    // private functions
     function _add_property($name, $datatype, $required)
     {
         $this->property[$name] = new $datatype;
@@ -60,6 +61,14 @@ class XWL_object
     {
         // _add_property($name, $datatype, $required)
         $this->_add_property("id", "XWL_ID", 1);
+    }
+
+    function load_SQL($result)
+    {
+        if (!$result) return;
+        foreach ($result as $key => $value) {
+            $this->property[$key]->set_value($value);
+        }
     }
 }
 
@@ -139,6 +148,11 @@ class XWL_article extends XWL_object
         $this->_add_property("leader", "XWL_XHTML_long", true);
         $this->_add_property("content", "XWL_XHTML_long", false);
         $this->_add_property("language", "XWL_lang", true);
+
+        // linked properties
+        $this->_add_property("topic_name", "XWL_string", false);
+        $this->_add_property("topic_icon", "XWL_URI", false);
+        $this->_add_property("user_name", "XWL_string", false);
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.14 2003/04/23 04:35:11 loki Exp $
+// $Id: article.xml.php,v 1.15 2003/04/23 15:50:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -58,13 +58,10 @@ echo "\n";
 echo "  <!-- main: main section of document. index page contains articles. -->\n";
 echo "    <main>\n";
 
-/*
-$id = xwl_valid_ID($_GET['id']);
-$topic = xwl_db_fetch_topic();
-$article = xwl_db_fetch_article_single($id);
-*/
-
-$xwl_article = $xwl_db->fetch_article(1);
+// fetch article
+$id = new XWL_ID;
+$id->set_value($_GET['id']);
+$xwl_article = $xwl_db->fetch_article($id->SQL_safe_value());
 
 // convert to _xml values for convenience
 foreach ($xwl_article->property as $key => $value) {

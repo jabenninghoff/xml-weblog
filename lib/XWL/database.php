@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.3 2003/04/23 04:35:11 loki Exp $
+// $Id: database.php,v 1.4 2003/04/23 15:50:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -46,13 +46,26 @@ class XWL_database
     var $_db;
 
     // private functions
-    function _load_object($class, $result)
+    function _fetch_single($class, $query)
     {
-        $object = new $class;
-        foreach ($result as $key => $value) {
-            $object->property[$key]->set_value($value);
+        $result = $this->_db->getRow($query, DB_FETCHMODE_ASSOC);
+
+        $obj = new $class;
+        $obj->load_SQL($result);
+        return $obj;
+    }
+
+    function _fetch_multiple($class, $query)
+    {
+        $result = $this->_db->getAll($query, DB_FETCHMODE_ASSOC);
+
+        echo $class, "\n";
+        foreach ($result as $res) {
+            $tmp = new $class;
+            $tmp->load_SQL($res);
+            $obj[] = $tmp;
         }
-        return $object;
+        return $obj;
     }
 
     // public functions
@@ -63,37 +76,27 @@ class XWL_database
 
     function fetch_site($url)
     {
-        $result = $this->_db->getRow("select * from site where url='$url' or id=1 order by id desc", DB_FETCHMODE_ASSOC);
-
-        return $this->_load_object("XWL_site", $result);
+        // get the specified site if it exists, otherwise get the default site (id=1)
+        return $this->_fetch_single("XWL_site", "select * from site where url='$url' or id=1 order by id desc");
     }
 
     function fetch_messages()
     {
-        $result = $this->_db->getAll("select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index", DB_FETCHMODE_ASSOC);
-
-        foreach ($result as $res) {
-            $message[] = $this->_load_object("XWL_message", $res);
-        }
-        return $message;
+        // get all active messages
+        return $this->_fetch_multiple("XWL_message", "select * from message where (start_date < now() or start_date=0) and (end_date > now() or end_date=0) order by message_index");
     }
 
     function fetch_blocks()
     {
-
-        $result = $this->_db->getAll("select * from block order by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
-
-        foreach ($result as $res) {
-            $block[] = $this->_load_object("XWL_block", $res);
-        }
-        return $block;
+        // get all blocks in the order they will be displayed
+        return $this->_fetch_multiple("XWL_block", "select * from block order by sidebar_align,sidebar_index,block_index");
     }
 
     function fetch_article($id)
     {
-        $result = $this->_db->getRow("select * from article where id=$id", DB_FETCHMODE_ASSOC);
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id and article.id = '$id'";
 
-        return $this->_load_object("XWL_article", $result);        
+        return $this->_fetch_single("XWL_article", $query);
     }
 }
 

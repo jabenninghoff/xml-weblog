@@ -1,5 +1,5 @@
 <?php
-// $Id: article.inc.php,v 1.7 2003/04/23 04:35:11 loki Exp $
+// $Id: article.inc.php,v 1.8 2003/04/23 15:50:01 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // display article on index.xml.php or article.xml.php page
@@ -44,16 +44,16 @@ echo <<< END
       <!-- metadata -->
       <id>{$article['id']}</id>
       <topic>
-        <name>topic_name</name>
-        <icon>topic_icon</icon>
-        <url>topic_url</url>
+        <name>{$article['topic_name']}</name>
+        <icon>{$article['topic_icon']}</icon>
+        <url>topic.php?id={$article['topic']}</url>
       </topic>
       <language>{$article['language']}</language>
       <url>article.php?id={$article['id']}</url>
 
       <!-- "header" info -->
       <title>{$article['title']}</title>
-      <author>user_name</author>
+      <author>{$article['user_name']}</author>
       <date>{$article['date']}</date>
 
       <!-- actual content -->
