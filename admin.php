@@ -1,8 +1,6 @@
 <?php
-// $Id: admin.php,v 1.1 2002/10/19 16:34:35 loki Exp $
+// $Id: admin.php,v 1.2 2002/10/20 00:34:54 loki Exp $
 // admin front page
-
-require_once "include/functions.inc.php";
 
 // check authentication
 if (!isset($_SERVER['PHP_AUTH_USER'])) {
