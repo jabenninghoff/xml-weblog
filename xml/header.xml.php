@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.11 2002/10/28 17:23:13 loki Exp $
+// $Id: header.xml.php,v 1.12 2002/10/29 23:28:51 loki Exp $
 
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
@@ -14,8 +14,8 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
 ?>
   <!-- header: top of the page, with logo, slogan, etc.  -->
   <header>
-    <banner>[banner: not implemented]</banner>
-    <logo>image.php?name=<?php echo $site['logo']; ?></logo>
+    <!-- <banner>[banner: not implemented]</banner> -->
+    <logo><?php echo $site['logo']; ?></logo>
     <name><?php echo $site['name']; ?></name>
     <slogan><?php echo $site['slogan']; ?></slogan>
     <url><?php echo $site['url']; ?></url>

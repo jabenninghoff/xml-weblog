@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.2 2002/10/29 18:19:46 loki Exp $
+// $Id: db.inc.php,v 1.3 2002/10/29 23:28:51 loki Exp $
 
 // connect
 require_once "include/config.inc.php";
@@ -34,14 +34,16 @@ function fetch_article($limit)
 
     if (!$limit || $limit <= 0) $limit = $xlw_article_default_limit;
 
-    return $xlw_db->getAll("select * from article group by date desc limit $limit", DB_FETCHMODE_ASSOC);
+    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id group by article.date desc limit $limit";
+    return $xlw_db->getAll($query, DB_FETCHMODE_ASSOC);
 }
 
 function fetch_article_single($id)
 {
     global $xlw_db;
 
-    return $xlw_db->getRow("select * from article where id='$id'", DB_FETCHMODE_ASSOC);
+    $query = "select article.*,topic.name as topic_name,topic.icon as topic_icon,user.userid as author from article,topic,user where article.topic=topic.id and article.user=user.id and article.id='$id'";
+    return $xlw_db->getRow($query, DB_FETCHMODE_ASSOC);
 }
 
 function fetch_topic()
@@ -57,6 +59,13 @@ function fetch_image($name)
     global $xlw_db;
 
     return $xlw_db->getRow("select * from image where name='$name'", DB_FETCHMODE_ASSOC);
+}
+
+function fetch_icon($name)
+{
+    global $xlw_db;
+
+    return $xlw_db->getRow("select * from icon where name='$name'", DB_FETCHMODE_ASSOC);
 }
 
 // auth functions

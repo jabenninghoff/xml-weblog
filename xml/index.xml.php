@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.9 2002/10/28 17:23:13 loki Exp $
+// $Id: index.xml.php,v 1.10 2002/10/29 23:28:51 loki Exp $
 
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
@@ -9,7 +9,11 @@ $site = fetch_site(base_url());
 $block = fetch_block();
 $message = fetch_message();
 $article = fetch_article($site['article_limit']);
-$topic = fetch_topic();
+
+if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
+    // standalone
+    header('Content-Type: text/xml');
+}
 
 xml_declaration();
 ?>
@@ -32,8 +36,8 @@ $id = $article[$i]['id'];
       <!-- metadata -->
       <id><?php echo $id; ?></id>
       <topic>
-        <name><?php echo $topic[($article[$i]['topic'])-1]['name']; ?></name>
-        <icon>[icon: not implemented]</icon>
+        <name><?php echo $article[$i]['topic_name']; ?></name>
+        <icon><?php echo $article[$i]['topic_icon']; ?></icon>
       </topic>
       <language><?php echo $article[$i]['language']; ?></language>
       <url>article.php?id=<?php echo $id; ?></url>

@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.6 2002/10/28 17:23:13 loki Exp $
+// $Id: article.xml.php,v 1.7 2002/10/29 23:28:51 loki Exp $
 
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
@@ -12,7 +12,6 @@ if (basename($_SERVER['PHP_SELF']) == "article.xml.php") {
 // build variables
 $site = fetch_site(base_url());
 $block = fetch_block();
-$topic = fetch_topic();
 
 $id = valid_ID($_GET['id']);
 $article = fetch_article_single($id);
@@ -32,8 +31,8 @@ xml_declaration();
       <!-- metadata -->
       <id><?php echo $id; ?></id>
       <topic>
-        <name><?php echo $topic[($article['topic'])-1]['name']; ?></name>
-        <icon>[icon: not implemented]</icon>
+        <name><?php echo $article['topic_name']; ?></name>
+        <icon><?php echo $article['topic_icon']; ?></icon>
       </topic>
       <language><?php echo $article['language']; ?></language>
       <url>article.php?id=<?php echo $id; ?></url>
