@@ -1,6 +1,6 @@
 <!--
 From: http://casbah.org/CML/Wilma/Wilma.dtd  2001-06
-$Id: CASBAH-Wilma-DTD.txt,v 1.1 2001/12/28 08:54:21 death Exp $
+$Casbah: Wilma.dtd,v 1.1 1999/02/13 05:09:26 kclark Exp $
 
 Wilma ML by Kendall G. Clark and Niel Bornstein for
 	
