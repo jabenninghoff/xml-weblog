@@ -1,5 +1,5 @@
 <?php
-// $Id: db.inc.php,v 1.9 2002/11/25 04:03:17 loki Exp $
+// $Id: db.inc.php,v 1.10 2002/11/25 16:18:40 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -78,6 +78,22 @@ function fetch_article($limit, $start, $end)
         $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit $limit";
         return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
     }
+}
+
+function fetch_article_first()
+{
+    global $xwl_db;
+
+    $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date desc limit 1";
+    return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
+}
+
+function fetch_article_last()
+{
+    global $xwl_db;
+
+    $query = "select article.*,user.userid as author from article,user where article.user=user.id order by article.date asc limit 1";
+    return $xwl_db->getRow($query, DB_FETCHMODE_ASSOC);
 }
 
 function fetch_article_single($id)
