@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.15 2004/05/01 07:15:31 loki Exp $
+// $Id: datatype.php,v 1.16 2004/05/02 21:33:04 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -112,6 +112,14 @@ class XWL_integer extends XWL_datatype
         }
         $val = $this->value ? $this->HTML_safe_value() : "";
         return "<input name=\"$name\" type=\"text\" maxlength=\"10\" size=\"10\" value=\"$val\"/>";
+    }
+
+    function valid($input)
+    {
+        // positive integers only
+        if (!is_numeric($input) || $input <= 0 || $input > _XWL_UNSIGNED_INT_MAX) return false;
+
+        return true;
     }
 }
 

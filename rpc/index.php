@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.6 2004/05/02 03:37:24 loki Exp $
+// $Id: index.php,v 1.7 2004/05/02 21:33:04 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -42,8 +42,30 @@ require_once "XWL.php";
 require_once "include/site.php";
 require_once "XML/RPC/Server.php";
 
+// XML-RPC errors
+
+$_xwl_xmlrpc_method = "unknownMethod";
+
+define('_XWL_XMLRPC_ERROR_UNAUTHORIZED', $GLOBALS['xmlrpcerruser']+11);
+define('_XWL_XMLRPC_ERROR_NOSSL', $GLOBALS['xmlrpcerruser']+12);
+define('_XWL_XMLRPC_ERROR_INVALID_POSTID', $GLOBALS['xmlrpcerruser']+21);
+define('_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS', $GLOBALS['xmlrpcerruser']+22);
+define('_XWL_XMLRPC_ERROR_NOTFOUND_POSTID', $GLOBALS['xmlrpcerruser']+31);
+
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_UNAUTHORIZED] = "authorization failed: bad username/password.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOSSL] = "authorization failed: not using SSL.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_POSTID] = "%s failed: invalid postid.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS] = "%s failed: invalid numberOfPosts.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOTFOUND_POSTID] = "%s failed: postid not found.";
+
+function _xmlrpc_error($error_id) {
+    global $_xwl_xmlrpc_error, $_xwl_xmlrpc_method;
+
+    return new XML_RPC_Response(0, $error_id, sprintf($_xwl_xmlrpc_error[$error_id], $_xwl_xmlrpc_method));
+}
+
 // rpc authorization routine
-function rpc_auth($user, $pass) {
+function _rpc_auth($user, $pass) {
     global $xwl_db;
 
     if ($user && XWL_string::valid($user)) {
@@ -54,11 +76,39 @@ function rpc_auth($user, $pass) {
     return true;
 }
 
-// we use the MetaWeblog & Blogger APIs
+// XML-RPC authentication wrapper
+function xwl_xmlrpc($params) {
 
-$blogger = array(
-    "getRecentPosts"
-);
+    global $xwl_site_value_xml, $_xwl_xmlrpc_method;
+    $resp_array = array();
+
+    // make sure we are using SSL if available
+    if ($xwl_site_value_xml['ssl_port'] && !$_SERVER['HTTPS']) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOSSL);
+    }
+
+    // we support the MetaWeblog & Blogger APIs
+    $m = explode(".", $params->method());
+    $api = $m[0];
+    $_xwl_xmlrpc_method = $m[1];
+
+    // authenticate user
+    $u_param = ($api == "blogger" ? 2 : 1);
+    $p_param = $u_param + 1;
+    $username = $params->getParam($u_param);
+    $password = $params->getParam($p_param);
+
+    if (!_rpc_auth($username->scalarval(), $password->scalarval())) {
+        // user error 1
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNAUTHORIZED);
+    }
+
+    // call the appropriate function
+    $rpc_function = $api."_".$_xwl_xmlrpc_method;
+    return $rpc_function($params);
+}
+
+// blogger functions
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
@@ -67,18 +117,15 @@ $blogger = array(
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
 function blogger_getRecentPosts($params) {
 
-    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
-    $resp_array = array();
-
-    $username = $params->getParam(2);
-    $password = $params->getParam(3);
-    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
-        // user error 1
-        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
-    }
+    global $xwl_db, $xwl_site_value_xml;
 
     $numberOfPosts = $params->getParam(4);
     $num = $numberOfPosts->scalarval();
+
+    // validate numberOfPosts
+    if (!XWL_integer::valid($num)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS);
+    }
 
     $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
 
@@ -99,25 +146,13 @@ function blogger_getRecentPosts($params) {
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
 
 
-$metaWeblog = array(
-    "getRecentPosts", "getCategories", "getPost"
-);
-
 // metaWeblog.newPost
 // metaWeblog.editPost
 
 // metaWeblog.getCategories (blogid, username, password)
 function metaWeblog_getCategories($params) {
 
-    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
-    $resp_array = array();
-
-    $username = $params->getParam(1);
-    $password = $params->getParam(2);
-    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
-        // user error 1
-        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
-    }
+    global $xwl_db, $xwl_site_value_xml;
 
     $xwl_topic = $xwl_db->fetch_topics();
 
@@ -137,25 +172,19 @@ function metaWeblog_getCategories($params) {
 // metaWeblog.getPost (postid, username, password)
 function metaWeblog_getPost($params) {
 
-    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
-    $resp_array = array();
+    global $xwl_db, $xwl_site_value_xml;
 
     $postid = $params->getParam(0);
-    $username = $params->getParam(1);
-    $password = $params->getParam(2);
-    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
-        // user error 1
-        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
-    }
+    $id = $postid->scalarval();
 
     // validate $postid
-    $tmp_id = new XWL_ID;
-    $tmp_id->set_value($postid->scalarval());
-    $id = $tmp_id->value;
+    if (!XWL_integer::valid($id)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
+    }
 
     if (!$xwl_article = $xwl_db->fetch_article($id)) {
-        // user error 2
-        return new XML_RPC_Response(0, $xmlrpcerruser+2, "getPost failed: invalid postid");
+        // this doesn't work for some reason ???
+        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
     $link = $xwl_site_value_xml['url']."article.php?id=$id";
@@ -177,18 +206,15 @@ function metaWeblog_getPost($params) {
 // metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts)
 function metaWeblog_getRecentPosts($params) {
 
-    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
-    $resp_array = array();
-
-    $username = $params->getParam(1);
-    $password = $params->getParam(2);
-    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
-        // user error 1
-        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
-    }
+    global $xwl_db, $xwl_site_value_xml;
 
     $numberOfPosts = $params->getParam(3);
     $num = $numberOfPosts->scalarval();
+
+    // validate numberOfPosts
+    if (!XWL_integer::valid($num)) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS);
+    }
 
     $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
 
@@ -213,13 +239,12 @@ function metaWeblog_getRecentPosts($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
 }
 
-
-// build the server
-foreach (array("blogger", "metaWeblog") as $api) {
-    foreach ($$api as $m) {
-        $dispatch_map["$api.$m"] = array("function" => "${api}_$m");
-    }
-}
+$dispatch_map = array(
+    "blogger.getRecentPosts" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.getRecentPosts" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.getCategories" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.getPost" => array("function" => "xwl_xmlrpc")
+);
 
 // generate response
 $xml_rpc_server = new XML_RPC_Server($dispatch_map);
