@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.22 2003/12/01 00:38:34 loki Exp $
+// $Id: load_dbase.php,v 1.23 2004/04/30 18:04:02 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database/image loader
@@ -48,7 +48,7 @@ $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$
 
 if (DB::isError($db)) {
     $link = mysql_pconnect($xwl_db_server, $xwl_db_user, $xwl_db_password) or die("Error: couldn't connect!\n");
-    mysql_create_db($xwl_db_database) or die("Error: couldn't create database!\n");
+    mysql_query("CREATE DATABASE $xwl_db_database") or die("Error: couldn't create database!\n");
     $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
     if (DB::isError($db)) die("Error: WTF Happened ?\n");
 } else die("Error: database already exists. not installing.\n");
