@@ -1,4 +1,4 @@
-/* $Id: basic.css,v 1.4 2003/04/21 20:54:12 loki Exp $ */
+/* $Id: basic.css,v 1.5 2004/10/18 15:20:19 loki Exp $ */
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /* basic CSS1 support */
@@ -17,6 +17,10 @@ img {
 }
 
 h3 {
+    font-size: medium;
+}
+
+pre {
     font-size: medium;
 }
 
