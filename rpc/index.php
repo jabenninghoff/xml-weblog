@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.12 2004/05/03 04:53:38 loki Exp $
+// $Id: index.php,v 1.13 2004/05/03 05:20:53 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -112,7 +112,7 @@ function xwl_xmlrpc($params) {
 }
 
 
-// metaWeblog.getCategories (blogid, username, password) returns struct
+// metaWeblog.getCategories (blogid, username, password) returns struct (of structs, each is a category)
 function _getCategories($params) {
 
     global $xwl_db, $xwl_site_value_xml;
@@ -166,7 +166,7 @@ function _metaWeblog_translate_post($article) {
 }
 
 // blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
-// metaWeblog.getPost (postid, username, password) returns struct
+// metaWeblog.getPost (postid, username, password) returns struct (post as RSS 2.0 item)
 function _getPost($params) {
 
     global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
@@ -190,7 +190,7 @@ function _getPost($params) {
 }
 
 // blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
-// metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts) returns array of structs
+// metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts) returns array of structs (each is a post)
 function _getRecentPosts($params) {
 
     global $xwl_db, $xwl_site_value_xml, $_xwl_xmlrpc_api, $_pshift;
@@ -216,7 +216,7 @@ function _getRecentPosts($params) {
 
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
-// metaWeblog.newPost (blogid, username, password, struct, publish) returns string
+// metaWeblog.newPost (blogid, username, password, struct, publish) returns string (postId)
 
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
 // metaWeblog.editPost (postid, username, password, struct, publish) returns true
