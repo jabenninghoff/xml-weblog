@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.5 2002/10/26 03:20:24 loki Exp $
+// $Id: load_dbase.php,v 1.6 2002/10/26 05:19:52 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -22,14 +22,14 @@ $type = array(
     "boolean" => "tinyint NOT NULL default 0",
     "date" => "datetime NOT NULL default '0000-00-00 00:00:00'",
     "image" => "mediumblob NOT NULL",
-    "image-small" => "blob NOT NULL",
+    "image_small" => "blob NOT NULL",
     "int" => "int unsigned NOT NULL default 0",
     "lang" => "varchar(255) NOT NULL default 'en'",
     "string" => "varchar(255) NOT NULL default ''",
-    "string-XHTML" => "varchar(255) NOT NULL default ''",
-    "XHTML-code" => "text NOT NULL",
-    "XHTML-fragment" => "text NOT NULL",
-    "XHTML-long" => "mediumtext NOT NULL"
+    "string_XHTML" => "varchar(255) NOT NULL default ''",
+    "XHTML_code" => "text NOT NULL",
+    "XHTML_fragment" => "text NOT NULL",
+    "XHTML_long" => "mediumtext NOT NULL"
 );
 
 
@@ -42,12 +42,12 @@ $site = array(
     "id" => array("ID", 1),
     "url" => array("URI", 1),
     "name" => array("string", 1),
-    "slogan" => array("string-XHTML", 0),
+    "slogan" => array("string_XHTML", 0),
     "logo" => array("URI", 0),
-    "description" => array("XHTML-fragment", 0),
-    "header_content" => array("XHTML-code", 0),
-    "disclaimer" => array("XHTML-fragment", 0),
-    "footer_content" => array("XHTML-code", 0),
+    "description" => array("XHTML_fragment", 0),
+    "header_content" => array("XHTML_code", 0),
+    "disclaimer" => array("XHTML_fragment", 0),
+    "footer_content" => array("XHTML_code", 0),
     "language" => array("lang", 1)
 );
 
@@ -56,14 +56,14 @@ $message = array(
     "message_index" => array("int", 1),
     "start_date" => array("date", 0),
     "end_date" => array("date", 0),
-    "content" => array("XHTML-fragment", 1),
+    "content" => array("XHTML_fragment", 1),
     "language" => array("lang", 1)
 );
 
 $topic = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
-    "description" => array("XHTML-fragment", 0),
+    "description" => array("XHTML_fragment", 0),
     "icon" => array("URI", 1)
 );
 
@@ -73,7 +73,7 @@ $block = array(
     "sidebar_index" => array("int", 1),
     "block_index" => array("int", 1),
     "title" => array("string", 1),
-    "content" => array("XHTML-code", 1),
+    "content" => array("XHTML_code", 1),
     "language" => array("lang", 1)
 );
 
@@ -84,8 +84,8 @@ $article = array(
     "title" => array("string", 1),
     "author" => array("string", 1),
     "date" => array("date", 1),
-    "leader" => array("XHTML-long", 1),
-    "content" => array("XHTML-long", 0),
+    "leader" => array("XHTML_long", 1),
+    "content" => array("XHTML_long", 0),
     "language" => array("lang", 1)
 );
 
@@ -109,7 +109,7 @@ $image = array(
 $icon = array(
     "id" => array("ID", 1),
     "name" => array("string", 1),
-    "src" => array("image-small", 1),
+    "src" => array("image_small", 1),
     "alt" => array("string", 0),
     "width" => array("int", 0),
     "height" => array("int", 0)
