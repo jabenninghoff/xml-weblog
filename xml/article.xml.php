@@ -1,6 +1,7 @@
 <?php
-// $Id: article.xml.php,v 1.7 2002/10/29 23:28:51 loki Exp $
+// $Id: article.xml.php,v 1.8 2002/10/30 15:43:03 loki Exp $
 
+require_once "include/article.inc.php";
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
@@ -26,32 +27,7 @@ xml_declaration();
 
   <!-- main: main section of document. index page contains articles. -->
   <main>
-    <!-- 0 or more articles, default 10 most recent. topmost is index 0 -->
-    <article content="show">
-      <!-- metadata -->
-      <id><?php echo $id; ?></id>
-      <topic>
-        <name><?php echo $article['topic_name']; ?></name>
-        <icon><?php echo $article['topic_icon']; ?></icon>
-      </topic>
-      <language><?php echo $article['language']; ?></language>
-      <url>article.php?id=<?php echo $id; ?></url>
-
-      <!-- "header" info -->
-      <title><?php echo $article['title']; ?></title>
-      <author><?php echo $article['author']; ?></author>
-      <date><?php echo $article['date']; ?></date>
-
-      <!-- actual content -->
-      <leader>
-<?php echo trim($article['leader']), "\n"; ?>
-      </leader>
-      <content>
-<?php echo trim($article['content']), "\n"; ?>
-      </content>
-
-      <!-- comments (not yet implemented) -->
-    </article>
+<?php display_article($article, 0, "show"); ?>
   </main>
 
 <?php require "xml/footer.xml.php"; ?>

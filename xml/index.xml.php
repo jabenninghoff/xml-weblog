@@ -1,6 +1,7 @@
 <?php
-// $Id: index.xml.php,v 1.10 2002/10/29 23:28:51 loki Exp $
+// $Id: index.xml.php,v 1.11 2002/10/30 15:43:03 loki Exp $
 
+require_once "include/article.inc.php";
 require_once "include/db.inc.php";
 require_once "include/functions.inc.php";
 
@@ -30,35 +31,7 @@ xml_declaration();
 <?php
 $i = 0;
 while ($article[$i]) {
-$id = $article[$i]['id'];
-?>
-    <article index="<?php echo $i; ?>">
-      <!-- metadata -->
-      <id><?php echo $id; ?></id>
-      <topic>
-        <name><?php echo $article[$i]['topic_name']; ?></name>
-        <icon><?php echo $article[$i]['topic_icon']; ?></icon>
-      </topic>
-      <language><?php echo $article[$i]['language']; ?></language>
-      <url>article.php?id=<?php echo $id; ?></url>
-
-      <!-- "header" info -->
-      <title><?php echo $article[$i]['title']; ?></title>
-      <author><?php echo $article[$i]['author']; ?></author>
-      <date><?php echo $article[$i]['date']; ?></date>
-
-      <!-- actual content -->
-      <leader>
-<?php echo trim($article[$i]['leader']), "\n"; ?>
-      </leader>
-      <content>
-<?php echo trim($article[$i]['content']), "\n"; ?>
-      </content>
-
-      <!-- comments (not yet implemented) -->
-    </article>
-<?php
-    $i++;
+    display_article($article[$i], $i++, "");
 }
 ?>
   </main>
