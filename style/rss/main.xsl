@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.4 2004/04/30 21:24:20 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.5 2004/05/01 17:27:00 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -57,7 +57,7 @@
 
 <xsl:template match="header">
     <title><xsl:value-of select="name"/></title>
-    <link><xsl:value-of select="url"/></link>
+    <link><xsl:value-of select="url"/>index.php</link>
     <description><xsl:value-of select="description"/></description>
     <!-- unimplemented
         <language></language>
