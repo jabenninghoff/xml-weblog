@@ -1,6 +1,11 @@
-/* $Id: advanced.css,v 1.1 2002/11/14 23:42:13 loki Exp $ */
+/* $Id: advanced.css,v 1.2 2002/11/15 15:41:14 loki Exp $ */
 
 /* advanced/CSS2 support - modern browsers */
+
+/* standards note */
+.ahem {
+    display: none;
+}
 
 /* default settings */
 body {
@@ -21,7 +26,7 @@ img {
 
 h3 {
     background-color: #D0D0D0;
-    padding: 4px;
+    padding: 0.25em;
     font-size: 120%;
 }
 
@@ -29,11 +34,6 @@ h3 {
 a.img {
     text-decoration: none;
     word-spacing: 0.5em;
-}
-
-p.hrule {
-    border-bottom: 1px solid black;
-    clear: both;
 }
 
 p.break {
@@ -45,25 +45,21 @@ p.zero {
     margin: 0;
 }
 
-table.head {
-    border: solid gray;
-}
-
 /* main sections */
 div.header {
-    margin-bottom: 2ex;
+    margin-bottom: 3ex;
 }
 
 div.footer {
     clear: both;
     text-align: center;
-    margin-top: 4ex;
+    margin-top: 3ex;
     border-top: 1px solid black;
 }
 
 /* subsections */
 div.masthead {
-    border: solid gray;
+    border: 3px solid gray;
     padding: 1em;
 }
 
@@ -82,7 +78,7 @@ div.message {
 
 div.block-title {
     border: 2px solid black;
-    padding: 4px;
+    padding: 0.25em;
     background: #D0D0D0;
 }
 
@@ -90,14 +86,13 @@ div.block-main {
     border-right: 2px solid black;
     border-left: 2px solid black;
     border-bottom: 2px solid black;
-    padding: 4px;
-    margin-bottom: 8px;
+    padding: 0.25em;
+    margin-bottom: 2ex;
 }
 
 div.byline {
     border: 1px solid black;
-    padding: 3px;
-    width: auto;
+    padding: 0.25em;
 }
 
 /* extras */

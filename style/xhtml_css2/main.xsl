@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.12 2002/11/15 00:43:04 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.13 2002/11/15 15:41:14 loki Exp $ -->
 
 <!--
    -
@@ -48,6 +48,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title><xsl:value-of select="@title"/></title>
     <link rel="stylesheet" href="style/xhtml_css2/basic.css" type="text/css"/>
+    <style type="text/css">@import "style/xhtml_css2/advanced.css";</style>
     <xsl:if test="sidebar[@align='left']">
       <style type="text/css">@import "style/xhtml_css2/sidebar_left.css";</style>
     </xsl:if>
@@ -56,6 +57,12 @@
     </xsl:if>
   </head>
   <body>
+    <xsl:comment> Only non-standards-compliant browsers should see the following message </xsl:comment>
+    <p class="ahem">
+      <b>Note:</b> This site will look much better in a browser that supports 
+      <a href="http://www.webstandards.org/upgrade/">web standards</a>,
+      but it is accessible to any browser or Internet device.
+    </p>
     <div class="header">
       <xsl:apply-templates select="header"/>
     </div>
