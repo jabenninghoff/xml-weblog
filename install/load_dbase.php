@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.4 2002/10/24 18:41:30 loki Exp $
+// $Id: load_dbase.php,v 1.5 2002/10/26 03:20:24 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
@@ -35,81 +35,84 @@ $type = array(
 
 // table definitions
 
+// $object = array(
+//     "field" => array("type", required),
+
 $site = array(
-    "id" => "ID",
-    "url" => "URI",
-    "name" => "string",
-    "slogan" => "string-XHTML",
-    "logo" => "URI",
-    "description" => "XHTML-fragment",
-    "header_content" => "XHTML-code",
-    "disclaimer" => "XHTML-fragment",
-    "footer_content" => "XHTML-code",
-    "language" => "lang"
+    "id" => array("ID", 1),
+    "url" => array("URI", 1),
+    "name" => array("string", 1),
+    "slogan" => array("string-XHTML", 0),
+    "logo" => array("URI", 0),
+    "description" => array("XHTML-fragment", 0),
+    "header_content" => array("XHTML-code", 0),
+    "disclaimer" => array("XHTML-fragment", 0),
+    "footer_content" => array("XHTML-code", 0),
+    "language" => array("lang", 1)
 );
 
 $message = array(
-    "id" => "ID",
-    "message_index" => "int",
-    "start_date" => "date",
-    "end_date" => "date",
-    "content" => "XHTML-fragment",
-    "language" => "lang"
+    "id" => array("ID", 1),
+    "message_index" => array("int", 1),
+    "start_date" => array("date", 0),
+    "end_date" => array("date", 0),
+    "content" => array("XHTML-fragment", 1),
+    "language" => array("lang", 1)
 );
 
 $topic = array(
-    "id" => "ID",
-    "name" => "string",
-    "description" => "XHTML-fragment",
-    "icon" => "URI"
+    "id" => array("ID", 1),
+    "name" => array("string", 1),
+    "description" => array("XHTML-fragment", 0),
+    "icon" => array("URI", 1)
 );
 
 $block = array(
-    "id" => "ID",
-    "sidebar_align" => "string",
-    "sidebar_index" => "int",
-    "block_index" => "int",
-    "title" => "string",
-    "content" => "XHTML-code",
-    "language" => "lang"
+    "id" => array("ID", 1),
+    "sidebar_align" => array("string", 1),
+    "sidebar_index" => array("int", 1),
+    "block_index" => array("int", 1),
+    "title" => array("string", 1),
+    "content" => array("XHTML-code", 1),
+    "language" => array("lang", 1)
 );
 
 $article = array(
-    "id" => "ID",
-    "site" => "int",
-    "topic" => "int",
-    "title" => "string",
-    "author" => "string",
-    "date" => "date",
-    "leader" => "XHTML-long",
-    "content" => "XHTML-long",
-    "language" => "lang"
+    "id" => array("ID", 1),
+    "site" => array("int", 1),
+    "topic" => array("int", 1),
+    "title" => array("string", 1),
+    "author" => array("string", 1),
+    "date" => array("date", 1),
+    "leader" => array("XHTML-long", 1),
+    "content" => array("XHTML-long", 0),
+    "language" => array("lang", 1)
 );
 
 $user = array(
-    "id" => "ID",
-    "userid" => "string",
-    "password" => "string",
-    "admin" => "boolean"
+    "id" => array("ID", 1),
+    "userid" => array("string", 1),
+    "password" => array("string", 1),
+    "admin" => array("boolean", 1)
 );
 
 // image-BLOB tables
 $image = array(
-    "id" => "ID",
-    "name" => "string",
-    "src" => "image",
-    "alt" => "string",
-    "width" => "int",
-    "height" => "int"
+    "id" => array("ID", 1),
+    "name" => array("string", 1),
+    "src" => array("image", 1),
+    "alt" => array("string", 0),
+    "width" => array("int", 0),
+    "height" => array("int", 0)
 );
 
 $icon = array(
-    "id" => "ID",
-    "name" => "string",
-    "src" => "image-small",
-    "alt" => "string",
-    "width" => "int",
-    "height" => "int"
+    "id" => array("ID", 1),
+    "name" => array("string", 1),
+    "src" => array("image-small", 1),
+    "alt" => array("string", 0),
+    "width" => array("int", 0),
+    "height" => array("int", 0)
 );
 
 $tables = array(
@@ -123,6 +126,7 @@ CREATE TABLE schema (
   object varchar(255) NOT NULL default '',
   property varchar(255) NOT NULL default '',
   datatype varchar(255) NOT NULL default 'string',
+  required tinyint NOT NULL default 1,
   PRIMARY KEY (id)
 ) TYPE=MyISAM;
 
@@ -131,13 +135,13 @@ foreach ($tables as $table) {
 
     // table schema
     foreach ($$table as $col => $t) {
-        echo "INSERT INTO schema VALUES(0,'$table','$col','$t');\n";
+        echo "INSERT INTO schema VALUES(0,'$table','$col','$t[0]',$t[1]);\n";
     }
     echo "\n";
 
     echo "CREATE TABLE $table (\n";
     foreach ($$table as $col => $t) {
-        echo "  $col $type[$t],\n";
+        echo "  $col {$type[$t[0]]},\n";
     }
     echo "  PRIMARY KEY (id)\n";
     echo ") TYPE=MyISAM;\n\n";
