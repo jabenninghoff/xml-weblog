@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.4 2002/10/20 00:34:54 loki Exp $
+// $Id: article.xml.php,v 1.5 2002/10/21 06:19:26 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -14,8 +14,10 @@ $site = fetch_site(1);
 $block = fetch_block();
 $topic = fetch_topic();
 
+$id = valid_ID($_GET['id']);
+
 // fetch article
-$q = "select * from article where id='{$_GET['id']}'";
+$q = "select * from article where id='$id'";
 $article = $db->getRow($q, DB_FETCHMODE_ASSOC);
 
 ?>
