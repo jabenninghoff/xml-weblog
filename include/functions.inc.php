@@ -100,4 +100,64 @@ if (strspn($id,"012345679") == strlen($id)) {
 }
 }
 
+function valid_URI($uri)
+{
+    return $uri;
+}
+
+function valid_boolean($b)
+{
+    return $b;
+}
+
+function valid_date($date)
+{
+    return $date;
+}
+
+function valid_image($image)
+{
+    return $image;
+}
+
+function valid_image_small($image)
+{
+    return $image;
+}
+
+function valid_int($int)
+{
+    return $int;
+}
+
+function valid_lang($lang)
+{
+    return $lang;
+}
+
+function valid_string($str)
+{
+    return $str;
+}
+
+function valid_string_XHTML($str)
+{
+    return $str;
+}
+
+function valid_XHTML_code($xhtml)
+{
+    return $xhtml;
+}
+
+function valid_XHTML_fragment($xhtml)
+{
+    return $xhtml;
+}
+
+function valid_XHTML_long($xhtml)
+{
+    return $xhtml;
+}
+
 ?>
