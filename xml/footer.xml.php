@@ -1,7 +1,7 @@
 <?php
-// $Id: footer.xml.php,v 1.1 2002/10/17 05:04:15 loki Exp $
+// $Id: footer.xml.php,v 1.2 2002/10/17 05:45:33 loki Exp $
 
-require_once "functions.inc.php";
+require_once "include/functions.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "footer.xml.php") {
     // standalone
