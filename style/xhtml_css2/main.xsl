@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.21 2003/04/21 20:54:12 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.22 2003/10/21 22:31:11 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -38,13 +38,18 @@
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<!-- xmlns="http://www.w3.org/1999/xhtml"
+   - we really should have this here, but it breaks the validator (until
+   - the xmlns issues get worked out, either by directly supporting the xhtml
+   - tag subset in xwl or by using the xhtml namespace for those tags) 
+  -->
 <xsl:output method="xml" indent="yes" encoding="iso-8859-1"
     omit-xml-declaration="yes"
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
     doctype-system="/DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="page">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
+<html xml:lang="{@lang}" lang="{@lang}">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title><xsl:value-of select="@title"/></title>
