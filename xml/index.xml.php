@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.21 2003/05/14 22:44:44 loki Exp $
+// $Id: index.xml.php,v 1.22 2003/06/09 19:13:32 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -39,6 +39,13 @@
 require_once "XWL.php";
 require_once "include/site.php";
 require_once "include/article.inc.php";
+require_once "include/auth.inc.php";
+
+// check authentication
+if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
+    xwl_auth_unauthorized($xwl_auth_realm);
+    exit;
+}
 
 if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     // standalone

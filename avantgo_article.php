@@ -1,5 +1,5 @@
 <?php
-// $Id: avantgo_article.php,v 1.5 2003/05/14 22:44:44 loki Exp $
+// $Id: avantgo_article.php,v 1.6 2003/06/09 19:13:32 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // avantgo article renderer
@@ -38,7 +38,6 @@
  *
  */
 
-require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
 
 /*
@@ -49,12 +48,6 @@ require_once "include/style.inc.php";
  *
  * There should be a better fix for this.
  */
-
-// check authentication
-if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
-    xwl_auth_unauthorized($xwl_auth_realm);
-    exit;
-}
 
 // get php-formatted xml document (must be in the global context)
 ob_start();

@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.23 2003/04/21 20:54:12 loki Exp $
+// $Id: admin.xml.php,v 1.24 2003/06/09 19:13:32 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -433,15 +433,17 @@ echo "      </content>\n";
 }
 
 // main
+
+// check authentication
+if (!xwl_auth_user_authenticated() || !xwl_auth_user_authorized("admin")) {
+    xwl_auth_unauthorized($xwl_auth_realm);
+    exit;
+}
+
 if (($page = basename($_SERVER['PHP_SELF']))  == "admin.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 
-    // check authentication
-    if (!xwl_auth_user_authenticated() || !xwl_auth_user_authorized("admin")) {
-        xwl_auth_unauthorized("private");
-        exit;
-    }
 }
 
 // site variables

@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.4 2003/04/21 20:54:12 loki Exp $
+// $Id: user.php,v 1.5 2003/06/09 19:13:32 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user configuration page
@@ -38,14 +38,7 @@
  *
  */
 
-require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
-
-// check authentication
-if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
-    xwl_auth_unauthorized($xwl_auth_realm);
-    exit;
-}
 
 // get php-formatted xml document (must be in the global context)
 ob_start();

@@ -1,5 +1,5 @@
 <?php
-// $Id: avantgo.php,v 1.6 2003/05/14 22:44:44 loki Exp $
+// $Id: avantgo.php,v 1.7 2003/06/09 19:13:32 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // avantgo front page renderer
@@ -38,14 +38,7 @@
  *
  */
 
-require_once "include/auth.inc.php";
 require_once "include/style.inc.php";
-
-// check authentication
-if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
-    xwl_auth_unauthorized($xwl_auth_realm);
-    exit;
-}
 
 // get php-formatted xml document (must be in the global context)
 ob_start();
