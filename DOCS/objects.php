@@ -1,8 +1,9 @@
 <?php
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
+include "include/functions.inc.php";
 ?>
-<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-<!-- $Id: objects.php,v 1.3 2002/07/03 23:33:47 loki Exp $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<!-- $Id: objects.php,v 1.4 2002/07/20 16:15:23 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>XML Weblog Objects</title>
@@ -77,7 +78,7 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
         implemented in version 2.0.
       </p>
 <?php
-print '<p><a href="http://validator.w3.org/check?uri=http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].';ss=1">validate</a></p>'."\n";
+validate_self();
 ?>
   </body>
 </html>
