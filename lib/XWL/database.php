@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.17 2004/04/30 21:55:21 loki Exp $
+// $Id: database.php,v 1.18 2004/07/09 17:56:15 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -120,6 +120,13 @@ class XWL_database
     function fetch_article_last()
     {
         $query = "$this->_article_base_query order by article.date asc limit 1";
+
+        return $this->_fetch_single("XWL_article", $query);
+    }
+
+    function fetch_article_last_id()
+    {
+        $query = "$this->_article_base_query order by article.id desc limit 1";
 
         return $this->_fetch_single("XWL_article", $query);
     }
