@@ -208,19 +208,19 @@ function valid_string_XHTML($str)
 
 function valid_XHTML_code($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/><p><code>";
+    $tags = "<a><b><i><s><u><br><br/><img><p><code>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_fragment($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/>";
+    $tags = "<a><b><i><s><u><br><br/><img>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_long($xhtml)
 {
-    $tags = "<a><b><i><s><u><br><br/><p>";
+    $tags = "<a><b><i><s><u><br><br/><img><p>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
