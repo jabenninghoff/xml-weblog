@@ -1,4 +1,4 @@
--- $Id: xml-mysql.sql,v 1.3 2002/10/15 22:24:05 loki Exp $
+-- $Id: xml-mysql.sql,v 1.4 2002/10/15 22:32:17 loki Exp $
 --
 -- XML MySQL database definitions / initial values
 
@@ -42,6 +42,7 @@ CREATE TABLE blocks (
   sidebar_index int(10) unsigned NOT NULL default 0,
   title varchar(255) NOT NULL default '',
   content text NOT NULL,
+  php_script varchar(255) NOT NULL default '',
   language varchar(255) NOT NULL default 'en',
   PRIMARY KEY  (id)
 ) TYPE=MyISAM COMMENT='Sidebar Blocks';
