@@ -1,11 +1,11 @@
 <?php
 // require_once only if not called from somewhere else
-if (basename($_SERVER['PHP_SELF']) == "index_xml.php") {
+if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
     require_once "../include/functions.inc.php";
 }
 ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<!-- $Id: index.xml.php,v 1.1 2002/10/16 19:32:30 loki Exp $ -->
+<!-- $Id: index.xml.php,v 1.2 2002/10/16 22:13:25 loki Exp $ -->
 <!-- XML-weblog front page -->
 
 <!-- page: XML-weblog root element -->
