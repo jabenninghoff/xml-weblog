@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.5 2004/05/02 02:57:39 loki Exp $
+// $Id: index.php,v 1.6 2004/05/02 03:37:24 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -80,7 +80,7 @@ function blogger_getRecentPosts($params) {
     $numberOfPosts = $params->getParam(4);
     $num = $numberOfPosts->scalarval();
 
-    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit']);
+    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
 
     for ($i=0; $xwl_article[$i]; $i++) {
         $resp_struct = array(
@@ -190,7 +190,7 @@ function metaWeblog_getRecentPosts($params) {
     $numberOfPosts = $params->getParam(3);
     $num = $numberOfPosts->scalarval();
 
-    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit']);
+    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
 
     for ($i=0; $xwl_article[$i]; $i++) {
         $id = $xwl_article[$i]->property['id']->value;
