@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.15 2002/10/22 22:13:51 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.16 2002/10/24 22:59:24 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -100,20 +100,24 @@
 <xsl:template match="admin">
   <xsl:apply-templates select="menu"/>
   <h2><xsl:value-of select="title"/></h2>
-  <table>
-    <tr>
-    <xsl:for-each select="object[1]/property">
-      <th><xsl:value-of select="@name"/></th>
-    </xsl:for-each>
-    </tr>
-    <xsl:for-each select="object">
-      <tr>
-        <xsl:for-each select="property">
-          <td><xsl:copy-of select="./text()|./*"/></td>
-        </xsl:for-each>
-      </tr>
-    </xsl:for-each>
-  </table>
+  <xsl:if test="object">
+    <table>
+      <xsl:for-each select="object">
+        <xsl:if test="position()=1">
+          <tr>
+            <xsl:for-each select="property">
+              <th><xsl:value-of select="@name"/></th>
+            </xsl:for-each>
+           </tr>
+        </xsl:if>
+        <tr>
+          <xsl:for-each select="property">
+            <td><xsl:copy-of select="./text()|./*"/></td>
+          </xsl:for-each>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:if>
   <xsl:apply-templates select="form"/>
 </xsl:template>
 
