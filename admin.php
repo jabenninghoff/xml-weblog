@@ -1,11 +1,12 @@
 <?php
-// $Id: admin.php,v 1.2 2002/10/20 00:34:54 loki Exp $
+// $Id: admin.php,v 1.3 2002/10/27 17:25:54 loki Exp $
 // admin front page
 
+include "include/auth.inc.php";
+
 // check authentication
-if (!isset($_SERVER['PHP_AUTH_USER'])) {
-    header('WWW-Authenticate: Basic realm="private"');
-    header('HTTP/1.0 401 Unauthorized');
+if (!user_authenticated() || !user_authorized("admin")) {
+    unauthorized("private");
     exit;
 }
 
