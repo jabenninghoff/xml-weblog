@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.9 2002/11/14 04:55:07 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.10 2002/11/14 05:44:57 loki Exp $ -->
 
 <!--
    -
@@ -108,8 +108,8 @@
 </xsl:template>
 
 <xsl:template match="block">
-  <div class="block-title"><b><xsl:value-of select="title"/></b></div>
-  <div class="block-main"><xsl:copy-of select="content/text()|content/*"/></div>
+  <div class="block-title"><p class="zero"><b><xsl:value-of select="title"/></b></p></div>
+  <div class="block-main"><p class="zero"><xsl:copy-of select="content/text()|content/*"/></p></div>
 </xsl:template>
 
 <xsl:template match="main">
