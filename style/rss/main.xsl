@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.6 2004/06/16 16:13:49 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.7 2004/07/11 22:02:57 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -78,7 +78,7 @@
         <title><xsl:value-of select="title"/></title>
         <link><xsl:value-of select="$rootURL"/><xsl:value-of select="url"/></link>
         <description>
-            %cdata_open%<xsl:copy-of select="leader/*"/><xsl:copy-of select="content/*"/>%cdata_close%
+            <xwl function="cdata_open"/><xsl:copy-of select="leader/*"/><xsl:copy-of select="content/*"/><xwl function="cdata_close"/>
         </description>
         <!-- disabled (duplicate)
         <author><xsl:value-of select="author/name"/> &lt;<xsl:value-of select="author/mail"/>&gt;</author>

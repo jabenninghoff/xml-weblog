@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.14 2004/04/30 21:24:19 loki Exp $
+// $Id: style.inc.php,v 1.15 2004/07/11 22:02:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // style/xml rendering module
@@ -76,11 +76,11 @@ function xwl_style_render_page($xml, $style)
     $result = xslt_process($xh, 'arg:/_xml', 'arg:/_xsl', NULL, $arguments);
 
     // textarea hack
-    $result = str_replace("%enter_text%", "", $result);
+    $result = preg_replace("'\s*<xwl function=\"remove\"/>\s*'", "", $result);
 
     // cdata hack
-    $result = str_replace("%cdata_open%", "<![CDATA[", $result);
-    $result = str_replace("%cdata_close%", "]]>", $result);
+    $result = preg_replace("'\s*<xwl function=\"cdata_open\"/>\s*'", "<![CDATA[", $result);
+    $result = preg_replace("'\s*<xwl function=\"cdata_close\"/>\s*'", "]]>", $result);
 
     echo $result;
     xslt_free($xh);

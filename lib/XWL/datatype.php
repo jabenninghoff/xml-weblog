@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.17 2004/07/10 22:40:03 loki Exp $
+// $Id: datatype.php,v 1.18 2004/07/11 22:02:57 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -552,7 +552,7 @@ class XWL_XHTML extends XWL_datatype
         if ($mode == "delete") {
             return parent::admin_input($name, $mode);
         }
-        $val = $this->value ? $this->HTML_safe_value() : "%enter_text%";
+        $val = $this->value ? $this->HTML_safe_value() : '<xwl function="remove"/>';
         return "<textarea name=\"$name\" cols=\"48\" rows=\"8\">$val</textarea>";
     }
 }

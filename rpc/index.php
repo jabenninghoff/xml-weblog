@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.19 2004/07/10 17:45:13 loki Exp $
+// $Id: index.php,v 1.20 2004/07/11 22:02:57 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -148,10 +148,15 @@ function _getCategories($params) {
 
 function _blogger_translate_post($article) {
 
+    $content = $article->property['leader']->value;
+    if ($article->property['content']->value) {
+        $content .= "<xwl function=\"split\"/>\n".$article->property['content']->value;
+    }
+
     $post_struct = array(
         "userid" => new XML_RPC_Value($article->property['user_name']->value),
         "dateCreated" => new XML_RPC_Value($article->property['date']->iso8601_date(), "dateTime.iso8601"),
-        "content" => new XML_RPC_Value($article->property['leader']->value),
+        "content" => new XML_RPC_Value($content),
         "postid" => new XML_RPC_Value($article->property['id']->value)
     );
 
@@ -164,12 +169,17 @@ function _metaWeblog_translate_post($article) {
 
     $id = $article->property['id']->value;
     $link = $xwl_site_value_xml['url']."article.php?id=$id";
+    $content = $article->property['leader']->value;
+    if ($article->property['content']->value) {
+        $content .= "<xwl function=\"split\"/>\n".$article->property['content']->value;
+    }
+
     $post_struct = array(
         "categories" => new XML_RPC_Value(
             array(new XML_RPC_Value($article->property['topic_name']->value)), "array"),
         "userid" => new XML_RPC_Value($article->property['user_name']->value),
         "dateCreated" => new XML_RPC_Value($article->property['date']->iso8601_date(), "dateTime.iso8601"),
-        "description" => new XML_RPC_Value($article->property['leader']->value),
+        "description" => new XML_RPC_Value($content),
         "postid" => new XML_RPC_Value($id),
         "title" => new XML_RPC_Value($article->property['title']->value),
         "link" => new XML_RPC_Value($link),
@@ -245,6 +255,8 @@ function _blogger_post($content, $publish) {
 
     global $xwl_db, $_xwl_auth_user;
 
+    $article = explode('<xwl function="split"/>', $content->scalarval());
+
     $post = new XWL_article;
 
     $post->property['site']->set_value($GLOBALS['xwl_default_site']);
@@ -252,7 +264,8 @@ function _blogger_post($content, $publish) {
     $post->property['title']->set_value($GLOBALS['xwl_blogger_title']);
     $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
     $post->property['date']->set_value("now");
-    $post->property['leader']->set_value($content->scalarval());
+    $post->property['leader']->set_value($article[0]);
+    $post->property['content']->set_value($article[1]);
     $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
 
     if ($post->missing_required()) {
@@ -308,6 +321,8 @@ function _metaWeblog_post($post_struct, $publish) {
         }
     }
 
+    $article = explode('<xwl function="split"/>', $description->scalarval());
+
     $post = new XWL_article;
 
     $post->property['site']->set_value($GLOBALS['xwl_default_site']);
@@ -315,7 +330,8 @@ function _metaWeblog_post($post_struct, $publish) {
     $post->property['title']->set_value($title->scalarval());
     $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
     $post->property['date']->set_value("now");
-    $post->property['leader']->set_value($description->scalarval());
+    $post->property['leader']->set_value($article[0]);
+    $post->property['content']->set_value($article[1]);
     $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
 
     if ($post->missing_required()) {
@@ -373,7 +389,9 @@ function _blogger_edit($id, $content, $publish) {
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
-    $post->property['leader']->set_value($content->scalarval());
+    $article = explode('<xwl function="split"/>', $content->scalarval());
+    $post->property['leader']->set_value($article[0]);
+    $post->property['content']->set_value($article[1]);
 
     if ($post->missing_required()) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
@@ -428,9 +446,13 @@ function _metaWeblog_edit($id, $post_struct, $publish) {
         }
     }
 
+    $article = explode('<xwl function="split"/>', $description->scalarval());
+
     $post->property['topic']->set_value($topic);
     $post->property['title']->set_value($title->scalarval());
-    $post->property['leader']->set_value($description->scalarval());
+    $post->property['leader']->set_value($article[0]);
+    $post->property['content']->set_value($article[1]);
+
 
     if ($post->missing_required()) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
