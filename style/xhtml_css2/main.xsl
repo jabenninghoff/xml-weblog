@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.4 2002/11/01 17:58:50 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.5 2002/11/01 18:47:15 loki Exp $ -->
 
 <!--
    -
@@ -33,7 +33,7 @@
    - NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
    - SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    -
-   -->
+  -->
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
