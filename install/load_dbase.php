@@ -1,17 +1,20 @@
 <?php
-// $Id: load_dbase.php,v 1.8 2002/10/27 15:58:18 loki Exp $
+// $Id: load_dbase.php,v 1.9 2002/10/28 17:23:13 loki Exp $
 // database/image loader
 
 header('Content-Type: text/plain');
 
-require_once('DB.php');
-$db = DB::connect("mysql://xml:weblog@localhost/xml_tmnet", true);
+require_once "include/config.inc.php";
+require_once "DB.php";
+
+$db = DB::connect("$xlw_db_type://$xlw_db_user:$xlw_db_password@$xlw_db_server/$xlw_db_database", true);
+
 if (DB::isError($db)) {
-    $link = mysql_pconnect("localhost", "xml", "weblog")
+    $link = mysql_pconnect($xlw_db_server, $xlw_db_user, $xlw_db_password)
         or die("Error: couldn't connect!\n");
-    mysql_create_db("xml_tmnet")
+    mysql_create_db($xlw_db_database)
         or die("Error: couldn't create database!\n");
-    $db = DB::connect("mysql://xml:weblog@localhost/xml_tmnet", true);
+    $db = DB::connect("$xlw_db_type://$xlw_db_user:$xlw_db_password@$xlw_db_server/$xlw_db_database", true);
     if (DB::isError($db)) die("Error: WTF Happened ?\n");
 } else die("Error: database already exists. not installing.\n");
 
@@ -45,6 +48,7 @@ $mime_type = array("", "image/gif", "image/jpeg", "image/png",
 $site = array(
     "id" => array("ID", 1),
     "url" => array("URI", 1),
+    "article_limit" => array("int", 1),
     "name" => array("string", 1),
     "slogan" => array("string_XHTML", 0),
     "logo" => array("URI", 0),
@@ -175,4 +179,5 @@ foreach ($list as $name) {
        
     echo "loaded.\n";
 }
+
 ?>
