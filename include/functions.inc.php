@@ -59,7 +59,7 @@ function fetch_message()
 global $db;
 
 $q = "select * from message where (start_date < now() or start_date=0)".
-     "and (end_date > now() or end_date=0)"; // add "group by index"
+     "and (end_date > now() or end_date=0) group by message_index";
 return $db->getAll($q, DB_FETCHMODE_ASSOC);
 }
 
