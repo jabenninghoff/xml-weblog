@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.13 2002/10/19 18:36:55 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.14 2002/10/21 06:25:17 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -95,7 +95,7 @@
 
 <xsl:template match="admin">
   <xsl:apply-templates select="menu"/>
-  <p><xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text></p>
+  <h2><xsl:value-of select="title"/></h2>
   <table>
     <tr>
     <xsl:for-each select="object[1]/property">
@@ -120,6 +120,10 @@
   <xsl:if test="normalize-space(.)">
     <xsl:value-of select="."/><br/>
   </xsl:if>
+</xsl:template>
+
+<xsl:template match="comment()">
+  <xsl:comment><xsl:value-of select="."/></xsl:comment>
 </xsl:template>
 
 </xsl:stylesheet>
