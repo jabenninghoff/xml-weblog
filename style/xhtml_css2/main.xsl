@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.24 2003/12/06 20:12:37 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.25 2004/04/30 18:15:02 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -145,7 +145,7 @@
   </div>
   <div class="byline">
     <p class="zero">
-      posted by <b><xsl:value-of select="author"/></b> on
+      posted by <b><xsl:value-of select="author/name"/></b> on
       <xsl:value-of select="date"/>
       <xsl:if test="not(@content='show') and normalize-space(content)">
         <b><a href="{url}">Read More...</a></b>

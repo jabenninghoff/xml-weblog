@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.5 2003/10/22 21:44:36 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.6 2004/04/30 18:15:02 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -82,7 +82,7 @@
     <xsl:copy-of select="content/*"/>
   </xsl:if>
   <p>
-    posted by <b><xsl:value-of select="author"/></b> on
+    posted by <b><xsl:value-of select="author/name"/></b> on
     <xsl:value-of select="date"/>
     <xsl:if test="not(@content='show') and normalize-space(content)">
       <b><a href="avantgo_{url}">Read More...</a></b>

@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.2 2003/11/03 07:28:58 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.3 2004/04/30 18:15:02 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -81,8 +81,10 @@
         <description>
             %cdata_open%<xsl:copy-of select="leader/*"/><xsl:copy-of select="content/*"/>%cdata_close%
         </description>
-        <author><xsl:value-of select="author"/></author>
-        <xsl:element name="dc:creator"><xsl:value-of select="author"/></xsl:element>
+        <!-- disabled (duplicate)
+        <author><xsl:value-of select="author/name"/> &lt;<xsl:value-of select="author/mail"/>&gt;</author>
+        -->
+        <xsl:element name="dc:creator"><xsl:value-of select="author/name"/></xsl:element>
         <category><xsl:value-of select="topic/name"/></category>
         <!-- unimplemented
             <comments></comments>
