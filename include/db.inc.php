@@ -1,11 +1,11 @@
 <?php
-// $Id: db.inc.php,v 1.13 2003/04/21 20:54:12 loki Exp $
+// $Id: db.inc.php,v 1.14 2003/10/22 21:44:35 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functional abstraction module
 
 /*
- * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
