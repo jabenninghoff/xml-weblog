@@ -10,13 +10,13 @@ echo '<p><a href="http://validator.w3.org/check?uri=http://',
     'alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>',"\n";
 }
 
-// replace <?code include="file.php"> with include "code/file.php"
+// replace <code include="file.php"/> with include "code/file.php"
 function process_code($string)
 {
 // Loop through to find the dynamic code processing instruction
-while ( ($pos = strpos( $string, '<?code' )) !== FALSE ) {
+while ( ($pos = strpos( $string, '<code' )) !== FALSE ) {
     // find the end of the instruction
-    if ( ($pos2 = strpos( $string, '?>', $pos + 6)) !== FALSE) {
+    if ( ($pos2 = strpos( $string, '/>', $pos + 6)) !== FALSE) {
         // extract the command
         $command = trim( substr( $string, $pos + 6, $pos2 - ($pos + 6) ) );
         // parse the command
@@ -30,7 +30,7 @@ while ( ($pos = strpos( $string, '<?code' )) !== FALSE ) {
                 ob_end_clean();
             } else die('error: missing closing " for include');
         }
-    } else die('error: missing closing ?> for <?code directive');
+    } else die('error: missing closing /> for <code tag');
     
 // paste the results and rescan
 $string = substr($string, 0, $pos) . $results . substr($string, $pos2 + 2);
@@ -86,78 +86,142 @@ global $db;
 return $db->getAll("select * from $type group by id", DB_FETCHMODE_ASSOC);
 }
 
+function safe_gpc_stripslashes($string)
+{
+return get_magic_quotes_gpc() ? stripslashes($string) : $string;
+}
+
 function safe_gpc_addslashes($string)
 {
 return get_magic_quotes_gpc() ? $string : addslashes($string);
 }
 
+function only_has($source,$valid)
+{
+    if (strspn($source,$valid) == strlen($source)) return true;
+    else return false;
+}
+
 function valid_ID($id)
 {
-if (strspn($id,"012345679") == strlen($id)) {
-    return $id;
-} else {
-    return "";
-}
+    $num =  "0123456789";
+
+    if (only_has($id,$num)) return $id;
+    else return "";
 }
 
 function valid_URI($uri)
 {
+    $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $num =  "0123456789";
+    $dns = "-.";
+    $url = "$-_.+"."!*'(),%";
+    $path = "/";
+    $query = ";:@&=";
+
+    $parsed = parse_url($uri);
+
+    // sanity check - make sure we parsed right
+    $new_uri = "";
+    if (isset($parsed['scheme'])) $new_uri .= $parsed['scheme']."://";
+    if (isset($parsed['pass'])) $new_uri .= "$parsed[user]:$parsed[pass]@";
+    elseif (isset($parsed['user'])) $uri .= "$parsed[user]@";
+    if (isset($parsed['host'])) $new_uri .= $parsed['host'];
+    if (isset($parsed['port'])) $new_uri .= ":$parsed[port]";
+    if (isset($parsed['path'])) $new_uri .= $parsed['path'];
+    if (isset($parsed['query'])) $new_uri .= "?$parsed[query]";
+    if (isset($parsed['fragment'])) $new_uri .= "#$parsed[fragment]"; 
+    if ($uri != $new_uri) return "";
+
+    // check each component
+    if ($parsed['scheme'] && $parsed['scheme'] != "http") return "";
+    if (!only_has($parsed['user'],$alpha.$num.$url)) return "";
+    if (!only_has($parsed['pass'],$alpha.$num.$url)) return "";
+    if (!only_has($parsed['host'],$alpha.$num.$dns)) return "";
+    if (!only_has($parsed['port'],$num)) return "";
+    if (!only_has($parsed['path'],$alpha.$num.$url.$path.$query)) return "";
+    if (!only_has($parsed['query'],$alpha.$num.$url.$query)) return "";
+    if (!only_has($parsed['fragment'],$alpha.$num.$url)) return "";
+
+    // uri is OK!
     return $uri;
 }
 
 function valid_boolean($b)
 {
-    return $b;
+    if (isset($b)) return "1";
+    else return "0";
 }
 
 function valid_date($date)
 {
-    return $date;
+    if (!$date) return "0000-00-00 00:00:00";
+    if (($timestamp = strtotime($date)) === -1) return "";
+    else return date("Y-m-d H:i:s",$timestamp);
 }
 
-function valid_image($image)
+function valid_image($file)
 {
-    return $image;
+    if (!is_uploaded_file($file['tmp_name'])) return "";
+    if (!getimagesize($file['tmp_name'])) return "";
+
+    return addslashes(fread(fopen($file['tmp_name'], "r"),
+        filesize($file['tmp_name'])));
 }
 
-function valid_image_small($image)
+function valid_image_small($file)
 {
-    return $image;
+    if (!is_uploaded_file($file['tmp_name'])) return "";
+    if (!getimagesize($file['tmp_name'])) return "";
+
+    return addslashes(fread(fopen($file['tmp_name'], "r"),
+        filesize($file['tmp_name'])));
 }
 
 function valid_int($int)
 {
-    return $int;
+    $num =  "0123456789";
+
+    if (only_has($int,$num)) return $int;
+    else return "";
 }
 
 function valid_lang($lang)
 {
-    return $lang;
+    // valid rfc1766 language codes
+    if (preg_match("/^[a-zA-Z]{2}$/", $lang)) return $lang;
+    if (preg_match("/^[a-zA-Z]{2}-[-a-zA-Z]*$/", $lang)) return $lang;
+    if (preg_match("/^[ix]-[-a-zA-Z]*$/", $lang)) return $lang;
+    return "";
 }
 
 function valid_string($str)
 {
-    return $str;
+    return addslashes(htmlspecialchars(safe_gpc_stripslashes($str)));
 }
 
 function valid_string_XHTML($str)
 {
-    return $str;
+    $tags = "<a><b><i><s><u>";
+    return addslashes(strip_tags(safe_gpc_stripslashes($str),$tags));
 }
 
 function valid_XHTML_code($xhtml)
 {
-    return $xhtml;
+    $tags = "<a><b><i><s><u><br><br/><p><code>";
+    return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_fragment($xhtml)
 {
-    return $xhtml;
+    $tags = "<a><b><i><s><u><br><br/>";
+    return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 function valid_XHTML_long($xhtml)
 {
-    return $xhtml;
+    $tags = "<a><b><i><s><u><br><br/><p>";
+    return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
 ?>

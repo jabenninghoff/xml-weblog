@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.11 2002/10/26 05:19:52 loki Exp $
+// $Id: admin.xml.php,v 1.12 2002/10/27 07:46:19 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -32,6 +32,7 @@ function admin_input($name, $type, $value, $mode) {
     echo "              <td><b>", ucfirst($name), "</b></td>\n";
 
     if ($mode == "delete") {
+        if ($type == "image" || $type == "image_small") $value = "[image]";
         echo "<td>$value", '<input name="', $name, '" type="hidden" value="',
             $value, '"/>', "</td>\n";
         return;
@@ -81,6 +82,10 @@ function admin_input($name, $type, $value, $mode) {
         echo "$value</textarea>";
         break;
 
+    case "image":
+    case "image_small":
+        echo '<input name="', $name, '" type="file"/>';
+        break;
     }
     echo "</td>\n";
 }
@@ -89,7 +94,7 @@ function admin_input($name, $type, $value, $mode) {
 function admin_form($object, $type, $schema, $mode)
 {
 echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" ",
-    "method=\"post\">\n";
+    "method=\"post\" enctype=\"multipart/form-data\">\n";
 echo "          <table>\n";
 foreach ($schema as $s) {
     echo "            <tr>\n";
@@ -107,6 +112,22 @@ echo '            <input name="submit" type="submit" value="', $button, '"/> ',
     '<input name="cancel" type="submit" value="Cancel"/>', "\n";
 echo "          </p>\n";
 echo "        </form>\n";
+}
+
+function admin_results($object, $schema)
+{
+echo "          <table>\n";
+foreach ($schema as $s) {
+    echo "            <tr>\n";
+    echo "              <td><b>", $s['property'], "</b></td>\n";
+    if ($s['datatype'] == "image" || $s['datatype'] == "image_small")
+        $value = "[image]";
+    else
+        $value = htmlspecialchars($object[$s['property']]);
+    echo "              <td>", $value, "</td>\n";
+    echo "            </tr>\n";
+}
+echo "          </table>\n";
 }
 
 function display_form()
@@ -139,7 +160,7 @@ if ($get_mode == "create") {
             if ($display[$s['datatype']]) {
                 echo "        ";
                 echo "<property name=\"{$s['property']}\">",
-                    "{$obj[$s['property']]}</property>\n";
+                    htmlspecialchars($obj[$s['property']]), "</property>\n";
             }
         }
     echo "        <property><a href=\"?type=$get_type&amp;mode=edit&amp;id=",
@@ -175,9 +196,7 @@ if ($post_mode == "delete") {
     $query = "DELETE from $post_type where id=$id";
     $db->query($query);
 
-    echo "      <content>\n";
-    echo "        <pre>$query;</pre>\n";
-    echo "      </content>\n";
+    echo "      <title>", ucfirst($post_type), " deleted</title>\n";
     return;
 }
 
@@ -188,6 +207,8 @@ $schema = $db->getAll("select distinct property,datatype,required from schema ".
 foreach ($schema as $s) {
    $validate = "valid_".$s['datatype'];
    $object[$s['property']] = $validate($_POST[$s['property']]); 
+   if ($_FILES[$s['property']])
+       $object[$s['property']] = $validate($_FILES[$s['property']]);
 }
 if ($post_mode == "create") $object['id'] = "0";
 
@@ -207,7 +228,16 @@ if ($i) {
         echo " $val";
     }
     echo "</i></p>\n";
+
+    $slashes = array("string", "string_XHTML", "XHTML_code", "XHTML_fragment",
+        "XHTML_long");
+    foreach ($schema as $s) {
+        if (in_array($s['datatype'],$slashes)) {
+            $object[$s['property']] = stripslashes($object[$s['property']]);
+        }
+    }
     admin_form($object, $post_type, $schema, $post_mode);
+
     echo "      </content>\n";
     return;
 }
@@ -226,8 +256,11 @@ $query = ($post_mode == "edit") ? $query." WHERE id='".$object['id']."'" :
 
 $db->query($query);
 
+$action = $post_mode == "edit" ? "updated" : "created";
+echo "      <title>", ucfirst($post_type), " $action</title>\n";
+
 echo "      <content>\n";
-echo "        <p>".htmlspecialchars($query).";</p>\n";
+admin_results($object, $schema);
 echo "      </content>\n";
 }
 
