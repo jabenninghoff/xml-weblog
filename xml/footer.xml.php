@@ -1,5 +1,5 @@
 <?php
-// $Id: footer.xml.php,v 1.6 2002/11/01 17:58:50 loki Exp $
+// $Id: footer.xml.php,v 1.7 2003/04/16 03:58:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -17,7 +17,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *

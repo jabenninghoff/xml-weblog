@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.php,v 1.7 2002/11/24 21:28:28 loki Exp $
+// $Id: admin.php,v 1.8 2003/04/16 03:58:20 loki Exp $
 // admin front page
 
 /*
@@ -18,7 +18,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *

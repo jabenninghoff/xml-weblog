@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.21 2002/11/25 04:03:17 loki Exp $
+// $Id: functions.inc.php,v 1.22 2003/04/16 03:58:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -17,7 +17,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *
@@ -48,8 +48,7 @@ function validate_self()
     $uri = rawurlencode($uri);
 
     echo '<a class="img" href="http://validator.w3.org/check?uri=', $uri, ';ss=1">',
-          '<img src="images/valid-xhtml10.png" ',
-          'alt="Valid XHTML 1.0!" height="31" width="88"/></a>';
+      '<img src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88"/></a>';
 }
 
 // replace <code include="file.php"/> with include "code/file.php"
@@ -136,7 +135,7 @@ function valid_URI($uri)
     if (isset($parsed['port'])) $new_uri .= ":$parsed[port]";
     if (isset($parsed['path'])) $new_uri .= $parsed['path'];
     if (isset($parsed['query'])) $new_uri .= "?$parsed[query]";
-    if (isset($parsed['fragment'])) $new_uri .= "#$parsed[fragment]"; 
+    if (isset($parsed['fragment'])) $new_uri .= "#$parsed[fragment]";
     if ($uri != $new_uri) return "";
 
     // check each component
@@ -179,8 +178,7 @@ function valid_image($file)
     if (!is_uploaded_file($file['tmp_name'])) return "";
     if (!getimagesize($file['tmp_name'])) return "";
 
-    return addslashes(fread(fopen($file['tmp_name'], "r"),
-        filesize($file['tmp_name'])));
+    return addslashes(fread(fopen($file['tmp_name'], "r"), filesize($file['tmp_name'])));
 }
 
 function valid_image_small($file)
@@ -188,8 +186,7 @@ function valid_image_small($file)
     if (!is_uploaded_file($file['tmp_name'])) return "";
     if (!getimagesize($file['tmp_name'])) return "";
 
-    return addslashes(fread(fopen($file['tmp_name'], "r"),
-        filesize($file['tmp_name'])));
+    return addslashes(fread(fopen($file['tmp_name'], "r"), filesize($file['tmp_name'])));
 }
 
 function valid_int($int)

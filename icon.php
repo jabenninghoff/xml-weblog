@@ -1,5 +1,5 @@
 <?php
-// $Id: icon.php,v 1.2 2002/11/01 17:58:49 loki Exp $
+// $Id: icon.php,v 1.3 2003/04/16 03:58:20 loki Exp $
 // icon renderer
 
 /*
@@ -18,7 +18,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *

@@ -1,5 +1,5 @@
 <?php
-// $Id: load_dbase.php,v 1.16 2002/11/24 19:29:56 loki Exp $
+// $Id: load_dbase.php,v 1.17 2003/04/16 03:58:20 loki Exp $
 // database/image loader
 
 /*
@@ -18,7 +18,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *
@@ -45,10 +45,8 @@ require_once "DB.php";
 $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
 
 if (DB::isError($db)) {
-    $link = mysql_pconnect($xwl_db_server, $xwl_db_user, $xwl_db_password)
-        or die("Error: couldn't connect!\n");
-    mysql_create_db($xwl_db_database)
-        or die("Error: couldn't create database!\n");
+    $link = mysql_pconnect($xwl_db_server, $xwl_db_user, $xwl_db_password) or die("Error: couldn't connect!\n");
+    mysql_create_db($xwl_db_database) or die("Error: couldn't create database!\n");
     $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
     if (DB::isError($db)) die("Error: WTF Happened ?\n");
 } else die("Error: database already exists. not installing.\n");
@@ -76,7 +74,7 @@ include "./sample-values.sql";
 $query = preg_split("/;[(\n)(\r\n)(\cM)]/",ob_get_contents());
 foreach ($query as $q) {
     $db->query(trim($q));
-} 
+}
 ob_end_flush();
 
 ?>

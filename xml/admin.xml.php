@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.20 2003/04/04 18:19:12 loki Exp $
+// $Id: admin.xml.php,v 1.21 2003/04/16 03:58:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -17,7 +17,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *
@@ -56,8 +56,7 @@ function admin_input($name, $type, $value, $mode) {
 
     if ($mode == "delete") {
         if ($type == "image" || $type == "image_small") $value = "[image]";
-        echo "<td>$value", '<input name="', $name, '" type="hidden" value="',
-            $value, '"/>', "</td>\n";
+        echo "<td>$value", '<input name="', $name, '" type="hidden" value="', $value, '"/>', "</td>\n";
         return;
     }
 
@@ -73,8 +72,7 @@ function admin_input($name, $type, $value, $mode) {
     case "URI":
     case "string":
     case "string_XHTML":
-        echo '<input name="',$name,'" type="text" maxlength="255" size="40" ',
-            'value="', $value, '"/>';
+        echo '<input name="',$name,'" type="text" maxlength="255" size="40" value="', $value, '"/>';
         break;
 
     case "boolean":
@@ -83,19 +81,16 @@ function admin_input($name, $type, $value, $mode) {
         break;
 
     case "date":
-        echo '<input name="', $name, '" type="text" maxlength="19" size="20" ',
-            'value="', $value, '"/>';
+        echo '<input name="', $name, '" type="text" maxlength="19" size="20" value="', $value, '"/>';
         break;
 
     case "int":
-        echo '<input name="', $name, '" type="text" maxlength="10" size="10" ',
-            'value="', $value, '"/>';
+        echo '<input name="', $name, '" type="text" maxlength="10" size="10" value="', $value, '"/>';
         break;
 
     case "lang":
         $value = $value ? $value : $xwl_default_lang;
-        echo '<input name="', $name, '" type="text" maxlength="255" size="5" ',
-            'value="', $value, '"/>';
+        echo '<input name="', $name, '" type="text" maxlength="255" size="5" value="', $value, '"/>';
         break;
 
     case "XHTML_code":
@@ -158,8 +153,7 @@ function admin_form_article($object, $type, $schema, $mode)
 
             default:
                 echo "            <tr>\n";
-                admin_input($s['property'], $s['datatype'],
-                    htmlspecialchars($object[$s['property']]), $mode);
+                admin_input($s['property'], $s['datatype'], htmlspecialchars($object[$s['property']]), $mode);
                 echo "            </tr>\n";
                 break;
         }
@@ -182,8 +176,7 @@ function admin_form_block($object, $type, $schema, $mode)
             echo "            </tr>\n";
         } else {
             echo "            <tr>\n";
-            admin_input($s['property'], $s['datatype'],
-                htmlspecialchars($object[$s['property']]), $mode);
+            admin_input($s['property'], $s['datatype'], htmlspecialchars($object[$s['property']]), $mode);
             echo "            </tr>\n";
         }
     }
@@ -203,8 +196,7 @@ function admin_form_user($object, $type, $schema, $mode)
             echo "            </tr>\n";
         } else {
             echo "            <tr>\n";
-            admin_input($s['property'], $s['datatype'],
-                htmlspecialchars($object[$s['property']]), $mode);
+            admin_input($s['property'], $s['datatype'], htmlspecialchars($object[$s['property']]), $mode);
             echo "            </tr>\n";
         }
     }
@@ -222,8 +214,7 @@ function admin_form_image($object, $type, $schema, $mode)
             echo "            </tr>\n";
         } else {
             echo "            <tr>\n";
-            admin_input($s['property'], $s['datatype'],
-                htmlspecialchars($object[$s['property']]), $mode);
+            admin_input($s['property'], $s['datatype'], htmlspecialchars($object[$s['property']]), $mode);
             echo "            </tr>\n";
         }
     }
@@ -234,8 +225,7 @@ function admin_form($object, $type, $schema, $mode)
 {
 global $admin_form_handler;
 
-echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" ",
-    "method=\"post\" enctype=\"multipart/form-data\">\n";
+echo "        <form action=\"{$_SERVER['PHP_SELF']}?type=$type\" method=\"post\" enctype=\"multipart/form-data\">\n";
 if ($admin_form_handler[$type] && $mode != "delete") {
     $admin_form_handler[$type]($object, $type, $schema, $mode);
 } else {
@@ -243,8 +233,7 @@ if ($admin_form_handler[$type] && $mode != "delete") {
     echo "          <table>\n";
     foreach ($schema as $s) {
         echo "            <tr>\n";
-        admin_input($s['property'], $s['datatype'],
-            htmlspecialchars($object[$s['property']]), $mode);
+        admin_input($s['property'], $s['datatype'], htmlspecialchars($object[$s['property']]), $mode);
         echo "            </tr>\n";
     }
     echo "          </table>\n";
@@ -254,8 +243,7 @@ echo '            <input name="mode" type="hidden" value="', $mode, '"/>',"\n";
 echo '            <input name="type" type="hidden" value="', $type, '"/>',"\n";
 if ($mode == "edit") $button = "Save";
 else $button = ucfirst($mode);
-echo '            <input name="submit" type="submit" value="', $button, '"/> ',
-    '<input name="cancel" type="submit" value="Cancel"/>', "\n";
+echo '            <input name="submit" type="submit" value="', $button, '"/><input name="cancel" type="submit" value="Cancel"/>', "\n";
 echo "          </p>\n";
 echo "        </form>\n";
 }
@@ -301,20 +289,17 @@ if ($get_mode == "create") {
         foreach ($schema as $s) {
             if ($admin_display[$s['datatype']]) {
                 echo "        ";
-                echo "<property name=\"{$s['property']}\">",
-                    htmlspecialchars($obj[$s['property']]), "</property>\n";
+                echo "<property name=\"{$s['property']}\">", htmlspecialchars($obj[$s['property']]), "</property>\n";
             }
         }
-    echo "        <property><a href=\"$page?type=$get_type&amp;mode=edit&amp;id=",
-        $obj['id'], "\">edit</a></property>\n";
-    echo "        <property><a href=\"$page?type=$get_type&amp;mode=delete&amp;id=",
-        $obj['id'], "\">delete</a></property>\n";
+        echo "        <property><a href=\"$page?type=$get_type&amp;mode=edit&amp;id=", $obj['id'], "\">edit</a></property>\n";
+        echo "        <property><a href=\"$page?type=$get_type&amp;mode=delete&amp;id=", $obj['id'], "\">delete</a></property>\n";
         echo "      </object>\n";
     }
 } else {
-    echo "      <title>", ucfirst($get_mode), " ", ucfirst($get_type),
-        "</title>\n";
+    echo "      <title>", ucfirst($get_mode), " ", ucfirst($get_type), "</title>\n";
 }
+
 echo "      <content>\n";
 admin_form($get_object, $get_type, $schema, $get_mode);
 echo "      </content>\n";
@@ -328,7 +313,7 @@ function process_form_image($schema)
 
     foreach ($schema as $s) {
         $validate = "valid_".$s['datatype'];
-        $object[$s['property']] = $validate($_POST[$s['property']]); 
+        $object[$s['property']] = $validate($_POST[$s['property']]);
         if ($file = $_FILES[$s['property']]) {
             if (is_uploaded_file($file['tmp_name'])) {
                 if ($size = getimagesize($file['tmp_name'])) {
@@ -349,7 +334,7 @@ function process_form_user($schema)
 {
     foreach ($schema as $s) {
        $validate = "valid_".$s['datatype'];
-       $object[$s['property']] = $validate($_POST[$s['property']]); 
+       $object[$s['property']] = $validate($_POST[$s['property']]);
        if ($_FILES[$s['property']])
            $object[$s['property']] = $validate($_FILES[$s['property']]);
     }
@@ -390,7 +375,7 @@ if ($admin_form_processor[$post_type]) {
     // default handler
     foreach ($schema as $s) {
        $validate = "valid_".$s['datatype'];
-       $object[$s['property']] = $validate($_POST[$s['property']]); 
+       $object[$s['property']] = $validate($_POST[$s['property']]);
        if ($_FILES[$s['property']])
            $object[$s['property']] = $validate($_FILES[$s['property']]);
     }
@@ -414,8 +399,7 @@ if ($i) {
     }
     echo "</i></p>\n";
 
-    $slashes = array("string", "string_XHTML", "XHTML_code", "XHTML_fragment",
-        "XHTML_long");
+    $slashes = array("string", "string_XHTML", "XHTML_code", "XHTML_fragment", "XHTML_long");
     foreach ($schema as $s) {
         if (in_array($s['datatype'],$slashes)) {
             $object[$s['property']] = stripslashes($object[$s['property']]);
@@ -447,8 +431,8 @@ admin_results($object, $schema);
 echo "      </content>\n";
 }
 
-$page = basename($_SERVER['PHP_SELF']);
-if ($page  == "admin.xml.php") {
+// main
+if (($page = basename($_SERVER['PHP_SELF']))  == "admin.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 
@@ -468,7 +452,6 @@ $type = fetch_table_list();
 
 xml_declaration();
 ?>
-<?php echo "<!-- {$req_object['id']} -->\n"; ?>
 <page lang="en" title="<?php echo $site['name']; ?>">
 
 <?php require "xml/header.xml.php"; ?>
@@ -478,9 +461,9 @@ xml_declaration();
   <main>
     <admin>
 <?php
-// create top menu
+// create top (object select) menu
 foreach ($type as $item) {
-    echo "      <menu link=\"$page?type=$item\">",ucfirst($item."s"),"</menu>\n";
+    echo "      <menu link=\"$page?type=$item\">", ucfirst($item."s"), "</menu>\n";
 }
 if (isset($_POST['submit'])) {
     process_form();

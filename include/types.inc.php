@@ -1,5 +1,5 @@
 <?php
-// $Id: types.inc.php,v 1.7 2003/04/03 17:30:34 loki Exp $
+// $Id: types.inc.php,v 1.8 2003/04/16 03:58:20 loki Exp $
 // xml-weblog type definitions
 
 /*
@@ -18,7 +18,7 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *	This product includes software developed by John Benninghoff.
- * 4. Neither the name of the copyright holder nor the names of its 
+ * 4. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
  *
@@ -89,7 +89,7 @@ $admin_form_processor = array(
 // image types for getimagesize()
 $mime_type = array("", "image/gif", "image/jpeg", "image/png",
     "application/x-shockwave-flash", "PSD", "image/bmp", "image/tiff",
-    "image/tiff", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF"); 
+    "image/tiff", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF");
 
 // table definitions
 
@@ -181,7 +181,7 @@ $tables = array(
     "site", "message", "topic", "block", "article", "user", "image", "icon"
 );
 
-$create_schema_query = 
+$create_schema_query =
 "CREATE TABLE schema (
   id int unsigned NOT NULL auto_increment,
   object varchar(255) NOT NULL default '',
