@@ -1,5 +1,5 @@
 <?php
-// $Id: article.inc.php,v 1.2 2002/11/01 17:58:49 loki Exp $
+// $Id: article.inc.php,v 1.3 2002/11/25 00:42:06 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,14 +35,15 @@
  *
  */
 
-function display_article($article, $index, $content) {
+function display_article($article, $index, $content, $topic) {
     echo "    <article index=\"$index\" content=\"$content\">\n";
 ?>
       <!-- metadata -->
       <id><?php echo $article['id']; ?></id>
       <topic>
-        <name><?php echo $article['topic_name']; ?></name>
-        <icon><?php echo $article['topic_icon']; ?></icon>
+        <name><?php echo $topic[($article['topic'])-1]['name']; ?></name>
+        <icon><?php echo $topic[($article['topic'])-1]['icon']; ?></icon>
+        <url>topic.php?id=<?php echo $article['topic']; ?></url>
       </topic>
       <language><?php echo $article['language']; ?></language>
       <url>article.php?id=<?php echo $article['id']; ?></url>

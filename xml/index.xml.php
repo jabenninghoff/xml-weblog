@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.12 2002/11/01 17:58:50 loki Exp $
+// $Id: index.xml.php,v 1.13 2002/11/25 00:42:06 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -43,6 +43,7 @@ require_once "include/functions.inc.php";
 $site = fetch_site(base_url());
 $block = fetch_block();
 $message = fetch_message();
+$topic = fetch_topic();
 $article = fetch_article($site['article_limit']);
 
 if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
@@ -65,7 +66,7 @@ xml_declaration();
 <?php
 $i = 0;
 while ($article[$i]) {
-    display_article($article[$i], $i++, "");
+    display_article($article[$i], $i++, "", $topic);
 }
 ?>
   </main>

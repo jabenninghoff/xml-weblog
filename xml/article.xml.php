@@ -1,5 +1,5 @@
 <?php
-// $Id: article.xml.php,v 1.9 2002/11/01 17:58:50 loki Exp $
+// $Id: article.xml.php,v 1.10 2002/11/25 00:42:06 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -49,6 +49,7 @@ $site = fetch_site(base_url());
 $block = fetch_block();
 
 $id = valid_ID($_GET['id']);
+$topic = fetch_topic();
 $article = fetch_article_single($id);
 
 xml_declaration();
@@ -61,7 +62,7 @@ xml_declaration();
 
   <!-- main: main section of document. index page contains articles. -->
   <main>
-<?php display_article($article, 0, "show"); ?>
+<?php display_article($article, 0, "show", $topic); ?>
   </main>
 
 <?php require "xml/footer.xml.php"; ?>
