@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.22 2003/04/16 03:58:20 loki Exp $
+// $Id: functions.inc.php,v 1.23 2003/04/17 17:48:20 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -64,7 +64,7 @@ function process_code($string)
             if (($cpos = strpos($command, 'include="')) !== FALSE) {
                 if (($cpos2 = strpos( $command, '"', $cpos + 9)) !== FALSE) {
                     // got the filename ... include it
-                    $file = basename(trim(substr($command, $cpos+9, $cpos2-($cpos+9))));
+                    $file = valid_filename(trim(substr($command, $cpos+9, $cpos2-($cpos+9))));
                     ob_start();
                     include "code/$file";
                     $results = ob_get_contents();
@@ -150,6 +150,16 @@ function valid_URI($uri)
 
     // uri is OK!
     return $uri;
+}
+
+function valid_filename($file)
+{
+    $alpha = "abcdefghijklmnopqrstuvwxyz"."ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $num =  "0123456789";
+    $sym = "-_.";
+
+    if (only_has($file, $alpha.$num.$sym) && $file != ".." & $file != ".") return $file;
+    else return "";
 }
 
 function valid_boolean($b)
