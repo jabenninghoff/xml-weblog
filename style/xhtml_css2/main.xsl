@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.14 2002/11/15 18:08:24 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.15 2002/11/16 01:18:11 loki Exp $ -->
 
 <!--
    -
@@ -124,29 +124,26 @@
   <div class="block-main"><p class="zero"><xsl:copy-of select="content/text()|content/*"/></p></div>
 </xsl:template>
 
-<xsl:template match="main">
-  <xsl:for-each select="article">
-    <h3><xsl:value-of select="title"/></h3>
-    <p>
-      <span class="topic-icon">
-        <img src="{topic/icon}" alt="{topic/name}"/>
-      </span>
+<xsl:template match="article">
+  <h3><xsl:value-of select="title"/></h3>
+  <p>
+    <span class="topic-icon">
+      <img src="{topic/icon}" alt="{topic/name}"/>
+    </span>
+  </p>
+  <xsl:copy-of select="leader/*"/>
+  <xsl:if test="@content='show'">
+    <xsl:copy-of select="content/*"/>
+  </xsl:if>
+  <div class="byline">
+    <p class="zero">
+      posted by <b><xsl:value-of select="author"/></b> on
+      <xsl:value-of select="date"/>
+      <xsl:if test="not(@content='show') and normalize-space(content)">
+        <b><a href="{url}">Read More...</a></b>
+      </xsl:if>
     </p>
-    <xsl:copy-of select="leader/*"/>
-    <xsl:if test="@content='show'">
-      <xsl:copy-of select="content/*"/>
-    </xsl:if>
-    <div class="byline">
-      <p class="zero">
-        posted by <b><xsl:value-of select="author"/></b> on
-        <xsl:value-of select="date"/>
-        <xsl:if test="not(@content='show') and normalize-space(content)">
-          <b><a href="{url}">Read More...</a></b>
-        </xsl:if>
-      </p>
-    </div>
-  </xsl:for-each>
-  <xsl:apply-templates select="admin"/>
+  </div>
 </xsl:template>
 
 <xsl:template match="admin">
