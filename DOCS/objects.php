@@ -2,7 +2,7 @@
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
 ?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-<!-- $Id: objects.php,v 1.2 2002/06/23 07:44:39 loki Exp $ -->
+<!-- $Id: objects.php,v 1.3 2002/07/03 23:33:47 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>XML Weblog Objects</title>
@@ -36,7 +36,7 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
       <ul>
         <li>site URI (index column)</li>
         <li>site name</li>
-        <li>database name</li>
+        <li>database name (<strong>xml-<em>site_name</em>)</strong></li>
         <li>logo (stored as an image in the database)</li>
         <li>slogan</li>
         <li>administrator/author email address</li>
@@ -60,7 +60,8 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
       </p>
       <p>
         Pages currently have no attributes, only children, and are implemented
-        in php code.
+        only in php code. Internally, pages are represented as XML and are
+        transformed using XSLT/CSS to XHTML (or some other format).
       </p>
     <h2>header</h2>
     <h2>footer</h2>
