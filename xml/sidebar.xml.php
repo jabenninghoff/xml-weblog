@@ -1,34 +1,46 @@
 <?php
-// $Id: sidebar.xml.php,v 1.2 2002/10/17 05:45:33 loki Exp $
+// $Id: sidebar.xml.php,v 1.3 2002/10/17 20:29:42 loki Exp $
 
 require_once "include/functions.inc.php";
+require_once "include/config.inc.php";
 
 if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n";
+    echo "<page>\n";
+    // retrieve blocks
+    $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,block_index", DB_FETCHMODE_ASSOC);
 }
 ?>
   <!-- left or right sidebar(s), outermost is index 0 -->
-  <sidebar align="left" index="0">
+<?php
 
-    <!-- zero or more blocks, topmost is index 0 -->
-    <block index="0">
-      <title>News Sites (block.title)</title>
-      <content>
-        <a href="http://www.openbsd.org/">OpenBSD Journal</a><br/>
-        <a href="http://daily.daemonnews.org/">daemonnews</a><br/>
-        <a href="http://slashdot.org/">Slashdot</a><br/>
-        (block.content,XHTML+)
-      </content>
-    </block>
+$i = 0;
+// this loop only works because the blocks are already sorted!
+while ($block[$i]) {
 
-    <block index="1">
-      <title>Bogus Block (block.title)</title>
-      <content>
-        This block is <b>bogus!!!</b>
-        (block.content,XHTML+)
-      </content>
-    </block>
+    // get the new sidebar index & alignment
+    $align = $block[$i]['sidebar_align'];
+    $index = $block[$i]['sidebar_index'];
 
-  </sidebar>
+    echo '  <sidebar align="', $align, '" index="', $index, '">', "\n";
+    echo "    <!-- zero or more blocks, topmost is index 0 -->\n";
+
+    // this will run at least once, so i will be incremented
+    while ($block[$i]['sidebar_align'] == $align &&
+           $block[$i]['sidebar_index'] == $index) {
+        echo '    <block index="', $block[$i]['block_index'], '">', "\n";
+        echo "      <title>", $block[$i]['title'], "</title>\n";
+        echo "      <content>", $block[$i]['content'], "</content>\n";
+        echo "    </block>\n";
+        $i++;
+    }
+
+    echo "  </sidebar>\n";
+}
+
+if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {
+    echo "</page>\n";
+}
+?>
