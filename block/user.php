@@ -1,5 +1,5 @@
 <?php
-// $Id: user.php,v 1.6 2003/04/16 21:36:46 loki Exp $
+// $Id: user.php,v 1.7 2003/04/16 21:50:40 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -49,7 +49,7 @@ if (user_authenticated()) {
     if ($user['block']) {
         echo $user['block'], "\n";
     } else {
-        echo "<a href=\"user.php\">customize</a> your personal menu\n";
+        echo "<a href=\"user.php\">Customize</a> your personal menu\n";
     }
 
     echo "  </content>\n";
