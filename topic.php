@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.php,v 1.2 2002/11/17 03:47:44 loki Exp $
+// $Id: topic.php,v 1.3 2002/11/24 21:28:28 loki Exp $
 // single article renderer
 
 /*
@@ -36,24 +36,13 @@
  *
  */
 
-include_once "include/style.inc.php";
+require_once "include/style.inc.php";
 
-$style_path = get_style_path();
-
-// get php-formatted xml document
+// get php-formatted xml document (must be in the global context)
 ob_start();
 require "xml/topic.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-$arguments = array(
-     '/_xml' => $xml
-);
-
-// render & display the document using xslt
-$xh = xslt_create();
-$result = xslt_process($xh, 'arg:/_xml', $style_path, NULL, $arguments);
-echo $result;
-
-xslt_free($xh);
+render_page($xml);
 ?>

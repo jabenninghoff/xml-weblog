@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.2 2002/11/01 17:58:49 loki Exp $
+// $Id: style.inc.php,v 1.3 2002/11/24 21:28:28 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,7 +35,32 @@
  *
  */
 
-function get_style_path()
+function get_style()
 {
     return 'style/xhtml_css2/main.xsl';
 }
+
+function render_page($xml) {
+
+    // get correct style sheet
+    ob_start();
+    require get_style();
+    $xsl = ob_get_contents();
+    ob_end_clean();
+
+    $arguments = array(
+         '/_xml' => $xml,
+         '/_xsl' => $xsl
+    );
+
+    // render & display the document using xslt
+    $xh = xslt_create();
+    $result = xslt_process($xh, 'arg:/_xml', 'arg:/_xsl', NULL, $arguments);
+
+    // textarea hack
+    $result = str_replace("%enter_text%", "", $result);
+
+    echo $result;
+    xslt_free($xh);
+}
+?>

@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.8 2002/11/01 17:58:49 loki Exp $
+// $Id: index.php,v 1.9 2002/11/24 21:28:28 loki Exp $
 // front page renderer
 
 /*
@@ -36,24 +36,13 @@
  *
  */
 
-include_once "include/style.inc.php";
+require_once "include/style.inc.php";
 
-$style_path = get_style_path();
-
-// get php-formatted xml document
+// get php-formatted xml document (must be in the global context)
 ob_start();
 require "xml/index.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
-$arguments = array(
-     '/_xml' => $xml
-);
-
-// render & display the document using xslt
-$xh = xslt_create();
-$result = xslt_process($xh, 'arg:/_xml', $style_path, NULL, $arguments);
-echo $result;
-
-xslt_free($xh);
+render_page($xml);
 ?>
