@@ -1,5 +1,5 @@
 <?php
-// $Id: types.inc.php,v 1.5 2002/11/01 17:58:49 loki Exp $
+// $Id: types.inc.php,v 1.6 2002/11/24 21:54:53 loki Exp $
 // xml-weblog type definitions
 
 /*
@@ -132,7 +132,8 @@ $block = array(
     "sidebar_index" => array("int", 1),
     "block_index" => array("int", 1),
     "title" => array("string", 1),
-    "content" => array("XHTML_code", 1),
+    "content" => array("XHTML_code", 0),
+    "sysblock" => array("string", 0),
     "language" => array("lang", 1)
 );
 
