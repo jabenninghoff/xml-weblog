@@ -1,4 +1,4 @@
-/* $Id: advanced.css,v 1.3 2002/11/15 18:08:24 loki Exp $ */
+/* $Id: advanced.css,v 1.4 2002/11/15 23:18:36 loki Exp $ */
 
 /* advanced/CSS2 support - modern browsers */
 
@@ -75,7 +75,7 @@ div.message {
 
 div.block-title {
     border: 2px solid black;
-    padding: 0.25em;
+    padding: 4px;
     background: #D0D0D0;
 }
 
@@ -83,7 +83,7 @@ div.block-main {
     border-right: 2px solid black;
     border-left: 2px solid black;
     border-bottom: 2px solid black;
-    padding: 0.25em;
+    padding: 4px;
     margin-bottom: 2ex;
 }
 
