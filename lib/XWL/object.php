@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.11 2003/11/24 03:23:56 loki Exp $
+// $Id: object.php,v 1.12 2003/11/29 03:26:41 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -308,6 +308,11 @@ class XWL_user extends XWL_object
 
 class XWL_image extends XWL_object
 {
+    // image types for getimagesize()
+    var $mime_type = array("", "image/gif", "image/jpeg", "image/png",
+        "application/x-shockwave-flash", "PSD", "image/bmp", "image/tiff",
+        "image/tiff", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF");
+
     function XWL_image()
     {
         // _add_property($name, $datatype, $required)
@@ -320,6 +325,16 @@ class XWL_image extends XWL_object
         $this->_add_property("height", "XWL_integer", false);
     }
 
+    function load_image_file($filename) {
+        if ($size = getimagesize($filename)) {
+//            $this->property['src']->set_value(addslashes(fread(fopen($filename, "r"), filesize($filename))));
+            $this->property['src']->set_value(fread(fopen($filename, "r"), filesize($filename)));
+            $this->property['width']->set_value($size[0]);
+            $this->property['height']->set_value($size[1]);
+            $this->property['mime']->set_value($this->mime_type[$size[2]]);
+        }
+    }
+
     function _admin_input($prop, $mode) {
         if (in_array($prop, array("mime","width","height")) && $mode != "delete") {
             return "<tr><td>$prop</td><td><i>automatically generated</i></td></tr>";
@@ -329,7 +344,7 @@ class XWL_image extends XWL_object
     }
 }
 
-class XWL_icon extends XWL_object
+class XWL_icon extends XWL_image
 {
     function XWL_icon()
     {
@@ -340,14 +355,6 @@ class XWL_icon extends XWL_object
         $this->_add_property("mime", "XWL_string", true);
         $this->_add_property("width", "XWL_integer", false);
         $this->_add_property("height", "XWL_integer", false);
-    }
-
-    function _admin_input($prop, $mode) {
-        if (in_array($prop, array("mime","width","height")) && $mode != "delete") {
-            return "<tr><td>$prop</td><td><i>automatically generated</i></td></tr>";
-        } else {
-            return parent::_admin_input($prop, $mode);
-        }
     }
 }
 ?>

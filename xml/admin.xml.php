@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.28 2003/11/24 03:20:38 loki Exp $
+// $Id: admin.xml.php,v 1.29 2003/11/29 03:26:41 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -114,6 +114,15 @@ function process_form($object_class, $edit_mode, $object_id)
                 }
             }
         }
+
+        if ($object_class == "image" || $object_class == "icon") {
+            if ($file = $_FILES['src']) {
+                if (is_uploaded_file($file['tmp_name'])) {
+                    $object->load_image_file($file['tmp_name']);
+                }
+            }
+        }
+
         if ($missing = $object->missing_required()) {
             echo "        <p><b>please re-enter missing values:</b><i>";
             foreach ($missing as $val) {

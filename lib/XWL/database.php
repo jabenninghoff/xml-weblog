@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.13 2003/11/24 03:20:11 loki Exp $
+// $Id: database.php,v 1.14 2003/11/29 03:26:41 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -152,6 +152,19 @@ class XWL_database
         return $this->_fetch_multiple("XWL_article", $query);
     }
 
+    // image functions
+    function fetch_image($name)
+    {
+        // fetch image specified by name
+        return $this->_fetch_single("XWL_image", "select * from image where name='$name'");
+    }
+
+    function fetch_icon($name)
+    {
+        // fetch icon specified by name
+        return $this->_fetch_single("XWL_icon", "select * from icon where name='$name'");
+    }
+
     // admin functions
     function fetch_objects($class)
     {
@@ -205,26 +218,5 @@ class XWL_database
         return $user;
     }
 }
-
-// unimplemented functions
-
-/*
-
-// image functions
-function xwl_db_fetch_image($name)
-{
-    global $xwl_db;
-
-    return $xwl_db->getRow("select * from image where name='$name'", DB_FETCHMODE_ASSOC);
-}
-
-function xwl_db_fetch_icon($name)
-{
-    global $xwl_db;
-
-    return $xwl_db->getRow("select * from icon where name='$name'", DB_FETCHMODE_ASSOC);
-}
-
-*/
 
 ?>

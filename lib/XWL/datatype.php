@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.11 2003/11/24 03:20:11 loki Exp $
+// $Id: datatype.php,v 1.12 2003/11/29 03:26:41 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -463,14 +463,17 @@ class XWL_imagedata extends XWL_datatype
     var $sql_type = "mediumblob NOT NULL";
     var $admin_display = false;
 
-    function set_value($input_file)
+    function HTML_safe_value()
+    {
+        return htmlspecialchars("<image>");
+    }
+
+    function set_value($input_blob)
     {
         // valid image files of mediumblob size or less
-        if (!is_uploaded_file($input_file['tmp_name'])) return false;
-        if (!getimagesize($input_file['tmp_name'])) return false;
-        if ($size = filesize($input_file['tmp_name']) > _XWL_MEDIUMBLOB_SIZE) return false;
+        if (sizeof($input_blob) > _XWL_MEDIUMBLOB_SIZE) return false;
 
-        $this->value = fread(fopen($input_file['tmp_name'], "r"), $size);
+        $this->value = $input_blob;
         return true;
     }
 
@@ -489,14 +492,12 @@ class XWL_imagedata_small extends XWL_imagedata
     var $sql_type = "blob NOT NULL";
     var $admin_display = false;
 
-    function set_value($input_file)
+    function set_value($input_blob)
     {
         // valid image files of blob size or less
-        if (!is_uploaded_file($input_file['tmp_name'])) return false;
-        if (!getimagesize($input_file['tmp_name'])) return false;
-        if ($size = filesize($input_file['tmp_name']) > _XWL_BLOB_SIZE) return false;
+        if (sizeof($input_blob) > _XWL_BLOB_SIZE) return false;
 
-        $this->value = fread(fopen($input_file['tmp_name'], "r"), $size);
+        $this->value = $input_blob;
         return true;
     }
 }
