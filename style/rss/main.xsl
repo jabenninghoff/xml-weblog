@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.1 2003/11/03 06:31:01 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.2 2003/11/03 07:28:58 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -37,12 +37,10 @@
   -->
 
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<!-- xmlns="http://www.w3.org/1999/xhtml"
-   - we really should have this here, but it breaks the validator (until
-   - the xmlns issues get worked out, either by directly supporting the xhtml
-   - tag subset in xwl or by using the xhtml namespace for those tags) 
-  -->
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns="http://blogs.law.harvard.edu/tech/rss">
+
 <xsl:output method="xml" indent="yes" encoding="iso-8859-1"
     omit-xml-declaration="no"/>
 
@@ -84,6 +82,7 @@
             %cdata_open%<xsl:copy-of select="leader/*"/><xsl:copy-of select="content/*"/>%cdata_close%
         </description>
         <author><xsl:value-of select="author"/></author>
+        <xsl:element name="dc:creator"><xsl:value-of select="author"/></xsl:element>
         <category><xsl:value-of select="topic/name"/></category>
         <!-- unimplemented
             <comments></comments>
