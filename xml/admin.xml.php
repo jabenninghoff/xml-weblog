@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.1 2002/10/19 16:34:35 loki Exp $
+// $Id: admin.xml.php,v 1.2 2002/10/19 18:36:55 loki Exp $
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
 
@@ -27,9 +27,29 @@ $block = $db->getAll("select * from block group by sidebar_align,sidebar_index,b
 <?php require "xml/sidebar.xml.php"; ?>
 
   <main>
-    <content>
-      <p>welcome to admin.</p>
-    </content>
+    <admin>
+      <menu link="?menu=site">Site Configuration</menu>
+      <menu link="?menu=article">Articles</menu>
+      <menu link="?menu=block">Blocks</menu>
+      <menu link="?menu=message">Messages</menu>
+      <menu link="?menu=topic">Topics</menu>
+      <menu link="?menu=user">Users</menu>
+<?php
+for ($i=0; $block[$i]; $i++) {
+?>
+      <object class="block">
+        <property name="id"><?php echo $block[$i]['id']; ?></property>
+        <property name="align"><?php echo $block[$i]['sidebar_align']; ?></property>
+        <property name="sindex"><?php echo $block[$i]['sidebar_index']; ?></property>
+        <property name="bindex"><?php echo $block[$i]['block_index']; ?></property>
+        <property name="title"><?php echo $block[$i]['title']; ?></property>
+        <property><?php echo '<a href="?menu=block&amp;op=edit&amp;id=', $block[$i]['id'], '">edit</a>'; ?></property>
+        <property><?php echo '<a href="?menu=block&amp;op=delete&amp;id=', $block[$i]['id'], '">delete</a>'; ?></property>
+      </object>
+<?php
+}
+?>
+    </admin>
   </main>
 
 <?php require "xml/footer.xml.php"; ?>
