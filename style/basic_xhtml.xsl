@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.16 2002/10/24 22:59:24 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.17 2002/10/26 05:19:52 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -46,10 +46,6 @@
   <p class="center"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
   <hr/>
   <xsl:apply-templates select="message"/>
-</xsl:template>
-
-<xsl:template match="form">
-  <xsl:copy-of select="."/>
 </xsl:template>
 
 <xsl:template match="content">
@@ -118,7 +114,7 @@
       </xsl:for-each>
     </table>
   </xsl:if>
-  <xsl:apply-templates select="form"/>
+  <xsl:apply-templates select="content"/>
 </xsl:template>
 
 <xsl:template match="menu">
