@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.4 2002/10/14 21:33:46 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.5 2002/10/15 04:14:37 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"/>
@@ -38,7 +38,7 @@
   <p><xsl:copy-of select="banner/text()|banner/*"/></p>
   <h1>
     <img>
-      <xsl:attribute name="source">
+      <xsl:attribute name="src">
         <xsl:value-of select="logo"/>
       </xsl:attribute>
       <xsl:attribute name="alt">
