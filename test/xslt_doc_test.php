@@ -2,7 +2,7 @@
 require_once "../include/functions.inc.php";
 // get php-formatted xml document
 ob_start();
-require "../template.php";
+require "template.php";
 $xml = ob_get_contents();
 ob_end_clean();
 

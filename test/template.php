@@ -1,6 +1,6 @@
-<?php include_once "include/functions.inc.php"; ?>
+<?php include_once "../include/functions.inc.php"; ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<!-- $Id: template.php,v 1.3 2002/10/14 21:33:46 loki Exp $ -->
+<!-- $Id: template.php,v 1.4 2002/10/16 19:31:15 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
