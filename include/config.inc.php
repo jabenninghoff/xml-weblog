@@ -1,5 +1,5 @@
 <?php
-// $Id: config.inc.php,v 1.14 2004/07/10 17:45:13 loki Exp $
+// $Id: config.inc.php,v 1.15 2004/09/23 18:53:21 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // configuration variables
@@ -37,6 +37,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+// php include path
+ini_set('include_path', '/php-lib-path'.PATH_SEPARATOR.'/xml-weblog-lib-path'.PATH_SEPARATOR.'/xml-weblog-path');
 
 // database configuration
 $xwl_db_type = "mysql";         // currently, only mysql is supported
