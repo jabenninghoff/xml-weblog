@@ -1,8 +1,9 @@
 <?php
-// $Id: admin.xml.php,v 1.12 2002/10/27 07:46:19 loki Exp $
+// $Id: admin.xml.php,v 1.13 2002/10/27 17:25:54 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
+require_once "include/auth.inc.php";
 
 $display = array(
     "ID" => true,
@@ -268,9 +269,8 @@ if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
     // standalone
     header('Content-Type: text/xml');
     // check authentication
-    if (!isset($_SERVER['PHP_AUTH_USER'])) {
-        header('WWW-Authenticate: Basic realm="private"');
-        header('HTTP/1.0 401 Unauthorized');
+    if (!user_authenticated() || !user_authorized("admin")) {
+        unauthorized("private");
         exit;
     }
 }
