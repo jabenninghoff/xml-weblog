@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.5 2004/05/01 17:27:00 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.6 2004/06/16 16:13:49 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -38,8 +38,7 @@
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns="http://blogs.law.harvard.edu/tech/rss">
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <xsl:output method="xml" indent="yes" encoding="iso-8859-1"
     omit-xml-declaration="no"/>
