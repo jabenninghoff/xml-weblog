@@ -1,12 +1,12 @@
-/* $Id: sidebar_left.css,v 1.1 2002/10/31 00:41:29 loki Exp $ */
+/* $Id: sidebar_left.css,v 1.2 2002/10/31 09:25:13 loki Exp $ */
 
-div.sidebar_left {
+div.sidebar-left {
     position:absolute;
-    width:10em;
-    left:0.5em;
+    width: 10em;
+    left: 0.75em;
 }
 
 div.main {
-    margin-left:10em;
+    margin-left: 10em;
 }
 
