@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.11 2004/05/03 04:16:36 loki Exp $
+// $Id: index.php,v 1.12 2004/05/03 04:53:38 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -43,9 +43,6 @@ require_once "include/site.php";
 require_once "XML/RPC/Server.php";
 
 // XML-RPC errors
-
-$_xwl_xmlrpc_method = "unknownMethod";
-
 define('_XWL_XMLRPC_ERROR_UNAUTHORIZED', $GLOBALS['xmlrpcerruser']+11);
 define('_XWL_XMLRPC_ERROR_NOSSL', $GLOBALS['xmlrpcerruser']+12);
 define('_XWL_XMLRPC_ERROR_INVALID_POSTID', $GLOBALS['xmlrpcerruser']+21);
@@ -59,6 +56,7 @@ $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS] = "%s failed: invalid num
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOTFOUND_POSTID] = "%s failed: postid not found.";
 
 function _xmlrpc_error($error_id) {
+
     global $_xwl_xmlrpc_error, $_xwl_xmlrpc_method;
 
     return new XML_RPC_Response(0, $error_id, sprintf($_xwl_xmlrpc_error[$error_id], $_xwl_xmlrpc_method));
@@ -66,6 +64,7 @@ function _xmlrpc_error($error_id) {
 
 // rpc authorization routine
 function _rpc_auth($user, $pass) {
+
     global $xwl_db;
 
     if ($user && XWL_string::valid($user)) {
@@ -76,11 +75,15 @@ function _rpc_auth($user, $pass) {
     return true;
 }
 
-// XML-RPC authentication wrapper
+
+// XML-RPC authentication/wrapper
+$_xwl_xmlrpc_api = "unknownAPI";
+$_xwl_xmlrpc_method = "unknownMethod";
+$_pshift = 0;
+
 function xwl_xmlrpc($params) {
 
-    global $xwl_site_value_xml, $_xwl_xmlrpc_method;
-    $resp_array = array();
+    global $xwl_site_value_xml, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
 
     // make sure we are using SSL if available
     if ($xwl_site_value_xml['ssl_port'] && !$_SERVER['HTTPS']) {
@@ -89,14 +92,14 @@ function xwl_xmlrpc($params) {
 
     // we support the MetaWeblog & Blogger APIs
     $m = explode(".", $params->method());
-    $api = $m[0];
+    $_xwl_xmlrpc_api = $m[0];
     $_xwl_xmlrpc_method = $m[1];
 
     // authenticate user
-    $u_param = ($api == "blogger" ? 2 : 1);
-    $p_param = $u_param + 1;
-    $username = $params->getParam($u_param);
-    $password = $params->getParam($p_param);
+    $_pshift = ($_xwl_xmlrpc_api == "blogger" ? 1 : 0);
+
+    $username = $params->getParam(1+$_pshift);
+    $password = $params->getParam(2+$_pshift);
 
     if (!_rpc_auth($username->scalarval(), $password->scalarval())) {
         // user error 1
@@ -104,80 +107,13 @@ function xwl_xmlrpc($params) {
     }
 
     // call the appropriate function
-    $rpc_function = $api."_".$_xwl_xmlrpc_method;
+    $rpc_function = "_".$_xwl_xmlrpc_method;
     return $rpc_function($params);
 }
 
-// blogger functions
-
-// blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
-// blogger.editPost (appkey, postId, username, password, content, publish) returns true
-
-// blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
-function blogger_getPost($params) {
-
-    global $xwl_db;
-
-    $postid = $params->getParam(1);
-    $id = $postid->scalarval();
-
-    // validate $postid
-    if (!XWL_integer::valid($id)) {
-        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_POSTID);
-    }
-
-    if (!$xwl_article = $xwl_db->fetch_article($id)) {
-        // this doesn't work for some reason ???
-        return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
-    }
-
-    $resp_struct = array(
-        "userid" => new XML_RPC_Value($xwl_article->property['user_name']->value),
-        "dateCreated" => new XML_RPC_Value($xwl_article->property['date']->iso8601_date(), "dateTime.iso8601"),
-        "content" => new XML_RPC_Value($xwl_article->property['leader']->value),
-        "postid" => new XML_RPC_Value($xwl_article->property['id']->value)
-    );
-
-    return new XML_RPC_Response(new XML_RPC_Value($resp_struct, "struct"));
-}
-
-// blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
-function blogger_getRecentPosts($params) {
-
-    global $xwl_db, $xwl_site_value_xml;
-
-    $numberOfPosts = $params->getParam(4);
-    $num = $numberOfPosts->scalarval();
-
-    // validate numberOfPosts
-    if (!XWL_integer::valid($num)) {
-        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS);
-    }
-
-    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
-
-    for ($i=0; $xwl_article[$i]; $i++) {
-        $resp_struct = array(
-            "userid" => new XML_RPC_Value($xwl_article[$i]->property['user_name']->value),
-            "dateCreated" => new XML_RPC_Value($xwl_article[$i]->property['date']->iso8601_date(), "dateTime.iso8601"),
-            "content" => new XML_RPC_Value($xwl_article[$i]->property['leader']->value),
-            "postid" => new XML_RPC_Value($xwl_article[$i]->property['id']->value)
-        );
-
-        $resp_array[$i] = new XML_RPC_Value($resp_struct, "struct");
-    }
-
-    return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
-}
-
-// blogger.deletePost (appkey, postId, username, password, publish) returns true
-
-
-// metaWeblog.newPost (blogid, username, password, struct, publish) returns string
-// metaWeblog.editPost (postid, username, password, struct, publish) returns true
 
 // metaWeblog.getCategories (blogid, username, password) returns struct
-function metaWeblog_getCategories($params) {
+function _getCategories($params) {
 
     global $xwl_db, $xwl_site_value_xml;
 
@@ -196,12 +132,46 @@ function metaWeblog_getCategories($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "struct"));
 }
 
+function _blogger_translate_post($article) {
+
+    $post_struct = array(
+        "userid" => new XML_RPC_Value($article->property['user_name']->value),
+        "dateCreated" => new XML_RPC_Value($article->property['date']->iso8601_date(), "dateTime.iso8601"),
+        "content" => new XML_RPC_Value($article->property['leader']->value),
+        "postid" => new XML_RPC_Value($article->property['id']->value)
+    );
+
+    return new XML_RPC_Value($post_struct, "struct");
+}
+
+function _metaWeblog_translate_post($article) {
+
+    global $xwl_site_value_xml;
+
+    $id = $article->property['id']->value;
+    $link = $xwl_site_value_xml['url']."article.php?id=$id";
+    $post_struct = array(
+        "categories" => new XML_RPC_Value(
+            array(new XML_RPC_Value($article->property['topic_name']->value)), "array"),
+        "userid" => new XML_RPC_Value($article->property['user_name']->value),
+        "dateCreated" => new XML_RPC_Value($article->property['date']->iso8601_date(), "dateTime.iso8601"),
+        "description" => new XML_RPC_Value($article->property['leader']->value),
+        "postid" => new XML_RPC_Value($id),
+        "title" => new XML_RPC_Value($article->property['title']->value),
+        "link" => new XML_RPC_Value($link),
+        "permaLink" => new XML_RPC_Value($link)
+    );
+
+    return new XML_RPC_Value($post_struct, "struct");
+}
+
+// blogger.getPost (appkey, postId, username, password) returns struct: content, userId, postId, dateCreated
 // metaWeblog.getPost (postid, username, password) returns struct
-function metaWeblog_getPost($params) {
+function _getPost($params) {
 
-    global $xwl_db, $xwl_site_value_xml;
+    global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
 
-    $postid = $params->getParam(0);
+    $postid = $params->getParam(0+$_pshift);
     $id = $postid->scalarval();
 
     // validate $postid
@@ -214,28 +184,18 @@ function metaWeblog_getPost($params) {
         return _xwl_xmlrpc_error(_XWL_XMLRPC_ERROR_NOTFOUND_POSTID);
     }
 
-    $link = $xwl_site_value_xml['url']."article.php?id=$id";
-    $resp_struct = array(
-            "categories" => new XML_RPC_Value(
-                array(new XML_RPC_Value($xwl_article->property['topic_name']->value)), "array"),
-        "userid" => new XML_RPC_Value($xwl_article->property['user_name']->value),
-        "dateCreated" => new XML_RPC_Value($xwl_article->property['date']->iso8601_date(), "dateTime.iso8601"),
-        "description" => new XML_RPC_Value($xwl_article->property['leader']->value),
-        "postid" => new XML_RPC_Value($id),
-        "title" => new XML_RPC_Value($xwl_article->property['title']->value),
-        "link" => new XML_RPC_Value($link),
-        "permaLink" => new XML_RPC_Value($link)
-    );
+    $translate_function = "_${_xwl_xmlrpc_api}_translate_post";
 
-    return new XML_RPC_Response(new XML_RPC_Value($resp_struct, "struct"));
+    return new XML_RPC_Response($translate_function($xwl_article));
 }
 
+// blogger.getRecentPosts (appkey, blogId, username, password, numberOfPosts) returns array of structs (each is a post)
 // metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts) returns array of structs
-function metaWeblog_getRecentPosts($params) {
+function _getRecentPosts($params) {
 
-    global $xwl_db, $xwl_site_value_xml;
+    global $xwl_db, $xwl_site_value_xml, $_xwl_xmlrpc_api, $_pshift;
 
-    $numberOfPosts = $params->getParam(3);
+    $numberOfPosts = $params->getParam(3+$_pshift);
     $num = $numberOfPosts->scalarval();
 
     // validate numberOfPosts
@@ -243,28 +203,26 @@ function metaWeblog_getRecentPosts($params) {
         return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS);
     }
 
+    $translate_function = "_${_xwl_xmlrpc_api}_translate_post";
+
     $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit'], 0, 0);
 
     for ($i=0; $xwl_article[$i]; $i++) {
-        $id = $xwl_article[$i]->property['id']->value;
-        $link = $xwl_site_value_xml['url']."article.php?id=$id";
-        $resp_struct = array(
-            "categories" => new XML_RPC_Value(
-                array(new XML_RPC_Value($xwl_article[$i]->property['topic_name']->value)), "array"),
-            "userid" => new XML_RPC_Value($xwl_article[$i]->property['user_name']->value),
-            "dateCreated" => new XML_RPC_Value($xwl_article[$i]->property['date']->iso8601_date(), "dateTime.iso8601"),
-            "description" => new XML_RPC_Value($xwl_article[$i]->property['leader']->value),
-            "postid" => new XML_RPC_Value($id),
-            "title" => new XML_RPC_Value($xwl_article[$i]->property['title']->value),
-            "link" => new XML_RPC_Value($link),
-            "permaLink" => new XML_RPC_Value($link)
-        );
-
-        $resp_array[$i] = new XML_RPC_Value($resp_struct, "struct");
+        $resp_array[$i] = $translate_function($xwl_article[$i]);
     }
 
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
 }
+
+
+// blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
+// metaWeblog.newPost (blogid, username, password, struct, publish) returns string
+
+// blogger.editPost (appkey, postId, username, password, content, publish) returns true
+// metaWeblog.editPost (postid, username, password, struct, publish) returns true
+
+// blogger.deletePost (appkey, postId, username, password, publish) returns true
+
 
 $dispatch_map = array(
     "blogger.getPost" => array("function" => "xwl_xmlrpc"),
