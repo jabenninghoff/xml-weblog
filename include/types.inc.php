@@ -1,5 +1,5 @@
 <?php
-// $Id: types.inc.php,v 1.3 2002/11/01 16:46:21 loki Exp $
+// $Id: types.inc.php,v 1.4 2002/11/01 17:25:02 loki Exp $
 // xml-weblog type definitions
 
 // basic datatype definitions
@@ -41,13 +41,15 @@ $admin_form_handler = array(
     "article" => "admin_form_article",
     "block" => "admin_form_block",
     "icon" => "admin_form_image",
-    "image" => "admin_form_image"
+    "image" => "admin_form_image",
+    "user" => "admin_form_user"
 );
 
 // custom admin form processors
 $admin_form_processor = array(
     "icon" => "process_form_image",
-    "image" => "process_form_image"
+    "image" => "process_form_image",
+    "user" => "process_form_user"
 );
 
 // image types for getimagesize()
