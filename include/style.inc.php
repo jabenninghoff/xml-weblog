@@ -1,5 +1,5 @@
 <?php
-// $Id: style.inc.php,v 1.11 2003/11/03 06:31:01 loki Exp $
+// $Id: style.inc.php,v 1.12 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // style/xml rendering module
@@ -50,7 +50,7 @@ function xwl_style_get()
 
     $style = new XWL_filename;
 
-    if (!$style->set_value($_GET['style'])) $style->set_value($xwl_default_style);
+    if (!$style->set_value(XWL::magic_unslash($_GET['style']))) $style->set_value($xwl_default_style);
 
     return $style;
 }

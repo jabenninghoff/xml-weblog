@@ -1,5 +1,5 @@
 <?php
-// $Id: image.php,v 1.14 2003/11/29 03:26:41 loki Exp $
+// $Id: image.php,v 1.15 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // image renderer
@@ -49,7 +49,7 @@ if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
 }
 
 $name = new XWL_string;
-$name->set_value($_GET['name']);
+$name->set_value(XWL::magic_unslash($_GET['name']));
 
 if ($image = $xwl_db->fetch_image($name->value)) {
     header("Content-Type: ".$image->property['mime']->value);

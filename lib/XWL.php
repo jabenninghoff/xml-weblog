@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.8 2003/11/24 03:20:11 loki Exp $
+// $Id: XWL.php,v 1.9 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -63,11 +63,6 @@ class XWL
         else return false;
     }
 
-    function _safe_gpc_stripslashes($string)
-    {
-        return get_magic_quotes_gpc() ? stripslashes($string) : $string;
-    }
-
     function _test_xml($string)
     {
         $xml_doc = '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>'."\n"; //<?
@@ -80,6 +75,11 @@ class XWL
     }
 
     // public functions
+    function magic_unslash($string)
+    {
+        return get_magic_quotes_gpc() ? stripslashes($string) : $string;
+    }
+
     function xml_declaration()
     {
         echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n"; //<?

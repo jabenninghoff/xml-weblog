@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.12 2003/11/29 03:26:41 loki Exp $
+// $Id: datatype.php,v 1.13 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -331,7 +331,7 @@ class XWL_string_XHTML extends XWL_string
         if (!$this->_valid_string($input)) return false;
 
         $valid_tags = "<a><b><i><s><span>";
-        $stripped_input = strip_tags(XWL::_safe_gpc_stripslashes($input), $valid_tags);
+        $stripped_input = strip_tags($input, $valid_tags);
 
         if (!XWL::_test_xml($stripped_input)) return false;
 
@@ -519,10 +519,12 @@ class XWL_XHTML extends XWL_datatype
 
     function set_value($input)
     {
-        // XHTML only
-        if (!$this->_valid_XHTML($input)) return false;
+        $stripped_input = strip_tags($input, $this->_valid_tags);
 
-        $this->value = strip_tags(XWL::_safe_gpc_stripslashes($input), $this->_valid_tags);
+        // XHTML only
+        if (!XWL::_test_xml($stripped_input)) return false;
+
+        $this->value = $stripped_input;        
         return true;
     }
 

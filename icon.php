@@ -1,5 +1,5 @@
 <?php
-// $Id: icon.php,v 1.7 2003/11/29 03:26:41 loki Exp $
+// $Id: icon.php,v 1.8 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // icon renderer
@@ -49,7 +49,7 @@ if (xwl_auth_login() && !xwl_auth_user_authenticated()) {
 }
 
 $name = new XWL_string;
-$name->set_value($_GET['name']);
+$name->set_value(XWL::magic_unslash($_GET['name']));
 
 if ($icon = $xwl_db->fetch_icon($name->value)) {
     header("Content-Type: ".$icon->property['mime']->value);

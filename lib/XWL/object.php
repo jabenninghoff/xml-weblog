@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.12 2003/11/29 03:26:41 loki Exp $
+// $Id: object.php,v 1.13 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -327,7 +327,6 @@ class XWL_image extends XWL_object
 
     function load_image_file($filename) {
         if ($size = getimagesize($filename)) {
-//            $this->property['src']->set_value(addslashes(fread(fopen($filename, "r"), filesize($filename))));
             $this->property['src']->set_value(fread(fopen($filename, "r"), filesize($filename)));
             $this->property['width']->set_value($size[0]);
             $this->property['height']->set_value($size[1]);
