@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.29 2003/11/29 03:26:41 loki Exp $
+// $Id: admin.xml.php,v 1.30 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -108,9 +108,9 @@ function process_form($object_class, $edit_mode, $object_id)
             if ($object->property[$name]) {
                 if ($name == "password" && $_POST['password'] != $_POST['saved_password']) {
                     // here the magic happens -- we want to crypt the password (which has changed)
-                    $object->property[$name]->set_password($post);
+                    $object->property[$name]->set_password(XWL::magic_unslash($post));
                 } else {
-                    $object->property[$name]->set_value($post);
+                    $object->property[$name]->set_value(XWL::magic_unslash($post));
                 }
             }
         }
@@ -196,7 +196,7 @@ $object_class = in_array($_GET['class'],$xwl_object_class) ? $_GET['class'] : $x
 $edit_mode = ($_GET['mode'] == "edit" || $_GET['mode'] == "delete") ? $_GET['mode'] : "create";
 
 $temp_id = new XWL_ID;
-if ($temp_id->set_value($_GET['id'])) {
+if ($temp_id->set_value(XWL::magic_unslash($_GET['id']))) {
     $object_id = $temp_id->value;
 } else {
     // fall back to create mode when given an invalid id
