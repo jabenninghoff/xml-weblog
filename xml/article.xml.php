@@ -1,6 +1,8 @@
 <?php
-// $Id: article.xml.php,v 1.20 2004/04/30 21:24:20 loki Exp $
+// $Id: article.xml.php,v 1.21 2004/04/30 22:18:54 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
+// single article page
 
 /*
  * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.

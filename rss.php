@@ -1,8 +1,8 @@
 <?php
-// $Id: rss.php,v 1.3 2004/04/30 21:24:19 loki Exp $
+// $Id: rss.php,v 1.4 2004/04/30 22:18:54 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
-// avantgo front page renderer
+// RSS XML renderer
 
 /*
  * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
@@ -43,7 +43,7 @@ require_once "include/style.inc.php";
 // get php-formatted xml document (must be in the global context)
 ob_start();
 
-// we use the same index.xml page for avantgo.php
+// we use the same index.xml page for rss.php
 require "xml/index.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
@@ -51,6 +51,7 @@ ob_end_clean();
 $style = new XWL_filename;
 $style->set_value("rss");
 
+// use RSS content-type
 header("Content-type: application/rss+xml");
 xwl_style_render_page($xml, $style);
 ?>

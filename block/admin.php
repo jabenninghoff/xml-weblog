@@ -1,6 +1,8 @@
 <?php
-// $Id: admin.php,v 1.5 2004/04/30 21:24:19 loki Exp $
+// $Id: admin.php,v 1.6 2004/04/30 22:18:54 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+
+// administration block
 
 /*
  * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.

@@ -1,6 +1,6 @@
 <?php
 // feed URI link builder
-// see http://www.25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html
+
 $uri = "feed://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 $uri = preg_replace("/[^\/]+$/","rss.php", $uri);
 

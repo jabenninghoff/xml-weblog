@@ -1,5 +1,6 @@
 <?php
 // archive.org feed validator logo/link
+
 $uri = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 $uri = preg_replace("/[^\/]+$/","rss.php", $uri);
 
