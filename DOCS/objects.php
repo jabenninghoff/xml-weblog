@@ -2,7 +2,7 @@
 print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
 ?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-<!-- $Id: objects.php,v 1.1 2002/06/23 07:16:06 loki Exp $ -->
+<!-- $Id: objects.php,v 1.2 2002/06/23 07:44:39 loki Exp $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>XML Weblog Objects</title>
@@ -12,6 +12,10 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
         font-size: 10pt; 
       }
       h1, h2, h3 { font-family: arial, helvetica, sans-serif; }
+      h3 {
+        font-weight: normal;
+        font-size: 12pt;
+      }
     </style>
   </head>
   <body>
@@ -24,10 +28,10 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
       <p>
         A <strong>site</strong> is the root object for the XML weblog. It is
         not represented in the internal XML source document. The site is a
-        record in the <strong>sites</strong> table of the
-        <strong>xml-master</strong> database; each record is an unique URI, and
-        multiple URIs may point to the same site. The record holds all
-        site-wide settings and configuration variables, specifically:
+        record in the <strong>sites</strong> table of the <strong>xml-master
+        </strong> database; each record is an unique URI, and multiple URIs may
+        point to the same site. The record holds all site-wide settings and
+        configuration variables, specifically:
       </p>
       <ul>
         <li>site URI (index column)</li>
@@ -46,9 +50,31 @@ print '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
         configuration matching the URI row.
       </p>
     <h2>page</h2>
-      <p>A <strong>page</strong> is a ... 
+      <p>
+        A <strong>page</strong> consists of a <strong>header</strong>,
+        <strong>footer</strong>, and <strong>blocks</strong>, normally
+        represented as an XHTML web page. The "front page" of a site displays
+        the header, left blocks, the <strong>main</strong> block, right blocks,
+        and the footer. As described below, the <strong>articles</strong> are
+        displayed in the main block.
+      </p>
+      <p>
+        Pages currently have no attributes, only children, and are implemented
+        in php code.
+      </p>
     <h2>header</h2>
     <h2>footer</h2>
+    <h2>block</h2>
+    <h3>main block</h3>
+    <h3>static block</h3>
+    <h3>code block</h3>
+    <h2>article</h2>
+    <h2>user</h2>
+    <h2>comment</h2>
+      <p>
+        <strong>users</strong> and <strong>comments</strong> will be
+        implemented in version 2.0.
+      </p>
 <?php
 print '<p><a href="http://validator.w3.org/check?uri=http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].';ss=1">validate</a></p>'."\n";
 ?>
