@@ -1,5 +1,5 @@
 <?php
-// $Id: header.xml.php,v 1.7 2002/10/18 15:49:01 loki Exp $
+// $Id: header.xml.php,v 1.8 2002/10/18 22:00:12 loki Exp $
 
 require_once "include/functions.inc.php";
 require_once "include/config.inc.php";
@@ -19,7 +19,7 @@ if (basename($_SERVER['PHP_SELF']) == "header.xml.php") {
   <!-- header: top of the page, with logo, slogan, etc.  -->
   <header>
     <banner>[banner: not implemented]</banner>
-    <logo>image.php?type=image&amp;id=<?php echo $site['logo']; ?></logo>
+    <logo>image.php?name=<?php echo $site['logo']; ?></logo>
 <?php
 $element = array ( "name", "slogan", "url", "description" );
 foreach ($element as $tag) {
