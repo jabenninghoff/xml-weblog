@@ -1,5 +1,5 @@
 <?php
-// $Id: config.inc.php,v 1.10 2003/04/21 20:54:12 loki Exp $
+// $Id: config.inc.php,v 1.11 2003/10/20 18:25:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // configuration variables
@@ -40,7 +40,7 @@
 
 // database configuration
 $xwl_db_type = "mysql";         // currently, only mysql is supported
-$xwl_db_server = "localhost";
+$xwl_db_server = "127.0.0.1";
 $xwl_db_user = "xml";
 $xwl_db_password = "weblog";
 $xwl_db_database = "xml_weblog";
