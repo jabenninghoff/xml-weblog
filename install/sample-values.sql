@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.28 2003/10/22 21:44:36 loki Exp $
+-- $Id: sample-values.sql,v 1.29 2003/11/03 08:18:04 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -47,29 +47,29 @@ INSERT INTO block VALUES (5,'left',1,5,'sysblock','','admin','en');
 
 INSERT INTO message VALUES (1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','<b>Under Construction:</b> This site has not yet been configured.','en');
 
-INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','images/xml-weblog-logo.png','xml-weblog sample site','<p class=\"zero\"><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br class=\"br\"/>Comments are owned by the Poster. The Rest &#169; 2002-2003 xml-weblog.org','<p>\r\n<a class=\"img\" href=\"http://httpd.apache.org\"><img src=\"images/apache_pb.png\" alt=\"Powered by Apache\"/></a>\r\n<a class=\"img\" href=\"http://www.mysql.com\"><img src=\"images/mysql_pb.png\" alt=\"Powered by MySQL\"/></a>\r\n<a class=\"img\" href=\"http://www.php.net\"><img src=\"images/php_pb.png\" alt=\"Powered by PHP\"/></a>\r\n<code include=\"validxml.php\"/>\r\n<a class=\"img\" href=\"http://jigsaw.w3.org/css-validator/\"><img src=\"images/valid-css.png\" alt=\"Valid CSS\"/></a>\r\n</p>','en');
+INSERT INTO site VALUES (1,'http://www.xml-weblog.org/',10,'xml-weblog','the first fully buzzword-compliant weblog engine','images/xml-weblog-logo.gif','xml-weblog sample site','<p class=\"zero\"><code include=\"date.php\"/></p>',' All trademarks and copyrights on this page are owned by their respective owners.<br class=\"br\"/>Comments are owned by the Poster. The Rest &#169; 2002-2003 xml-weblog.org','<p>\r\n<a class=\"img\" href=\"http://httpd.apache.org\"><img src=\"images/apache_pb.gif\" alt=\"Powered by Apache\"/></a>\r\n<a class=\"img\" href=\"http://www.mysql.com\"><img src=\"images/mysql_pb.gif\" alt=\"Powered by MySQL\"/></a>\r\n<a class=\"img\" href=\"http://www.php.net\"><img src=\"images/php_pb.gif\" alt=\"Powered by PHP\"/></a>\r\n<code include=\"validxml.php\"/>\r\n<a class=\"img\" href=\"http://jigsaw.w3.org/css-validator/\"><img src=\"images/valid-css.gif\" alt=\"Valid CSS\"/></a>\r\n</p>','en');
 
-INSERT INTO topic VALUES (1,'No Topic','No topic.','wl_icons/blank.png');
-INSERT INTO topic VALUES (2,'Announcements','Site Information and Announcements.','wl_icons/announce.png');
-INSERT INTO topic VALUES (3,'Apple','Apple Computer, Mac OS X, and all things Macintosh.','wl_icons/apple.png');
-INSERT INTO topic VALUES (4,'BSD','BSD and Berkeley-derived Unices: FreeBSD, NetBSD, OpenBSD, and Darwin.','wl_icons/bsd.png');
-INSERT INTO topic VALUES (5,'Books','Book news and reviews.','wl_icons/books.png');
-INSERT INTO topic VALUES (6,'Bugs','xml-weblog bug reports.','wl_icons/bugs.png');
-INSERT INTO topic VALUES (7,'Censorship','censorship and attacks on free speech principles.','wl_icons/censorship.png');
-INSERT INTO topic VALUES (8,'Courts','The Courts and Legal matters.','wl_icons/courts.png');
-INSERT INTO topic VALUES (9,'Games','Computer, board, card, and other games.','wl_icons/games.png');
-INSERT INTO topic VALUES (10,'Hackers','The dark side of computer security.','wl_icons/hackers.png');
-INSERT INTO topic VALUES (11,'Hardware','Computer and Electronic hardware and equipment.','wl_icons/hardware.png');
-INSERT INTO topic VALUES (12,'Humor','Humor. Laugh, damn it!','wl_icons/humor.png');
-INSERT INTO topic VALUES (13,'Mail','Messages from the aether.','wl_icons/mail.png');
-INSERT INTO topic VALUES (14,'Microsoft','Microsoft Corporation and all things Bill.','wl_icons/microsoft.png');
-INSERT INTO topic VALUES (15,'Miscellaneous','Random stuff.','wl_icons/misc.png');
-INSERT INTO topic VALUES (16,'Money','Money, Business, and Economics.','wl_icons/money.png');
-INSERT INTO topic VALUES (17,'Music','Music on CD, LP, MP3, and live events.','wl_icons/music.png');
-INSERT INTO topic VALUES (18,'News','News from the outside world.','wl_icons/news.png');
-INSERT INTO topic VALUES (19,'Privacy','Privacy in the digital age.','wl_icons/privacy.png');
-INSERT INTO topic VALUES (20,'Security','Computer and Network security.','wl_icons/security.png');
-INSERT INTO topic VALUES (21,'Sites','Interesting places to visit on the web.','wl_icons/sites.png');
-INSERT INTO topic VALUES (22,'Software','Software and programming.','wl_icons/software.png');
-INSERT INTO topic VALUES (23,'Technology','Modern and post-modern technology.','wl_icons/technology.png');
-INSERT INTO topic VALUES (24,'XML-Weblog','XML-Weblog site management engine','wl_icons/xml-weblog.png');
+INSERT INTO topic VALUES (1,'No Topic','No topic.','wl_icons/blank.gif');
+INSERT INTO topic VALUES (2,'Announcements','Site Information and Announcements.','wl_icons/announce.gif');
+INSERT INTO topic VALUES (3,'Apple','Apple Computer, Mac OS X, and all things Macintosh.','wl_icons/apple.gif');
+INSERT INTO topic VALUES (4,'BSD','BSD and Berkeley-derived Unices: FreeBSD, NetBSD, OpenBSD, and Darwin.','wl_icons/bsd.gif');
+INSERT INTO topic VALUES (5,'Books','Book news and reviews.','wl_icons/books.gif');
+INSERT INTO topic VALUES (6,'Bugs','xml-weblog bug reports.','wl_icons/bugs.gif');
+INSERT INTO topic VALUES (7,'Censorship','censorship and attacks on free speech principles.','wl_icons/censorship.gif');
+INSERT INTO topic VALUES (8,'Courts','The Courts and Legal matters.','wl_icons/courts.gif');
+INSERT INTO topic VALUES (9,'Games','Computer, board, card, and other games.','wl_icons/games.gif');
+INSERT INTO topic VALUES (10,'Hackers','The dark side of computer security.','wl_icons/hackers.gif');
+INSERT INTO topic VALUES (11,'Hardware','Computer and Electronic hardware and equipment.','wl_icons/hardware.gif');
+INSERT INTO topic VALUES (12,'Humor','Humor. Laugh, damn it!','wl_icons/humor.gif');
+INSERT INTO topic VALUES (13,'Mail','Messages from the aether.','wl_icons/mail.gif');
+INSERT INTO topic VALUES (14,'Microsoft','Microsoft Corporation and all things Bill.','wl_icons/microsoft.gif');
+INSERT INTO topic VALUES (15,'Miscellaneous','Random stuff.','wl_icons/misc.gif');
+INSERT INTO topic VALUES (16,'Money','Money, Business, and Economics.','wl_icons/money.gif');
+INSERT INTO topic VALUES (17,'Music','Music on CD, LP, MP3, and live events.','wl_icons/music.gif');
+INSERT INTO topic VALUES (18,'News','News from the outside world.','wl_icons/news.gif');
+INSERT INTO topic VALUES (19,'Privacy','Privacy in the digital age.','wl_icons/privacy.gif');
+INSERT INTO topic VALUES (20,'Security','Computer and Network security.','wl_icons/security.gif');
+INSERT INTO topic VALUES (21,'Sites','Interesting places to visit on the web.','wl_icons/sites.gif');
+INSERT INTO topic VALUES (22,'Software','Software and programming.','wl_icons/software.gif');
+INSERT INTO topic VALUES (23,'Technology','Modern and post-modern technology.','wl_icons/technology.gif');
+INSERT INTO topic VALUES (24,'XML-Weblog','XML-Weblog site management engine','wl_icons/xml-weblog.gif');
