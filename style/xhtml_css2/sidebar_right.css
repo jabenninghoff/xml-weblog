@@ -1,8 +1,8 @@
-/* $Id: sidebar_right.css,v 1.5 2002/11/01 22:05:38 loki Exp $ */
+/* $Id: sidebar_right.css,v 1.6 2002/11/14 00:43:39 loki Exp $ */
 
 div.sidebar-right {
     float: right;
-    width: 9.75em;
+    width: 160px;
 }
 
 div.main {
