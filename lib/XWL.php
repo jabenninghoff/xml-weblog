@@ -1,5 +1,5 @@
 <?php
-// $Id: XWL.php,v 1.4 2003/04/22 21:17:40 loki Exp $
+// $Id: XWL.php,v 1.5 2003/10/22 15:36:56 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
@@ -100,48 +100,4 @@ class XWL
         }
         return $string;
     }
-}
-
-// test section
-if (basename($_SERVER['PHP_SELF']) == "XWL.php") {
-header('Content-Type: text/plain');
-
-XWL::xml_declaration();
-echo XWL::process_code("<p><code include=\"date.php\"/></p>\n");
-echo "my base_url: ", XWL::base_url(), "\n";
-echo "\n";
-
-$test_values = array(
-    "XWL_ID" => "801928",
-    "XWL_URI" => "http://www.technomagik.net/index.php",
-    "XWL_boolean" => "1",
-    "XWL_date" => "7/17/71",
-    "XWL_integer" => "655536",
-    "XWL_string" => "this is a string. >><<&&''''\"\\",
-    "XWL_lang" => "x-klingon",
-    "XWL_string_XHTML" => "<p><b>XHTML</b> test.</p>",
-    "XWL_XHTML" => "<p>base XHTML class - do not use</p>",
-    "XWL_XHTML_code" => "<p>XHTML_code</p>",
-    "XWL_XHTML_fragment" => "<p>XHTML_fragment</p>",
-    "XWL_XHTML_long" => "<p>XHTML_long</p>",
-);
-
-foreach ($test_values as $key => $test) {
-    $object = new $key;
-    if ($object->set_value($test)) echo $object->HTML_safe_value(), " | ", $object->SQL_safe_value(), "\n";
-    else echo "bad $key!\n";
-}
-echo "\n";
-
-foreach ($xwl_object_class as $test) {
-    $test = "XWL_$test";
-    echo "new $test:\n";
-    $object = new $test;
-    foreach ($object->property as $key => $property) {
-        $req = $object->required[$key] ? "true" : "false";
-        echo "    $key: ", get_class($property), " ($req)\n";
-    }
-    echo "\n";
-}
-
 }
