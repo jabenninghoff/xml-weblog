@@ -1,0 +1,2 @@
+./image/logo.gif
+./image/valid-xhtml10.png
