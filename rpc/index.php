@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.13 2004/05/03 05:20:53 loki Exp $
+// $Id: index.php,v 1.14 2004/07/09 17:56:15 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -40,20 +40,29 @@
 
 require_once "XWL.php";
 require_once "include/site.php";
+require_once "include/auth.inc.php";
 require_once "XML/RPC/Server.php";
 
 // XML-RPC errors
-define('_XWL_XMLRPC_ERROR_UNAUTHORIZED', $GLOBALS['xmlrpcerruser']+11);
-define('_XWL_XMLRPC_ERROR_NOSSL', $GLOBALS['xmlrpcerruser']+12);
+define('_XWL_XMLRPC_ERROR_AUTH_FAIL', $GLOBALS['xmlrpcerruser']+11);
+define('_XWL_XMLRPC_ERROR_NOT_AUTHORIZED', $GLOBALS['xmlrpcerruser']+12);
+define('_XWL_XMLRPC_ERROR_NOSSL', $GLOBALS['xmlrpcerruser']+19);
 define('_XWL_XMLRPC_ERROR_INVALID_POSTID', $GLOBALS['xmlrpcerruser']+21);
 define('_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS', $GLOBALS['xmlrpcerruser']+22);
+define('_XWL_XMLRPC_ERROR_INVALID_CONTENT', $GLOBALS['xmlrpcerruser']+23);
+define('_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH', $GLOBALS['xmlrpcerruser']+29);
 define('_XWL_XMLRPC_ERROR_NOTFOUND_POSTID', $GLOBALS['xmlrpcerruser']+31);
+define('_XWL_XMLRPC_ERROR_DB_ERROR', $GLOBALS['xmlrpcerruser']+32);
 
-$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_UNAUTHORIZED] = "authorization failed: bad username/password.";
-$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOSSL] = "authorization failed: not using SSL.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_AUTH_FAIL] = "authentication failed: bad username/password.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOT_AUTHORIZED] = "%s failed: user not authorized for supplied method.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOSSL] = "authentication failed: not using SSL.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_POSTID] = "%s failed: invalid postid.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_NUMPOSTS] = "%s failed: invalid numberOfPosts.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_INVALID_CONTENT] = "%s failed: invalid content.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH] = "%s failed: unsupported publish value.";
 $_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_NOTFOUND_POSTID] = "%s failed: postid not found.";
+$_xwl_xmlrpc_error[_XWL_XMLRPC_ERROR_DB_ERROR] = "%s failed: database error.";
 
 function _xmlrpc_error($error_id) {
 
@@ -62,20 +71,6 @@ function _xmlrpc_error($error_id) {
     return new XML_RPC_Response(0, $error_id, sprintf($_xwl_xmlrpc_error[$error_id], $_xwl_xmlrpc_method));
 }
 
-// rpc authorization routine
-function _rpc_auth($user, $pass) {
-
-    global $xwl_db;
-
-    if ($user && XWL_string::valid($user)) {
-        $_auth_user = $xwl_db->fetch_user($user);
-    }
-    if (crypt($pass, $_auth_user->property['password']->value) != $_auth_user->property['password']->value) return false;
-
-    return true;
-}
-
-
 // XML-RPC authentication/wrapper
 $_xwl_xmlrpc_api = "unknownAPI";
 $_xwl_xmlrpc_method = "unknownMethod";
@@ -83,7 +78,7 @@ $_pshift = 0;
 
 function xwl_xmlrpc($params) {
 
-    global $xwl_site_value_xml, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
+    global $xwl_db, $xwl_site_value_xml, $_xwl_auth_user, $_xwl_xmlrpc_api, $_xwl_xmlrpc_method, $_pshift;
 
     // make sure we are using SSL if available
     if ($xwl_site_value_xml['ssl_port'] && !$_SERVER['HTTPS']) {
@@ -100,10 +95,19 @@ function xwl_xmlrpc($params) {
 
     $username = $params->getParam(1+$_pshift);
     $password = $params->getParam(2+$_pshift);
+    $user = $username->scalarval();
+    $pass = $password->scalarval();
 
-    if (!_rpc_auth($username->scalarval(), $password->scalarval())) {
-        // user error 1
-        return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNAUTHORIZED);
+    // we have to fetch $_xwl_auth_user ourselves
+    if ($user && XWL_string::valid($user)) {
+        $_xwl_auth_user = $xwl_db->fetch_user($user);
+    } else {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_AUTH_FAIL);
+    }
+
+    // we also have to check the password ourselves
+    if (crypt($pass, $_xwl_auth_user->property['password']->value) != $_xwl_auth_user->property['password']->value) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_AUTH_FAIL);
     }
 
     // call the appropriate function
@@ -214,9 +218,84 @@ function _getRecentPosts($params) {
     return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
 }
 
+function _blogger_post($content, $publish) {
+
+    global $xwl_db, $_xwl_auth_user;
+
+    $post = new XWL_article;
+
+    $post->property['site']->set_value($GLOBALS['xwl_default_site']);
+    $post->property['topic']->set_value($GLOBALS['xwl_default_topic']);
+    $post->property['title']->set_value(date("F j, Y"));
+    $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
+    $post->property['date']->set_value("now");
+    $post->property['leader']->set_value($content->scalarval());
+    $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
+
+    if ($post->missing_required()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
+    }
+
+    if ($xwl_db->create_object("article", $post)) {
+        $created_post = $xwl_db->fetch_article_last_id();
+        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value, "int"));
+    }
+
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+}
+
+function _metaWeblog_post($post_struct, $publish) {
+
+    global $xwl_db, $_xwl_auth_user;
+
+    $post = new XWL_article;
+
+    $post->property['site']->set_value($GLOBALS['xwl_default_site']);
+    $post->property['topic']->set_value($GLOBALS['xwl_default_topic']);
+    $post->property['title']->set_value(date("F j, Y"));
+    $post->property['user']->set_value($_xwl_auth_user->property['id']->value);
+    $post->property['date']->set_value("now");
+    $post->property['leader']->set_value("<p>metaWeblog post</p>");
+    $post->property['language']->set_value($GLOBALS['xwl_default_lang']);
+
+    if ($post->missing_required()) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_INVALID_CONTENT);
+    }
+
+    if ($xwl_db->create_object("article", $post)) {
+        $created_post = $xwl_db->fetch_article_last_id();
+        return new XML_RPC_Response(new XML_RPC_Value($created_post->property['id']->value, "int"));
+    }
+
+    return _xmlrpc_error(_XWL_XMLRPC_ERROR_DB_ERROR);
+}
 
 // blogger.newPost (appkey, blogId, username, password, content, publish) returns postId
 // metaWeblog.newPost (blogid, username, password, struct, publish) returns string (postId)
+function _newPost($params) {
+
+    global $xwl_db, $_xwl_xmlrpc_api, $_pshift;
+
+    // get the post content/struct and publish bit
+    $post = $params->getParam(3+$_pshift);
+    $p = $params->getParam(4+$_pshift);
+    $publish = $p->scalarval();
+
+    if (!$publish) {
+        // not publishing to home page is currently not supported.
+        // will be implemented with user submission system.
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_UNSUPP_PUBLISH);
+    }
+
+    // check authorization - require admin for now
+    if (!xwl_auth_user_authorized("admin")) {
+        return _xmlrpc_error(_XWL_XMLRPC_ERROR_NOT_AUTHORIZED);
+    }
+
+    $post_function = "_${_xwl_xmlrpc_api}_post";
+
+    return $post_function($post, $publish);
+}
 
 // blogger.editPost (appkey, postId, username, password, content, publish) returns true
 // metaWeblog.editPost (postid, username, password, struct, publish) returns true
@@ -227,9 +306,11 @@ function _getRecentPosts($params) {
 $dispatch_map = array(
     "blogger.getPost" => array("function" => "xwl_xmlrpc"),
     "blogger.getRecentPosts" => array("function" => "xwl_xmlrpc"),
-    "metaWeblog.getRecentPosts" => array("function" => "xwl_xmlrpc"),
+    "blogger.newPost" => array("function" => "xwl_xmlrpc"),
     "metaWeblog.getCategories" => array("function" => "xwl_xmlrpc"),
-    "metaWeblog.getPost" => array("function" => "xwl_xmlrpc")
+    "metaWeblog.getPost" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.getRecentPosts" => array("function" => "xwl_xmlrpc"),
+    "metaWeblog.newPost" => array("function" => "xwl_xmlrpc")
 );
 
 // generate response
