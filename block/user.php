@@ -1,11 +1,11 @@
 <?php
-// $Id: user.php,v 1.16 2003/12/06 20:12:37 loki Exp $
+// $Id: user.php,v 1.17 2004/04/30 21:24:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // user logon/personal menu block
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

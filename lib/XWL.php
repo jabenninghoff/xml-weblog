@@ -1,11 +1,11 @@
 <?php
-// $Id: XWL.php,v 1.10 2003/11/29 07:27:10 loki Exp $
+// $Id: XWL.php,v 1.11 2004/04/30 21:24:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog base library
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

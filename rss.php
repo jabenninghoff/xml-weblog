@@ -1,11 +1,11 @@
 <?php
-// $Id: rss.php,v 1.2 2004/04/30 18:14:59 loki Exp $
+// $Id: rss.php,v 1.3 2004/04/30 21:24:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // avantgo front page renderer
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

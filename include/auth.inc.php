@@ -1,11 +1,11 @@
 <?php
-// $Id: auth.inc.php,v 1.17 2003/12/01 01:21:46 loki Exp $
+// $Id: auth.inc.php,v 1.18 2004/04/30 21:24:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,11 +1,11 @@
 <?php
-// $Id: article.inc.php,v 1.10 2004/04/30 18:15:02 loki Exp $
+// $Id: article.inc.php,v 1.11 2004/04/30 21:24:19 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // display article on index.xml.php or article.xml.php page
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

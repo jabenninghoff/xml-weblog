@@ -1,9 +1,9 @@
 <?php
-// $Id: index.xml.php,v 1.26 2003/11/29 07:19:40 loki Exp $
+// $Id: index.xml.php,v 1.27 2004/04/30 21:24:20 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

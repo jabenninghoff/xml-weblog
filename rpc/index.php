@@ -1,11 +1,11 @@
 <?php
-// $Id: index.php,v 1.1 2003/11/23 02:30:30 loki Exp $
+// $Id: index.php,v 1.2 2004/04/30 21:24:20 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
 
 /*
- * Copyright (c) 2002, 2003 John Benninghoff <john@benninghoff.org>.
+ * Copyright (c) 2002 - 2004 John Benninghoff <john@benninghoff.org>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
