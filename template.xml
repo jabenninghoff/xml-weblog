@@ -1,45 +1,73 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: template.xml,v 1.4 2001/12/31 17:13:35 death Exp $ -->
-
+<!-- $Id: template.xml,v 1.5 2002/06/24 18:54:06 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
 <page>
+    <!-- (HTML) title -->
+    <title>page.title (generated)</title>
 
-    <!-- header: top of the page -->
-    <header>header goes here</header>
+    <!-- header: top of the page, with logo, slogan, etc.  -->
+    <header>
+        <name>site.name</name>
+        <slogan>site.slogan</slogan>
+        <logo>site.logo (image)</logo>
+        <!-- zero or more blocks -->
+        <block weight="0">
+            <title>block.title</title>
+            <content>block.content (XHMTL)</content>
+        </block> 
+    </header>
 
-    <!-- footer: bottom of page -->
-    <footer>footer goes here</footer>
+    <!-- footer: bottom of page, includes disclaimer -->
+    <footer>
+        <disclaimer>site.disclaimer</disclaimer>
+        <!-- zero or more blocks -->
+        <block weight="0">
+            <title>block.title</title>
+            <content>block.content (XHMTL)</content>
+        </block> 
+    </footer>
 
     <!--
-    block: basic unit of weblog. a block of space in left or right sidebar, or
-    in the main page area.
+        sidebar: either left- or right-aligned. contains 0 or more blocks.
+          multiple sidebars are allowed, however, normally there is only one
+          left and one right sidebar.
+     -->
+    <sidebar align="left">
 
-    attributes:
+        <!--
+        block: a block of text in the header, footer, or sidebar. May be static
+            or dynamic content (implemented on the back-end)
+    
+        attributes:
+    
+          weight: for determining placement on page. normally lower weighted
+              blocks appear at the top of the page, however, may appear in any
+              order in the XML document.
+        -->
+        <block weight="0">
+    	<!-- block title: name of block -->
+            <title>#PCDATA title goes here</title>
+    	<!-- block content -->
+            <content>XHTML content goes here</content>
+        </block>
 
-      weight: for determining placement on page. normally lower weighted blocks
-      appear at the top of the page, however may appear in any order in XML document.
+        <block weight="1">
+    	<!-- block title: name of block -->
+            <title>#PCDATA title goes here</title>
+    	<!-- block content -->
+            <content>XHTML content goes here</content>
+        </block>
 
-      class: left, right or main. Location of block in sidebar or in main section.
-    -->
-    <block weight="0" class="left">
+        <!-- ... additional blocks ... -->
 
-	<!-- block title: name of block -->
-        <title>#PCDATA title goes here</title>
+    </sidebar>
 
-	<!-- block content -->
-        <content>content goes here</content>
-
-    </block>
-
-    <!-- main block(s). Usually a single block; index page displays stories -->
-    <block class="main">
-        <title>home</title>
-
-        <!-- content: -->
-        <content object="" />
-
-    </block>
+    <!-- main: main section of document. index page contains articles. -->
+    <main>
+        <!-- 0 or more articles, default 10 most recent -->
+        <!-- article: -->
+    </main>
 
 </page>
