@@ -1,5 +1,5 @@
 <?php
-// $Id: datatype.php,v 1.4 2003/04/22 21:26:31 loki Exp $
+// $Id: datatype.php,v 1.5 2003/04/23 04:34:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog datatype definitions
@@ -96,6 +96,10 @@ class XWL_integer extends XWL_datatype
 class XWL_ID extends XWL_integer
 {
     var $sql_type = "int unsigned NOT NULL auto_increment";
+}
+
+class XWL_key extends XWL_integer
+{
 }
 
 class XWL_string extends XWL_datatype

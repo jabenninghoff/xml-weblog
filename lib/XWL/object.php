@@ -1,5 +1,5 @@
 <?php
-// $Id: object.php,v 1.2 2003/04/22 21:50:52 loki Exp $
+// $Id: object.php,v 1.3 2003/04/23 04:34:13 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-weblog objects (block, user, etc.)
@@ -129,12 +129,12 @@ class XWL_article extends XWL_object
     function XWL_article()
     {
         // _add_property($name, $datatype, $required)
-        // site -> site.id, topic -> topic.id, author -> user.id
+        // site -> site.id, topic -> topic.id, user -> user.id
         $this->_add_property("id", "XWL_ID", true);
-        $this->_add_property("site", "XWL_integer", true);
-        $this->_add_property("topic", "XWL_integer", true);
+        $this->_add_property("site", "XWL_key", true);
+        $this->_add_property("topic", "XWL_key", true);
         $this->_add_property("title", "XWL_string", true);
-        $this->_add_property("user", "XWL_integer", true);
+        $this->_add_property("user", "XWL_key", true);
         $this->_add_property("date", "XWL_date", true);
         $this->_add_property("leader", "XWL_XHTML_long", true);
         $this->_add_property("content", "XWL_XHTML_long", false);
