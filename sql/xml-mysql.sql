@@ -1,4 +1,4 @@
--- $Id: xml-mysql.sql,v 1.7 2002/10/17 05:03:08 loki Exp $
+-- $Id: xml-mysql.sql,v 1.8 2002/10/17 07:13:49 loki Exp $
 --
 -- XML MySQL database definitions / initial values
 
@@ -63,5 +63,5 @@ CREATE TABLE article (
 INSERT INTO article VALUES (1,1,1,'Some Mail Someone Sent Me','Loki','2002-10-16 12:00:00','<p>Here\'s some interesting email I got.</p>','<p>Blah blah blah blah blah. Blah. Blah Blah Blah. What else do you expect from this ?</p>','en');
 INSERT INTO blocks VALUES (1,0,'left',0,'News Sites','<a href=\"http://www.openbsd.org/\">OpenBSD Journal</a><br/>\r\n<a href=\"http://daily.daemonnews.org/\">daemonnews</a><br/>\r\n<a href=\"http://slashdot.org/\">Slashdot</a><br/>','','en');
 INSERT INTO blocks VALUES (2,1,'left',0,'Bogus Block','This block is <b>bogus!!</b>','','en');
-INSERT INTO site VALUES (1,'http://www.technomagik.net/private/xml-weblog/','XML-Weblog test site','We need a slogan !!','','Test site for XML-Weblog development (description)','<p><a href=\"http://www.google.com\">Search</a></p>','All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest (c) 2002 tm.net\r\n','<p>\r\n<a href=\"http://validator.w3.org/check?uri=http://blade.corp.isib.net/secure/xml/test/xslt_doc_test.php;ss=1\">\r\n<img src=\"http://www.w3.org/Icons/valid-xhtml10\" alt=\"Valid XHTML 1.0!\" height=\"31\" width=\"88\"/>\r\n</a>\r\n</p>','en');
+INSERT INTO site VALUES (1,'http://www.technomagik.net/private/xml-weblog/','XML-Weblog test site','We need a slogan !!','','Test site for XML-Weblog development (description)','<a href=\"http://www.google.com\">Search</a>','All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest (c) 2002 tm.net\r\n','<?code include=\"test.php\" ?>','en');
 INSERT INTO topic VALUES (1,'No Topic','Default (no topic)','');
