@@ -1,14 +1,10 @@
+<?php include_once "include/functions.inc.php"; ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<!-- $Id: template.php,v 1.1 2002/10/12 02:29:42 loki Exp $ -->
+<!-- $Id: template.php,v 1.2 2002/10/14 15:12:05 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
-<page>
-  <!-- active language (generated) -->
-  <language>x-klingon</language>
-
-  <!-- (HTML) title -->
-  <title>page title (generated)</title>
+<page lang="x-klingon" title="page title (generated)">
 
   <!-- header: top of the page, with logo, slogan, etc.  -->
   <header>
@@ -28,13 +24,13 @@
       sidebars are allowed, however, normally there is only one left and one
       right sidebar.
     -->
-  <sidebar align="left">
+  <sidebar align="left" index="0">
 
     <!--
       block: a block of text in the header, footer, or sidebar. May be static or
         dynamic content (implemented on the back-end with <include> tag)
       -->
-    <block>
+    <block index="0">
 
       <!-- block title: name of block -->
       <title>block.title</title>
@@ -43,7 +39,7 @@
       <content>block.content (XHTML+)</content>
     </block>
 
-    <block>
+    <block index="1">
       <title>block.title</title>
       <content>block.content (XHTML+)</content>
     </block>
@@ -80,6 +76,9 @@
   <!-- footer: bottom of page, includes disclaimer -->
   <footer>
     <disclaimer>site.disclaimer</disclaimer>
-    <content>site.footer_content (XHTML+,optional)</content>
+    <content>
+      site.footer_content (XHTML+,optional)
+      <?php validate_self(); ?>
+    </content>
   </footer>
 </page>
