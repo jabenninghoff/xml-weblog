@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.7 2002/10/24 20:23:50 loki Exp $
+// $Id: admin.xml.php,v 1.8 2002/10/24 20:27:51 loki Exp $
 
 require_once "include/config.inc.php";
 require_once "include/functions.inc.php";
@@ -34,7 +34,7 @@ function admin_input($name, $type, $value) {
     switch ($type) {
 
     case "ID":
-        echo "ID"; 
+        echo $value ? $value : "<i>next_id</i>"; 
         break;
 
     case "URI":
