@@ -1,4 +1,4 @@
--- $Id: sample-values.sql,v 1.35 2004/07/11 23:17:15 loki Exp $
+-- $Id: sample-values.sql,v 1.36 2004/07/12 04:58:09 loki Exp $
 --
 -- XML-weblog sample values
 --
@@ -41,7 +41,7 @@ INSERT INTO article VALUES (1,1,2,'Welcome to xml-weblog!',1,'2002-10-29 11:53:0
 
 INSERT INTO block VALUES (1,'left',1,1,'Main Menu','<a href=\"index.php\">Home</a><br class=\"br\"/>\r\n<a href=\"topic.php\">Topics</a><br class=\"br\"/>\r\n<a href=\"user.php\">Users</a>','','en');
 INSERT INTO block VALUES (2,'left',1,2,'sysblock','','archive','en');
-INSERT INTO block VALUES (3,'left',1,3,'News Links','<a href=\"http://www.deadly.org\">OpenBSD Journal</a><br class=\"br\"/>\r\n<a href=\"http://daily.daemonnews.org\">daemonnews</a><br class=\"br\"/>\r\n<a href=\"http://www.bsdtoday.com\">BSD Today</a><br class=\"br\"/>\r\n<a href=\"http://www.macosrumors.com\">MacOS Rumors</a><br class=\"br\"/>\r\n<a href=\"http://apple.slashdot.org\">Slashdot (Apple)</a><br class=\"br\"/>\r\n<a href=\"http://bsd.slashdot.org\">Slashdot (BSD)</a><br class=\"br\"/>\r\n<a href=\"http://yro.slashdot.org\">Slashdot (YRO)</a><br class=\"br\"/>\r\n<a href=\"http://slashdot.org\">Slashdot</a>\r\n','','en');
+INSERT INTO block VALUES (3,'left',1,3,'News Links','<a href=\"http://undeadly.org\">OpenBSD Journal</a><br class=\"br\"/>\r\n<a href=\"http://bsdnews.com\">daemonnews</a><br class=\"br\"/>\r\n<a href=\"http://www.macrumors.com\">Mac Rumors</a><br class=\"br\"/>\r\n<a href=\"http://apple.slashdot.org\">Slashdot (Apple)</a><br class=\"br\"/>\r\n<a href=\"http://bsd.slashdot.org\">Slashdot (BSD)</a><br class=\"br\"/>\r\n<a href=\"http://yro.slashdot.org\">Slashdot (YRO)</a><br class=\"br\"/>\r\n<a href=\"http://slashdot.org\">Slashdot</a>\r\n','','en');
 INSERT INTO block VALUES (4,'left',1,4,'sysblock','','user','en');
 INSERT INTO block VALUES (5,'left',1,5,'sysblock','','admin','en');
 
