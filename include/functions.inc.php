@@ -1,5 +1,5 @@
 <?php
-// $Id: functions.inc.php,v 1.18 2002/11/13 23:53:47 loki Exp $
+// $Id: functions.inc.php,v 1.19 2002/11/15 16:54:38 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -209,7 +209,7 @@ function valid_string_XHTML($str)
 
 function valid_XHTML_code($xhtml)
 {
-    $tags = "<a><b><i><s><span><div><pre><br><br/><img><p><code>";
+    $tags = "<a><b><i><s><span><pre><br><br/><img><p><code>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 
@@ -221,7 +221,7 @@ function valid_XHTML_fragment($xhtml)
 
 function valid_XHTML_long($xhtml)
 {
-    $tags = "<a><b><i><s><span><div><blockquote><table><tr><td><ul><ol><li><pre><br><br/><img><p>";
+    $tags = "<a><b><i><s><span><blockquote><table><tr><td><ul><ol><li><pre><br><br/><img><p>";
     return addslashes(strip_tags(safe_gpc_stripslashes($xhtml),$tags));
 }
 ?>
