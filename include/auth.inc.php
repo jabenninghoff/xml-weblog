@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.16 2003/12/01 00:26:43 loki Exp $
+// $Id: auth.inc.php,v 1.17 2003/12/01 01:21:46 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
@@ -52,6 +52,12 @@ if (isset($_SERVER['PHP_AUTH_USER']) && XWL_string::valid($_SERVER['PHP_AUTH_USE
     $_xwl_auth_user = false;
 }
 
+// set the always_login cookie (if it isn't there) unless we're logged out
+if ($_xwl_auth_user->property['always_login']->value && !$_COOKIE['always_login'] && !$_COOKIE['logout']) {
+    // set a cookie to expire in 90 days
+    setcookie('always_login', true, time()+60*60*24*90);
+}
+
 // private functions
 function _redirect_ssl()
 {
@@ -78,31 +84,18 @@ function xwl_auth_login()
 {
     global $_xwl_auth_user, $xwl_site_value_xml;
 
-    // see if the user explicity requested a login & there's no existing cookie
-    if (($_GET['login'] || $_POST['login']) && !$_COOKIE['always_login']) {
+    // see if the user explicity requested a login
+    if ($_GET['login'] || $_POST['login']) {
 
-        /*
-         * Some browsers (K-Meleon) only send credentials when asked, so to
-         * force them to give up the user & pass we set a cookie. While this
-         * does not violate rfc2617 (HTTP Authentication), all other browsers
-         * will send credentials every time if asked once, since it's more
-         * efficient that way. *sigh* This isn't too intrusive, since pretty
-         * much everyone silently accepts session cookies.
-         */
-        if ($_xwl_auth_user->property['always_login']->value) {
-            // set a cookie to expire in 90 days
-            setcookie('always_login', true, time()+60*60*24*90);
-        } else {
-            // set a session cookie
-            setcookie('login', true);
-        }
+        // set the ste to login
+        setcookie('login', true);
 
         return true;
     }
 
     // see if the user explicitly requested a logout
     if ($_GET['logout'] || $_POST['logout']) {     
-        // flush the login cookie & kill the login
+        // flush the login cookies & set the state to logout
         setcookie('login', false);
         setcookie('always_login', false);
         setcookie('logout', true);
@@ -112,14 +105,15 @@ function xwl_auth_login()
         exit;
     }
 
-    // this will be true (only) if the session cookie has been sent & user is not logged out.
-    return (($_COOKIE['login'] || $_COOKIE['always_login']) && !$_COOKIE['logout']);
+    // return true if a cookie is trying to log us in
+    return ($_COOKIE['login'] || $_COOKIE['always_login']);
 }
 
 function xwl_auth_user_authenticated()
 {
     global $_xwl_auth_user;
 
+    // don't authenticate if we're logged out
     if (!$_xwl_auth_user || $_COOKIE['logout']) return false;
 
     if (crypt($_SERVER['PHP_AUTH_PW'], $_xwl_auth_user->property['password']->value) != $_xwl_auth_user->property['password']->value) return false;
@@ -149,7 +143,7 @@ function xwl_auth_unauthorized($realm)
         _redirect_ssl();
     }
 
-    // flush any logout cookies
+    // if we failed a login, we are no longer logged out
     setcookie('logout', false);
 
     header('WWW-Authenticate: Basic realm="'.$realm.'"');
