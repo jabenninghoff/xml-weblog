@@ -1,5 +1,5 @@
 <?php
-// $Id: topic.xml.php,v 1.10 2003/10/22 21:44:36 loki Exp $
+// $Id: topic.xml.php,v 1.11 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -69,7 +69,7 @@ $id = new XWL_ID;
 $xwl_topic = $xwl_db->fetch_topics();
 
 // if no valid id, present topic list
-if (!$id->set_value($_GET['id'])) {
+if (!$id->set_value(XWL::magic_unslash($_GET['id']))) {
 
     echo "    <topiclist>\n";
     foreach ($xwl_topic as $topic) {

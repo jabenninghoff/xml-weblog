@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.25 2003/10/22 21:44:36 loki Exp $
+// $Id: index.xml.php,v 1.26 2003/11/29 07:19:40 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -54,10 +54,10 @@ if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
 
 // pre-fetch articles
 $start = new XWL_datenum;
-$start->set_value($_GET['start']);
+$start->set_value(XWL::magic_unslash($_GET['start']));
 
 $end = new XWL_datenum;
-$end->set_value($_GET['end']);
+$end->set_value(XWL::magic_unslash($_GET['end']));
 
 $xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit'], $start->value, $end->value);
 
