@@ -1,4 +1,4 @@
-<!-- $Id: basic_xhtml.xsl,v 1.8 2002/10/18 03:06:37 loki Exp $ -->
+<!-- $Id: basic_xhtml.xsl,v 1.9 2002/10/18 03:28:19 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -9,6 +9,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{@lang}" lang="{@lang}">
   <head>
     <title><xsl:value-of select="@title"/></title>
+    <style type="text/css">
+      p.center {text-align: center}
+    </style>
   </head>
   <body>
     <xsl:apply-templates select="header"/>
@@ -28,18 +31,20 @@
 </xsl:template>
 
 <xsl:template match="header">
-  <p><xsl:copy-of select="banner/text()|banner/*"/></p>
-  <h1>
-    <img src="{logo}" alt="{logo}"/>
-    <xsl:value-of select="name"/>
-  </h1>
-  <p>
-    <a href="{url}"><xsl:value-of select="url"/></a>:
-    <xsl:copy-of select="description/text()|description/*"/>
-  </p>
-  <p><xsl:copy-of select="slogan/text()|slogan/*"/></p>
-  <p><xsl:copy-of select="content/text()|content/*"/></p>
-  <p><xsl:copy-of select="message/text()|message/*"/></p>
+  <p class="center"><xsl:copy-of select="banner/text()|banner/*"/></p>
+  <table width="100%">
+    <tr>
+       <td><a href="index.php"><img src="{logo}" alt="{name}"/></a></td>
+       <td>
+         <xsl:copy-of select="description/text()|description/*"/><br/>
+         <xsl:copy-of select="content/text()|content/*"/><br/>
+       </td>
+    </tr>
+  </table>
+  <p class="center"><xsl:copy-of select="slogan/text()|slogan/*"/></p>
+  <hr/>
+  <p class="center"><xsl:copy-of select="message/text()|message/*"/></p>
+  <hr/>
 </xsl:template>
 
 <xsl:template match="footer">
