@@ -1,4 +1,4 @@
-/* $Id: sidebar_right.css,v 1.8 2002/11/14 04:55:07 loki Exp $ */
+/* $Id: sidebar_right.css,v 1.9 2002/11/14 05:02:32 loki Exp $ */
 
 div.sidebar-right {
     float: right;
@@ -7,12 +7,12 @@ div.sidebar-right {
 
 div.main {
     float: left;
-    margin-right: 10px;
+    margin-right: -10px;
 }
 
 /* IE hack -- this is not read by IE */
 body>div.main {
     float: none;
-    margin-left: 170px;
+    margin-right: 170px;
 }
 
