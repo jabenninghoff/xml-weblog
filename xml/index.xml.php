@@ -1,5 +1,5 @@
 <?php
-// $Id: index.xml.php,v 1.17 2003/04/21 20:54:12 loki Exp $
+// $Id: index.xml.php,v 1.18 2003/04/23 16:10:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,45 +36,55 @@
  *
  */
 
+require_once "XWL.php";
+require_once "include/site.php";
 require_once "include/article.inc.php";
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
 
+if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
+    // standalone
+    header('Content-Type: text/plain');
+}
+
+XWL::xml_declaration();
+
+echo "<page lang=\"en\" title=\"{$xwl_site_value_xml['name']}\">\n\n";
+
+require "xml/header.xml.php";
+echo "\n";
+
+require "xml/sidebar.xml.php";
+echo "\n";
+
+echo "  <!-- main: main section of document. index page contains articles. -->\n";
+echo "    <main>\n";
+
+/*
 // build variables
 $xwl_article_start = xwl_valid_datenum($_GET['start']);
 $xwl_article_end = xwl_valid_datenum($_GET['end']);
 
-$site = xwl_db_fetch_site(base_url());
-$block = xwl_db_fetch_block();
-$message = xwl_db_fetch_message();
-$topic = xwl_db_fetch_topic();
 $article = xwl_db_fetch_article($site['article_limit'],$xwl_article_start,$xwl_article_end);
+*/
 
-if (basename($_SERVER['PHP_SELF']) == "index.xml.php") {
-    // standalone
-    header('Content-Type: text/xml');
-}
+// fetch articles
+$xwl_article = $xwl_db->fetch_articles($xwl_site_value_xml['article_limit']);
 
-xml_declaration();
-?>
-<!-- XML-weblog front page -->
-<page lang="en" title="<?php echo $site['name']; ?>">
-
-<?php require "xml/header.xml.php"; ?>
-
-<?php require "xml/sidebar.xml.php"; ?>
-
-  <!-- main: main section of document. index page contains articles. -->
-  <main>
-    <!-- 0 or more articles, default 10 most recent. topmost is index 0 -->
-<?php
+// display articles
 $i = 0;
-while ($article[$i]) {
-    display_article($article[$i], $i++, "", $topic);
+while ($xwl_article[$i]) {
+
+    // convert to _xml values for convenience
+    foreach ($xwl_article[$i]->property as $key => $value) {
+        $xwl_article_value_xml[$key] = $value->display_XML();
+    }
+
+    xwl_display_article($xwl_article_value_xml, $i++, "");
 }
+
+echo "    </main>\n";
+
+require "xml/footer.xml.php";
+echo "\n";
+
+echo "</page>\n";
 ?>
-  </main>
-
-<?php require "xml/footer.xml.php"; ?>
-
-</page>

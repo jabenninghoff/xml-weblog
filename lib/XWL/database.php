@@ -1,5 +1,5 @@
 <?php
-// $Id: database.php,v 1.5 2003/04/23 15:54:43 loki Exp $
+// $Id: database.php,v 1.6 2003/04/23 16:10:27 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // database functions
@@ -97,6 +97,16 @@ class XWL_database
 
         return $this->_fetch_single("XWL_article", $query);
     }
+
+    function fetch_articles($limit)
+    {
+        if (!$limit || $limit <= 0) $limit = 1;
+
+        // fetch top ($limit) articles
+        $query = "select article.*, topic.name as topic_name, topic.icon as topic_icon, user.userid as user_name from article, topic, user where article.topic = topic.id and article.user = user.id order by article.date desc limit $limit";
+
+        return $this->_fetch_multiple("XWL_article", $query);
+    }
 }
 
 // unimplemented functions
@@ -104,10 +114,6 @@ class XWL_database
 /*
 function xwl_db_fetch_article($limit, $start, $end)
 {
-    global $xwl_db, $xwl_default_article_limit;
-
-    if (!$limit || $limit <= 0) $limit = $xwl_default_article_limit;
-
     if ($start) {
         $query = "select article.*,user.userid as author from article,user where article.user=user.id and article.date <= $start order by article.date desc limit $limit";
         return $xwl_db->getAll($query, DB_FETCHMODE_ASSOC);
