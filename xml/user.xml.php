@@ -1,5 +1,5 @@
 <?php
-// $Id: user.xml.php,v 1.3 2003/04/21 20:54:12 loki Exp $
+// $Id: user.xml.php,v 1.4 2003/04/22 22:59:36 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 /*
@@ -36,36 +36,35 @@
  *
  */
 
-require_once "include/article.inc.php";
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "XWL.php";
+require_once "include/site.php";
 
 if (basename($_SERVER['PHP_SELF']) == "user.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 }
 
-// build variables
-$site = xwl_db_fetch_site(base_url());
-$block = xwl_db_fetch_block();
+XWL::xml_declaration();
 
-$id = xwl_valid_ID($_GET['id']);
-$topic = xwl_db_fetch_topic();
-$article = xwl_db_fetch_article_single($id);
+echo "<page lang=\"en\" title=\"{$xwl_site_value_xml['name']}\">\n\n";
 
-xml_declaration();
-?>
-<page lang="en" title="<?php echo $site['name']; ?>">
+require "xml/header.xml.php";
+echo "\n";
 
-<?php require "xml/header.xml.php"; ?>
+require "xml/sidebar.xml.php";
+echo "\n";
 
-<?php require "xml/sidebar.xml.php"; ?>
-
+echo <<< END
   <!-- main: main section of document. index page contains articles. -->
   <main>
 <p>Not implemented.</p>
   </main>
 
-<?php require "xml/footer.xml.php"; ?>
 
-</page>
+END;
+
+require "xml/footer.xml.php";
+echo "\n";
+
+echo "</page>\n";
+?>
