@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.1 2002/10/31 00:41:29 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.2 2002/10/31 09:25:13 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -22,12 +22,12 @@
       <xsl:apply-templates select="header"/>
     </div>
     <xsl:if test="sidebar[@align='left']">
-      <div class="sidebar_left">
+      <div class="sidebar-left">
         <xsl:apply-templates select="sidebar[@align='left']"/>
       </div>
     </xsl:if>
     <xsl:if test="sidebar[@align='right']">
-      <div class="sidebar_right">
+      <div class="sidebar-right">
         <xsl:apply-templates select="sidebar[@align='right']"/>
       </div>
     </xsl:if>
@@ -74,7 +74,7 @@
 
 <xsl:template match="footer">
   <xsl:apply-templates select="content"/>
-  <span class="small"><p><xsl:copy-of select="disclaimer/*|disclaimer/text()"/></p></span>
+  <p><span class="small"><xsl:copy-of select="disclaimer/*|disclaimer/text()"/></span></p>
 </xsl:template>
 
 <xsl:template match="block">
@@ -87,9 +87,11 @@
 <xsl:template match="main">
   <xsl:for-each select="article">
     <h3><xsl:value-of select="title"/></h3>
-    <span class="topic_icon">
-      <p><img src="{topic/icon}" alt="{topic/name}"/></p>
-    </span>
+    <p>
+      <span class="topic-icon">
+        <img src="{topic/icon}" alt="{topic/name}"/>
+      </span>
+    </p>
     <xsl:copy-of select="leader/*"/>
     <xsl:if test="@content='show'">
       <xsl:copy-of select="content/*"/>
