@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.27 2004/07/11 23:17:15 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.28 2004/09/16 18:42:26 loki Exp $ -->
 <!-- vim: set expandtab tabstop=2 softtabstop=2 shiftwidth=2: -->
 
 <!--
@@ -52,7 +52,7 @@
 <html xml:lang="{@lang}" lang="{@lang}">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <title><xsl:value-of select="@title"/></title>
+    <link rel="alternate" type="application/xml" title="RSS" href="rss.php"/>
     <link rel="stylesheet" href="style/xhtml_css2/basic.css" type="text/css"/>
     <style type="text/css">@import "style/xhtml_css2/advanced.css";</style>
     <xsl:if test="sidebar[@align='left']">
@@ -61,6 +61,7 @@
     <xsl:if test="sidebar[@align='right']">
       <style type="text/css">@import "style/xhtml_css2/sidebar_right.css";</style>
     </xsl:if>
+    <title><xsl:value-of select="@title"/></title>
   </head>
   <body>
     <xsl:comment> Only non-standards-compliant browsers should see the following message </xsl:comment>
