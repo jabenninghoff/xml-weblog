@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.9 2003/04/16 03:58:20 loki Exp $
+// $Id: sidebar.xml.php,v 1.10 2003/04/17 17:51:21 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -69,7 +69,7 @@ while ($block[$i]) {
             echo "    </block>\n";
         } else {
             // run sysblock code
-            include "block/{$block[$i]['sysblock']}.php";
+            include "block/".valid_filename($block[$i]['sysblock'].".php");
         }
         $i++;
     }
