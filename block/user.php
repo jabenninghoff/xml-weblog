@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.4 2003/04/03 17:30:34 loki Exp $
+// $Id: user.php,v 1.1 2003/04/03 17:30:34 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -35,58 +35,23 @@
  *
  */
 
-require_once "include/db.inc.php";
-require_once "include/functions.inc.php";
+require_once "include/auth.inc.php";
 
-if (isset($_SERVER['PHP_AUTH_USER'])) {
-    $auth_user = fetch_user(safe_gpc_addslashes($_SERVER['PHP_AUTH_USER']));
+// only display for authenticated users
+if (!user_authenticated()) exit;
+
+$user = fetch_auth_user();
+
+echo "<block>\n";
+echo "  <title>$user[userid]'s Menu</title>\n";
+echo "  <content>\n";
+
+if ($user['block']) {
+    echo $user['block'], "\n";
 } else {
-    $auth_user = false;
+    echo "<a href=\"user.php\">customize</a> your personal menu\n";
 }
 
-function user_authenticated()
-{
-global $auth_user;
-
-    if (!$auth_user) return false;
-    if (crypt($_SERVER['PHP_AUTH_PW'], $auth_user['password'])
-        != $auth_user['password']) return false;
-
-    return true;
-}
-
-function user_authorized($priv)
-{
-global $auth_user;
-
-    if (!$auth_user) return false;
-    if (!$auth_user[$priv]) return false;
-
-    return true;
-}
-
-function fetch_auth_user()
-{
-global $auth_user;
-
-    return $auth_user;
-}
-
-function unauthorized($realm)
-{
-    header('WWW-Authenticate: Basic realm="'.$realm.'"');
-    header('HTTP/1.0 401 Unauthorized');
-?>
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<HTML><HEAD>
-<TITLE>401 Authorization Required</TITLE>
-</HEAD><BODY>
-<H1>401 Authorization Required</H1>
-<P>This server could not verify that you are authorized to access the document
-requested. Either you supplied the wrong credentials (e.g., bad password), or
-your browser doesn't understand how to supply the credentials required.</P>
-</BODY></HTML>
-<?php
-    exit;
-}
+echo "  </content>\n";
+echo "</block>\n";
 ?>
