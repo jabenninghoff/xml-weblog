@@ -1,5 +1,5 @@
 <?php
-// $Id: sidebar.xml.php,v 1.7 2002/11/01 17:58:50 loki Exp $
+// $Id: sidebar.xml.php,v 1.8 2002/11/24 21:54:53 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -61,12 +61,17 @@ while ($block[$i]) {
     // this will run at least once, so i will be incremented
     while ($block[$i]['sidebar_align'] == $align &&
           $block[$i]['sidebar_index'] == $index) {
-    echo '    <block index="', $block[$i]['block_index'], '">', "\n";
-    echo "      <title>{$block[$i]['title']}</title>\n";
-    echo "      <content>\n";
-    echo trim($block[$i]['content']), "\n";
-    echo "      </content>\n";
-    echo "    </block>\n";
+        if (!$block[$i]['sysblock']) {
+            echo '    <block index="', $block[$i]['block_index'], '">', "\n";
+            echo "      <title>{$block[$i]['title']}</title>\n";
+            echo "      <content>\n";
+            echo trim($block[$i]['content']), "\n";
+            echo "      </content>\n";
+            echo "    </block>\n";
+        } else {
+            // run sysblock code
+            include "block/{$block[$i]['sysblock']}.php";
+        }
         $i++;
     }
     echo "  </sidebar>\n";
