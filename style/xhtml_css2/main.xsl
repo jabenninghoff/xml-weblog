@@ -1,4 +1,4 @@
-<!-- $Id: main.xsl,v 1.2 2002/10/31 09:25:13 loki Exp $ -->
+<!-- $Id: main.xsl,v 1.3 2002/11/01 15:27:23 loki Exp $ -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
@@ -34,7 +34,6 @@
     <div class="main">
       <xsl:apply-templates select="main"/>
     </div>
-    <hr/>
     <div class="footer">
       <xsl:apply-templates select="footer"/>
     </div>
@@ -68,8 +67,7 @@
 </xsl:template>
 
 <xsl:template match="message">
-  <div class="center"><p><xsl:copy-of select="./text()|./*"/></p></div>
-  <hr/>
+  <div class="message"><p><xsl:copy-of select="./text()|./*"/></p></div>
 </xsl:template>
 
 <xsl:template match="footer">
@@ -95,18 +93,19 @@
     <xsl:copy-of select="leader/*"/>
     <xsl:if test="@content='show'">
       <xsl:copy-of select="content/*"/>
-      <hr/>
+      <p class="hrule"/>
     </xsl:if>
-      <p>
-        posted by <b><xsl:value-of select="author"/></b> on
-        <xsl:value-of select="date"/>
-        <xsl:if test="not(@content='show') and normalize-space(content)">
-          <b><a href="{url}">Read More...</a></b>
-        </xsl:if>
-      </p>
-    <xsl:if test="not(@content='show') and position()!=last()">
-      <xsl:comment><xsl:value-of select="last()"/></xsl:comment>
-      <hr/>
+      <div class="byline">
+        <p>
+          posted by <b><xsl:value-of select="author"/></b> on
+          <xsl:value-of select="date"/>
+          <xsl:if test="not(@content='show') and normalize-space(content)">
+            <b><a href="{url}">Read More...</a></b>
+          </xsl:if>
+        </p>
+      </div>
+      <xsl:if test="not(@content='show') and position()!=last()">
+      <p class="hrule"/>
     </xsl:if>
   </xsl:for-each>
   <xsl:apply-templates select="admin"/>
