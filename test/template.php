@@ -1,6 +1,6 @@
-<?php require_once "functions.inc.php"; ?>
+<?php require_once "include/functions.inc.php"; ?>
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<!-- $Id: template.php,v 1.5 2002/10/17 05:01:43 loki Exp $ -->
+<!-- $Id: template.php,v 1.6 2002/10/17 05:45:33 loki Exp $ -->
 <!-- XML weblog template/test page -->
 
 <!-- page: defines a single weblog "page" -->
