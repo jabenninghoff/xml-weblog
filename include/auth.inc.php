@@ -1,5 +1,5 @@
 <?php
-// $Id: auth.inc.php,v 1.15 2003/11/30 23:32:15 loki Exp $
+// $Id: auth.inc.php,v 1.16 2003/12/01 00:26:43 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // authentication & authorization module
@@ -79,7 +79,7 @@ function xwl_auth_login()
     global $_xwl_auth_user, $xwl_site_value_xml;
 
     // see if the user explicity requested a login & there's no existing cookie
-    if (($_GET['login'] || $_POST['login'] || $_COOKIE['login']) && !$_COOKIE['always_login']) {
+    if (($_GET['login'] || $_POST['login']) && !$_COOKIE['always_login']) {
 
         /*
          * Some browsers (K-Meleon) only send credentials when asked, so to
