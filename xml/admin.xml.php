@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.xml.php,v 1.19 2002/11/01 17:58:50 loki Exp $
+// $Id: admin.xml.php,v 1.20 2003/04/04 18:19:12 loki Exp $
 
 /*
  * Copyright (c) 2002, John Benninghoff <john@benninghoff.org>.
@@ -278,7 +278,7 @@ echo "          </table>\n";
 
 function display_form()
 {
-global $type,$admin_display;
+global $type,$admin_display,$page;
 
 // display variables
 $get_mode = $_GET['mode'];
@@ -305,9 +305,9 @@ if ($get_mode == "create") {
                     htmlspecialchars($obj[$s['property']]), "</property>\n";
             }
         }
-    echo "        <property><a href=\"?type=$get_type&amp;mode=edit&amp;id=",
+    echo "        <property><a href=\"$page?type=$get_type&amp;mode=edit&amp;id=",
         $obj['id'], "\">edit</a></property>\n";
-    echo "        <property><a href=\"?type=$get_type&amp;mode=delete&amp;id=",
+    echo "        <property><a href=\"$page?type=$get_type&amp;mode=delete&amp;id=",
         $obj['id'], "\">delete</a></property>\n";
         echo "      </object>\n";
     }
@@ -447,7 +447,8 @@ admin_results($object, $schema);
 echo "      </content>\n";
 }
 
-if (basename($_SERVER['PHP_SELF']) == "admin.xml.php") {
+$page = basename($_SERVER['PHP_SELF']);
+if ($page  == "admin.xml.php") {
     // standalone
     header('Content-Type: text/xml');
 
@@ -479,7 +480,7 @@ xml_declaration();
 <?php
 // create top menu
 foreach ($type as $item) {
-    echo "      <menu link=\"?type=$item\">",ucfirst($item."s"),"</menu>\n";
+    echo "      <menu link=\"$page?type=$item\">",ucfirst($item."s"),"</menu>\n";
 }
 if (isset($_POST['submit'])) {
     process_form();
