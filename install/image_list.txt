@@ -2,5 +2,6 @@
 ./image/mysql_pb.png
 ./image/openbsd_pb.png
 ./image/php_pb.png
+./image/valid-css.png
 ./image/valid-xhtml10.png
 ./image/xml-weblog-logo.png

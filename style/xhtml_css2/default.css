@@ -1,15 +1,13 @@
-/* $Id: default.css,v 1.1 2002/10/31 00:41:29 loki Exp $ */
+/* $Id: default.css,v 1.2 2002/10/31 09:25:13 loki Exp $ */
 
 body {
-    font: helvetica, sans-serif;
+    font-family: helvetica, sans-serif;
     font: 10pt arial, sans-serif;
     font: 10pt verdana, sans-serif;
-    right-margin: 0.5em;
-    left-margin: 0.5em;
 }
 
 table {
-    font: helvetica, sans-serif;
+    font-family: helvetica, sans-serif;
     font: 10pt arial, sans-serif;
     font: 10pt verdana, sans-serif;
 }
@@ -24,7 +22,7 @@ span.small {
 
 a.img {
     text-decoration: none;
-    word-spacing: 1em;
+    word-spacing: 0.5em;
 }
 
 img {
@@ -39,7 +37,7 @@ div.footer {
     text-align: center;
 }
 
-span.topic_icon {
+span.topic-icon {
     float: right;
     margin-right: 1em;
 }
