@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.3 2004/05/01 07:15:31 loki Exp $
+// $Id: index.php,v 1.4 2004/05/01 19:24:23 loki Exp $
 // vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
 
 // xml-rpc interface
@@ -99,11 +99,51 @@ function blogger_getRecentPosts($params) {
 // blogger.deletePost (appkey, postId, username, password, publish) returns true
 
 
+$metaWeblog = array(
+    "getRecentPosts"
+);
+
 // metaWeblog.newPost
 // metaWeblog.editPost
 // metaWeblog.getCategories
 // metaWeblog.getPost
-// metaWeblog.getRecentPosts
+
+// metaWeblog.getRecentPosts (blogid, username, password, numberOfPosts)
+function metaWeblog_getRecentPosts($params) {
+
+    global $xwl_db, $xwl_site_value_xml, $xmlrpcerruser;
+    $resp_array = array();
+
+    $username = $params->getParam(1);
+    $password = $params->getParam(2);
+    if (!rpc_auth($username->scalarval(), $password->scalarval())) {
+        // user error 1
+        return new XML_RPC_Response(0, $xmlrpcerruser+1, "authorization failed: bad username/password.");
+    }
+
+    $numberOfPosts = $params->getParam(3);
+    $num = $numberOfPosts->scalarval();
+
+    $xwl_article = $xwl_db->fetch_articles($num ? $num : $xwl_site_value_xml['article_limit']);
+
+    for ($i=0; $xwl_article[$i]; $i++) {
+        $id = $xwl_article[$i]->property['id']->value;
+        $link = $xwl_site_value_xml['url']."article.php?id=$id";
+        $resp_struct = array(
+            "userid" => new XML_RPC_Value($xwl_article[$i]->property['user_name']->value),
+            "dateCreated" => new XML_RPC_Value($xwl_article[$i]->property['date']->iso8601_date(), "dateTime.iso8601"),
+            "description" => new XML_RPC_Value($xwl_article[$i]->property['leader']->value),
+            "postid" => new XML_RPC_Value($id),
+            "title" => new XML_RPC_Value($xwl_article[$i]->property['title']->value),
+            "link" => new XML_RPC_Value($link),
+            "permaLink" => new XML_RPC_Value($link)
+        );
+
+        $resp_array[$i] = new XML_RPC_Value($resp_struct, "struct");
+    }
+
+    return new XML_RPC_Response(new XML_RPC_Value($resp_array, "array"));
+}
 
 
 // build the server
