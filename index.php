@@ -1,5 +1,5 @@
 <?php
-// $Id: index.php,v 1.1 2002/10/16 19:32:30 loki Exp $
+// $Id: index.php,v 1.2 2002/10/16 19:33:00 loki Exp $
 // front page renderer
 
 // includes
@@ -7,7 +7,7 @@ require_once "include/functions.inc.php";
 
 // get php-formatted xml document
 ob_start();
-require "xml/index_xml.php";
+require "xml/index.xml.php";
 $xml = ob_get_contents();
 ob_end_clean();
 
