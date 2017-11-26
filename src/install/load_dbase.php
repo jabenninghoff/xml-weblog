@@ -40,8 +40,8 @@
 
 header('Content-Type: text/plain');
 
-require_once "include/config.inc.php";
-require_once "lib/XWL.php";
+require_once "../include/config.inc.php";
+require_once "../lib/XWL.php";
 require_once "DB.php";
 
 $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
@@ -64,7 +64,7 @@ foreach ($xwl_object_class as $class) {
         if ($prop->sql_type) echo "  $name {$prop->sql_type},\n";
     }
     echo "  PRIMARY KEY (id)\n";
-    echo ") TYPE=MyISAM;\n\n";
+    echo ") ENGINE=MyISAM;\n\n";
 }
 
 include "./sample-values.sql";
