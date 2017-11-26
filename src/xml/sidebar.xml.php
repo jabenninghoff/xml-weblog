@@ -38,7 +38,7 @@
  *
  */
 
-require_once "XWL.php";
+require_once "lib/XWL.php";
 require_once "include/site.php";
 
 if (basename($_SERVER['PHP_SELF']) == "sidebar.xml.php") {

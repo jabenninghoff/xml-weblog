@@ -41,7 +41,7 @@
 header('Content-Type: text/plain');
 
 require_once "include/config.inc.php";
-require_once "XWL.php";
+require_once "lib/XWL.php";
 require_once "DB.php";
 
 $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);

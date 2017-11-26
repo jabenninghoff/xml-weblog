@@ -38,7 +38,7 @@
  *
  */
 
-require_once "XWL.php";
+require_once "lib/XWL.php";
 require_once "include/site.php";
 require_once "include/article.inc.php";
 require_once "include/auth.inc.php";
