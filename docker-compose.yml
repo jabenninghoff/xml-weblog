@@ -12,7 +12,7 @@ services:
       - ./src:/var/lib/nginx/html:ro
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
   php:
-    image: php:5-fpm-alpine
+    image: jbenninghoff/php-xml-weblog
     volumes:
       - ./src:/var/lib/nginx/html:ro
   mysql:
