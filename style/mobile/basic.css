@@ -1,0 +1,39 @@
+/* $Id: basic.css,v 1.1 2017/11/26 16:56:04 agamemnon Exp $ */
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
+
+/* basic CSS1 support */
+body {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: small;
+}
+
+td {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: small;
+}
+
+img {
+    border-width: 0;
+}
+
+h3 {
+    font-size: medium;
+}
+
+pre {
+    font-size: medium;
+}
+
+ol li {
+    margin-bottom: 1em;
+}
+
+/* variants */
+a.img {
+    text-decoration: none;
+    border: none;
+}
+
+span.small {
+    font-size: x-small;
+}
