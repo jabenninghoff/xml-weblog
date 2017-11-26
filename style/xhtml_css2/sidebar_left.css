@@ -1,11 +1,11 @@
-/* $Id: sidebar_left.css,v 1.12 2003/04/21 20:54:12 loki Exp $ */
+/* $Id: sidebar_left.css,v 1.13 2017/11/26 15:54:14 agamemnon Exp $ */
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 div.sidebar-left {
     float: left;
-    width: 160px;
+    width: 165px;
 }
 
 div.main {
-    margin-left: 170px;
+    margin-left: 175px;
 }
