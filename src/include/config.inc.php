@@ -38,6 +38,9 @@
  *
  */
 
+// php settings
+date_default_timezone_set('UTC'); // set UTC
+
 // database configuration
 $xwl_db_type = "mysql";         // currently, only mysql is supported
 $xwl_db_server = "127.0.0.1";
