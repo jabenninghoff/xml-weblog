@@ -57,7 +57,7 @@
 
 <xsl:template match="header">
   <p>
-    <a href="avantgo.php"><img src="{logo}" alt="{name}"/></a><br/>
+    <a href="avantgo.php"><img src="assets/avantlogo.gif" alt="{name}"/></a><br/>
     <xsl:copy-of select="slogan/text()|slogan/*"/><br/>
     <xsl:copy-of select="content/p/*"/>
   </p>
