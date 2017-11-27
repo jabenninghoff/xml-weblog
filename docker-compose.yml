@@ -15,13 +15,16 @@ services:
   php:
     image: jbenninghoff/php-xml-weblog
     environment:
-      MYSQL_ROOT_PASSWORD: $XWL_MYSQL_PASSWORD
+      MYSQL_PASSWORD: $XWL_MYSQL_PASSWORD
     volumes:
       - ./src:/var/lib/nginx/html:ro
   mysql:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: $XWL_MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: $XWL_MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: xml_weblog
+      MYSQL_USER: weblog
+      MYSQL_PASSWORD: $XWL_MYSQL_PASSWORD
     volumes:
       - ./data/mysql:/var/lib/mysql
 

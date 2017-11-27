@@ -47,12 +47,15 @@ require_once "DB.php";
 $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
 
 if (DB::isError($db)) {
-    $link = mysql_pconnect($xwl_db_server, $xwl_db_user, $xwl_db_password) or die("Error: couldn't connect!\n");
-    mysql_query("CREATE DATABASE $xwl_db_database") or die("Error: couldn't create database!\n");
-    $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
-    if (DB::isError($db)) die("Error: WTF Happened ?\n");
-    $db->query("SET SQL_MODE = '';") or die ("Error: couldn't set SQL_MODE!\n"); // workaround for strict SQL modes
-} else die("Error: database already exists. not installing.\n");
+    die("Error: database doesn't exist!\n");
+} else {
+    $res =& $db->query("SHOW TABLES");
+    if (PEAR::isError($res)) die($res->getMessage());
+    if ($res->numRows() != 0) die("Error: database tables already exist!\n");
+}
+
+$res =& $db->query("SET SQL_MODE = ''"); // workaround for strict SQL modes
+if (PEAR::isError($res)) die ("Error: couldn't set SQL_MODE!\n");
 
 ob_start();
 
