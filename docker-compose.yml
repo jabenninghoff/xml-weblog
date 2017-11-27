@@ -10,6 +10,7 @@ services:
       - "8080:80"
     volumes:
       - ./src:/var/lib/nginx/html:ro
+      - ./data/assets:/var/lib/nginx/assets:ro
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
   php:
     image: jbenninghoff/php-xml-weblog
