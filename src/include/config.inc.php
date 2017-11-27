@@ -45,7 +45,7 @@ date_default_timezone_set('UTC'); // set UTC
 $xwl_db_type = "mysql";         // currently, only mysql is supported
 $xwl_db_server = "mysql";
 $xwl_db_user = "root";
-$xwl_db_password = "mypassword";
+$xwl_db_password = $_ENV["MYSQL_ROOT_PASSWORD"];
 $xwl_db_database = "xml_weblog";
 
 // global defaults
