@@ -1,7 +1,7 @@
 # xml-weblog
 An XSLT based weblog engine written in PHP
 
-_From the introductory article, ca. 2004:_
+_From the introductory article, ca. 2002:_
 
 Welcome to xml-weblog, the first fully buzzword-compliant weblog/portal engine.
 
