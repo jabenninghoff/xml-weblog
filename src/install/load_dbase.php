@@ -51,6 +51,7 @@ if (DB::isError($db)) {
     mysql_query("CREATE DATABASE $xwl_db_database") or die("Error: couldn't create database!\n");
     $db = DB::connect("$xwl_db_type://$xwl_db_user:$xwl_db_password@$xwl_db_server/$xwl_db_database", true);
     if (DB::isError($db)) die("Error: WTF Happened ?\n");
+    $db->query("SET SQL_MODE = '';") or die ("Error: couldn't set SQL_MODE!\n"); // workaround for strict SQL modes
 } else die("Error: database already exists. not installing.\n");
 
 ob_start();
