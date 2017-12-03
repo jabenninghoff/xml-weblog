@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
-#      - 443:443
+      - 443:443
     networks:
       - proxy
     volumes:
@@ -14,7 +14,7 @@ services:
       - ./data/traefik.toml:/traefik.toml:ro
       - ./data/acme.json:/acme.json
     labels:
-      - traefik.frontend.rule=Host:traefik.technomagik.net
+      - traefik.frontend.rule=Host:$TRAEFIK_HOST
       - traefik.port=8080
       - traefik.enable=true
 
