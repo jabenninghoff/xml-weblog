@@ -17,7 +17,7 @@ Quickstart instructions to get an instance up & running. Assumes DNS or `dnsmasq
 Start the [traefik](https://traefik.io) reverse proxy using the `init.sh` script:
 ```sh
 cd docker/traefik
-cp template.env .env && vim .env # optional
+cp -i template.env .env && vim .env # optional
 sh init.sh
 docker-compose up -d
 ```
@@ -25,7 +25,7 @@ docker-compose up -d
 Start the applicaiton and load the default database:
 ```sh
 cd ../..
-cp template.env .env && vim .env
+cp -i template.env .env && vim .env
 docker-compose up -d
 lynx http://xml-weblog.test/install/load_dbase.php
 ```
