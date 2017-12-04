@@ -88,7 +88,7 @@ class XWL
 
     function base_url()
     {
-        $url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+        $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
         return substr($url,0,strrpos($url,"/")+1);
     }

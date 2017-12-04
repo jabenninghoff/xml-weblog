@@ -1,7 +1,7 @@
 <?php
 // W3C valid XTML 1.0 logo/link
 
-$uri = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+$uri = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 if ($_SERVER['QUERY_STRING']) $uri .= "?".$_SERVER['QUERY_STRING'];
 $uri = rawurlencode($uri);
 

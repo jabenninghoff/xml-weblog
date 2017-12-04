@@ -1,7 +1,7 @@
 <?php
 // archive.org feed validator logo/link
 
-$uri = "http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+$uri = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $uri = preg_replace("/[^\/]+$/","rss.php", $uri);
 
 echo '<a class="img" href="http://feeds.archive.org/validator/check.cgi?url=',
