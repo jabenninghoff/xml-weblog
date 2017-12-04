@@ -36,23 +36,6 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
 
-  # temporarily include phpmyadmin for testing
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - mysql
-    networks:
-      - proxy
-      - default
-    environment:
-      # PMA_HOST defaults to 'db'
-      PMA_HOST: mysql
-    labels:
-      - traefik.docker.network=proxy
-      - traefik.frontend.rule=Host:$XWL_PMA_HOST
-      - traefik.port=80
-      - traefik.enable=true
-
 networks:
   proxy:
     external: true
