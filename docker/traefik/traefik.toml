@@ -10,7 +10,4 @@ address = ":8080"
   users = ["admin:my-encrypted-htpasswd"]
 
 [docker]
-endpoint = "unix:///var/run/docker.sock"
-domain = "technomagik.net"
-watch = true
 exposedbydefault = false
