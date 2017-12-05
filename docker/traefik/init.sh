@@ -22,4 +22,4 @@ PASSWD=`htpasswd -nBC 10 admin`
 cat traefik.toml | sed "s!admin:my-encrypted-htpasswd!$PASSWD!" >./data/traefik.toml
 touch ./data/acme.json
 chmod 600 ./data/acme.json
-docker network create -o "com.docker.network.bridge.host_binding_ipv4"="$HOST_BIND_IP" proxy
+docker network create -o "com.docker.network.bridge.host_binding_ipv4"="$HOST_BIND_IP" public
