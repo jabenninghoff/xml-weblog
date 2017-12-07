@@ -76,7 +76,7 @@ function _redirect_ssl()
 
 // SSL (oops) check
 if (isset($_SERVER['PHP_AUTH_PW']) && !$_SERVER['HTTPS']) {
-    _redirect_ssl();
+    //_redirect_ssl();
 }
 
 // public functions
@@ -140,7 +140,7 @@ function xwl_auth_unauthorized($realm)
 {
     if (!$_SERVER['HTTPS']) {
         // redirect to ssl page before auth failure so browser won't send cleartext password
-        _redirect_ssl();
+        //_redirect_ssl();
     }
 
     // if we failed a login, we are no longer logged out
