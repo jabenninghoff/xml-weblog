@@ -15,7 +15,7 @@ address = ":8080"
   users = ["admin:my-encrypted-htpasswd"]
 
 [acme]
-email = "admin@example.com"
+email = "my-email"
 storage = "acme.json"
 entryPoint = "https"
 onHostRule = true
