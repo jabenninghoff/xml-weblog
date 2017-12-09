@@ -1,0 +1,60 @@
+"GET / HTTP/1\.[01]"
+"GET /rss\.php HTTP/1\.[01]"
+"(GET|HEAD) /robots\.txt HTTP/1\.[01]"
+"GET /favicon\.ico HTTP/1\.[01]"
+"GET /article\.php HTTP/1\.[01]"
+"GET /article\.php\?id=[0-9]* HTTP/1\.[01]"
+"GET /index\.php HTTP/1\.[01]"
+"GET /index\.php\?start=[0-9]* HTTP/1\.[01]"
+"GET /index\.php\?end=[0-9]* HTTP/1\.[01]"
+"GET /topic\.php HTTP/1\.[01]"
+"GET /topic\.php\?id=[0-9]* HTTP/1\.[01]"
+"GET /user\.php HTTP/1\.[01]"
+"GET /user\.php\?mode=new HTTP/1\.[01]"
+"(GET|HEAD) /images/apache_pb\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/mysql_pb\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/php_pb\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/valid-css\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/valid-rss\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/valid-xhtml10\.gif HTTP/1\.[01]"
+"(GET|HEAD) /images/xml-weblog-logo\.gif HTTP/1\.[01]"
+"GET /style/xhtml_css2/basic\.css HTTP/1\.[01]"
+"GET /style/xhtml_css2/advanced\.css HTTP/1\.[01]"
+"GET /style/xhtml_css2/sidebar_left\.css HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/announce\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/apple\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/blank\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/books\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/bsd\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/bugs\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/censorship\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/courts\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/games\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/hackers\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/hardware\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/humor\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/mail\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/microsoft\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/misc\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/money\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/music\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/news\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/politics\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/privacy\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/security\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/sites\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/software\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/technology\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/xml-weblog\.gif HTTP/1\.[01]"
+"(GET|HEAD) /wl_icons/xml\.gif HTTP/1\.[01]"
+"HEAD / HTTP/1\.0" 0
+"HEAD / HTTP/1\.[01]" 200 0
+"HEAD /index\.php HTTP/1\.[01]" 200 0
+"HEAD /index\.php\?start=[0-9]* HTTP/1\.[01]" 200 0
+"HEAD /topic\.php HTTP/1\.[01]" 200 0
+"HEAD /topic\.php\?id=[0-9]* HTTP/1\.[01]" 200 0
+"HEAD /user\.php\?mode=new HTTP/1\.[01]" 200 0
+"POST /index\.php HTTP/1\.0" 302 0
+"POST /index\.php HTTP/1\.1" 302 5
+"GET /apple-touch-icon.png HTTP/1.1" 404 3
+"GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3
