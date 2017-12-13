@@ -3,6 +3,7 @@ version: '3'
 services:
   web:
     image: nginx:alpine
+    restart: unless-stopped
     depends_on:
       - php
       - mysql
@@ -21,6 +22,7 @@ services:
 
   php:
     image: jbenninghoff/php-xml-weblog
+    restart: unless-stopped
     environment:
       MYSQL_PASSWORD: $XWL_MYSQL_PASSWORD
     volumes:
@@ -28,6 +30,7 @@ services:
 
   mysql:
     image: mysql
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: $XWL_MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: xml_weblog
