@@ -11,6 +11,7 @@ defaultEntryPoints = ["http", "https"]
 
 [web]
 address = ":8080"
+readOnly = true
   [web.auth.basic]
   users = ["admin:my-encrypted-htpasswd"]
 
