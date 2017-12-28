@@ -28,8 +28,8 @@ then
 	chmod 600 ./data/acme.json
 fi
 
-if [ "`docker network ls | awk '{print $2}' | grep traefik`" != "traefik" ]
+if [ "`docker network ls | awk '{print $2}' | grep public`" != "public" ]
 then
 	echo "Adding docker network..."
-	docker network create -o "com.docker.network.bridge.host_binding_ipv4"="$HOST_BIND_IP" traefik
+	docker network create -o "com.docker.network.bridge.host_binding_ipv4"="$HOST_BIND_IP" public
 fi
