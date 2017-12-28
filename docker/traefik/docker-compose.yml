@@ -8,7 +8,7 @@ services:
       - 80:80
       - 443:443
     networks:
-      - public
+      - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/traefik.toml:/traefik.toml:ro
@@ -19,5 +19,5 @@ services:
       - traefik.enable=true
 
 networks:
-  public:
+  traefik:
     external: true
