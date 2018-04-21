@@ -29,7 +29,7 @@ services:
       - ./src:/var/lib/nginx/html:ro
 
   mysql:
-    image: mysql:5
+    image: mysql:5.7
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: $XWL_MYSQL_ROOT_PASSWORD
