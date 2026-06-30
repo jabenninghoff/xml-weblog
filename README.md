@@ -1,7 +1,9 @@
 # xml-weblog
+
 An XSLT based weblog engine written in PHP
 
 ## Overview
+
 _From the introductory article, ca. 2002:_
 
 Welcome to xml-weblog, the first fully buzzword-compliant weblog/portal engine.
@@ -15,6 +17,7 @@ This separation of content, logical presentation, and actual presentation (style
 Quickstart instructions to get an instance up & running. Assumes DNS or `dnsmasq` is properly configured.
 
 Start the [traefik](https://traefik.io) reverse proxy using the `init.sh` script:
+
 ```sh
 cd docker/traefik
 cp -i template.env .env && vim .env # optional
@@ -23,6 +26,7 @@ docker-compose up -d
 ```
 
 Start the applicaiton and load the default database:
+
 ```sh
 cd ../..
 cp -i template.env .env && vim .env
