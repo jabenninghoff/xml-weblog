@@ -5,6 +5,8 @@
 - [ ] Remove Traefik reverse proxy
 - [ ] Refactor Dockerfile, Docker Compose files
 - [ ] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
+- [ ] Clean PHP headers
+- [ ] Update LICENSE
 - [ ] Security: read-only mounts except for mysql data
 - [ ] Security: backup, restore script for xml-weblog database
 - [ ] Security: detect changes to databases
@@ -12,6 +14,7 @@
 
 ## post-migration
 
+- [ ] Rename default branch to `main`
 - [ ] Update Docker following the [PHP language-specific guide](https://docs.docker.com/guides/php/)
 - [ ] Implement PHP [Composer](https://getcomposer.org)
 - [ ] Add [PHPUnit](https://phpunit.de/index.html) tests
