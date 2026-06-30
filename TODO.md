@@ -2,7 +2,7 @@
 
 ## pre-migration
 
-- [ ] Remove Traefik reverse proxy
+- [x] Remove Traefik reverse proxy
 - [ ] Refactor Dockerfile, Docker Compose files
 - [ ] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
 - [ ] Clean PHP headers
