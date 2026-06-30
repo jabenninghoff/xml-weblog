@@ -16,20 +16,12 @@ This separation of content, logical presentation, and actual presentation (style
 
 Quickstart instructions to get an instance up & running. Assumes DNS or `dnsmasq` is properly configured.
 
-Start the [traefik](https://traefik.io) reverse proxy using the `init.sh` script:
-
-```sh
-cd docker/traefik
-cp -i template.env .env && vim .env # optional
-sh init.sh
-docker-compose up -d
-```
-
 Start the application and load the default database:
 
 ```sh
-cd ../..
 cp -i template.env .env && vim .env
 docker-compose up -d
 lynx http://xml-weblog.test/install/load_dbase.php
 ```
+
+Log in to the default site <http://xml-weblog.test> by clicking the "Login" button and using the default username 'admin' and password 'weblog'. Change the default account and password by editing the user in the "Users" section of the "Administration" page, <http://xml-weblog.test/admin.php?class=user>.
