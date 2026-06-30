@@ -25,7 +25,7 @@ sh init.sh
 docker-compose up -d
 ```
 
-Start the applicaiton and load the default database:
+Start the application and load the default database:
 
 ```sh
 cd ../..
