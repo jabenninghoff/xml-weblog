@@ -23,6 +23,10 @@
 - [ ] Replace mysql with [mariadb](https://mariadb.org)
 - [ ] Fix dates (Time Zones) in Articles, Messages
 
+## Time Zone Issue
+
+On the original xml-weblog site, the posted datetime includes the offset for central time (-0500 or -0600). The docker version uses the correct date and time, but with a UTC offset (+0000).
+
 <!-- original TODO
 
 To Do:
