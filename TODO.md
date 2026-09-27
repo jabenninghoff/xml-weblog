@@ -8,10 +8,10 @@
 - [x] Clean PHP headers
 - [x] Update LICENSE
 - [ ] Fix dates (Time Zones) in Articles, Messages
-- [ ] Security: read-only mounts except for mysql data
+- [x] Security: read-only mounts except for mysql data
 - [ ] Security: backup, restore script for xml-weblog database
 - [ ] Security: detect changes to databases
-- [ ] Security: daily scheduled task to write docker-compose logs to disk
+- [x] Security: daily scheduled task to write docker-compose logs to disk
 
 ## post-migration
 
