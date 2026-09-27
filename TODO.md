@@ -10,7 +10,7 @@
 - [x] Security: read-only mounts except for mysql data
 - [x] Rename default branch to `main`
 - [x] Security: backup, restore script for xml-weblog database
-- [ ] Security: detect changes to databases
+- [x] Security: detect changes to databases
 - [x] Security: daily scheduled task to write docker-compose logs to disk
 
 ## post-migration
