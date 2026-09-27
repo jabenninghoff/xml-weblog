@@ -16,19 +16,19 @@ services:
     # image: ghcr.io/jabenninghoff/xml-weblog:version # uncomment and use with specific version number for production
     image: xml-weblog:dev # use with docker-build.sh for local development, remove for production
     restart: unless-stopped
-    environment:
-      MYSQL_PASSWORD: $XWL_MYSQL_PASSWORD
     volumes:
       - ./src:/var/lib/nginx/html:ro
+    environment:
+      - MYSQL_PASSWORD=$XWL_MYSQL_PASSWORD
 
   mysql:
     image: mysql:5.7.44-oraclelinux7 # sha256:4bc6bc963e6d8443453676cae56536f4b8156d78bae03c0145cbe47c2aad73bb
     platform: linux/amd64
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: $XWL_MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: xml_weblog
-      MYSQL_USER: weblog
-      MYSQL_PASSWORD: $XWL_MYSQL_PASSWORD
     volumes:
       - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=$XWL_MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=xml_weblog
+      - MYSQL_USER=weblog
+      - MYSQL_PASSWORD=$XWL_MYSQL_PASSWORD
