@@ -7,21 +7,21 @@
 - [x] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
 - [x] Clean PHP headers
 - [x] Update LICENSE
-- [ ] Fix dates (Time Zones) in Articles, Messages
 - [x] Security: read-only mounts except for mysql data
 - [ ] Security: backup, restore script for xml-weblog database
+- [x] Rename default branch to `main`
 - [ ] Security: detect changes to databases
 - [x] Security: daily scheduled task to write docker-compose logs to disk
 
 ## post-migration
 
-- [ ] Rename default branch to `main`
 - [ ] Update Docker following the [PHP language-specific guide](https://docs.docker.com/guides/php/)
 - [ ] Implement PHP [Composer](https://getcomposer.org)
 - [ ] Add [PHPUnit](https://phpunit.de/index.html) tests
 - [ ] Upgrade to [PHP](https://www.php.net) 8.5
 - [ ] Remove PEAR DB
 - [ ] Replace mysql with [mariadb](https://mariadb.org)
+- [ ] Fix dates (Time Zones) in Articles, Messages
 
 <!-- original TODO
 
