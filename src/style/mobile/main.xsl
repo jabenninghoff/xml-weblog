@@ -5,7 +5,7 @@
    - the xmlns issues get worked out, either by directly supporting the xhtml
    - tag subset in xwl or by using the xhtml namespace for those tags) 
   -->
-<xsl:output method="xml" indent="yes" encoding="iso-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
     omit-xml-declaration="yes"
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
     doctype-system="/DTD/xhtml1-strict.dtd"/>
@@ -13,7 +13,7 @@
 <xsl:template match="page">
 <html xml:lang="{@lang}" lang="{@lang}">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="alternate" type="application/xml" title="RSS" href="rss.php"/>
     <link rel="stylesheet" href="style/mobile/basic.css" type="text/css"/>
     <style type="text/css">@import "style/mobile/advanced.css";</style>

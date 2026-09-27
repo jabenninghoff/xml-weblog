@@ -28,7 +28,7 @@ class XWL
 
     function _test_xml($string)
     {
-        $xml_doc = '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>'."\n"; //<?
+        $xml_doc = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'."\n"; //<?
         $xml_doc .= "<testxml>$string</testxml>\n";
 
         // xml_parse value to make sure it's valid X(HT)ML
@@ -46,7 +46,7 @@ class XWL
 
     function xml_declaration()
     {
-        echo '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',"\n"; //<?
+        echo '<?xml version="1.0" encoding="utf-8" standalone="yes"?>',"\n"; //<?
     }
 
     function base_url()

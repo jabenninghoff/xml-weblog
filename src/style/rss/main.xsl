@@ -2,7 +2,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-<xsl:output method="xml" indent="yes" encoding="iso-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
     omit-xml-declaration="no"/>
 
 <xsl:variable name="rootURL" select="page/header/url"/>
