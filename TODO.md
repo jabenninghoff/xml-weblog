@@ -6,7 +6,7 @@
 - [x] Refactor Dockerfile, Docker Compose files
 - [ ] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
 - [x] Clean PHP headers
-- [ ] Update LICENSE
+- [x] Update LICENSE
 - [ ] Fix dates (Time Zones) in Articles, Messages
 - [ ] Security: read-only mounts except for mysql data
 - [ ] Security: backup, restore script for xml-weblog database
