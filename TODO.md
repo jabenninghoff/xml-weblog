@@ -8,8 +8,8 @@
 - [x] Clean PHP headers
 - [x] Update LICENSE
 - [x] Security: read-only mounts except for mysql data
-- [ ] Security: backup, restore script for xml-weblog database
 - [x] Rename default branch to `main`
+- [x] Security: backup, restore script for xml-weblog database
 - [ ] Security: detect changes to databases
 - [x] Security: daily scheduled task to write docker-compose logs to disk
 
