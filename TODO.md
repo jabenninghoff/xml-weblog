@@ -4,7 +4,7 @@
 
 - [x] Remove Traefik reverse proxy
 - [x] Refactor Dockerfile, Docker Compose files
-- [ ] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
+- [x] Implement `.github` automation from [nasmail](https://github.com/jabenninghoff/nasmail) (Dependabot, Publish Docker, Release Please)
 - [x] Clean PHP headers
 - [x] Update LICENSE
 - [ ] Fix dates (Time Zones) in Articles, Messages
