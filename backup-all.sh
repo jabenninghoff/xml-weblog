@@ -1,9 +1,8 @@
 #!/bin/sh
 # backup all databases
-if [ ! -d ./data/backup ]
-then
-	mkdir -p ./data/backup
-fi
+
+[ ! -d ./data/backup ] && mkdir -p ./data/backup
+
 # shellcheck disable=SC2016
 docker-compose exec mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD" 2>/dev/null' > data/backup/all-databases.sql
 
