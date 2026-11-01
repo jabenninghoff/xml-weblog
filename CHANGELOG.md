@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/jabenninghoff/xml-weblog/compare/v1.0.0...v1.0.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* bump docker/login-action from 4.6.0 to 4.7.0 ([8eea193](https://github.com/jabenninghoff/xml-weblog/commit/8eea193647388b87321fda8cb61e57650f33615d))
+
 ## 1.0.0 (2026-09-27)
 
 
