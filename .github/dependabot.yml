@@ -10,4 +10,4 @@ updates:
     cooldown:
       default-days: 7
     commit-message:
-      prefix: "fix" # actions updates are always fixes
+      prefix: "ci" # Actions updates are CI changes
